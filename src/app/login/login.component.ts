@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import { CustomerService } from '../customer.service';
+import { FormsModule } from '@angular/forms' ;
 
 @Component({
   selector: 'app-login',

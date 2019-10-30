@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {Observable } from 'rxjs';
 import {Subscription } from 'rxjs';
+import { ApiService } from './api.service';
 
  const TOKEN='TOKEN';
 
@@ -13,9 +14,8 @@ export class CustomerService {
   loggedIn_ = false;
   apiHost = 'http://skeletor:8080';
   apiUrlRoot = '/api/v1/sessions/';
-  currToken_ = '';
 
-  constructor(private router : Router, private http : HttpClient) {}
+  constructor(private router : Router, private http : HttpClient, private api : ApiService) {}
  
   setName(name: string) : void{
     this.userName_ = name;
@@ -47,11 +47,11 @@ export class CustomerService {
 
   setToken(token)
   {
-    this.currToken_ = token;
+    localStorage.setItem('TOKEN', token);
   }
   getToken()
   {
-    return this.currToken_;
+    return localStorage.getItem('TOKEN');
   }
 
   isLoggedIn() {
@@ -73,6 +73,7 @@ export class CustomerService {
   {
     this.userName_ = '';
     this.loggedIn_ = false;
+    localStorage.removeItm('TOKEN');
     this.router.navigateByUrl("login");
   }
 
