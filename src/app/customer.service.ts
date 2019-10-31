@@ -12,7 +12,6 @@ export class CustomerService {
 
   userName_ = '';
   loggedIn_ = false;
-  apiHost = 'http://skeletor:8080';
   apiUrlRoot = '/api/v1/sessions/';
 
   constructor(private router : Router, private http : HttpClient, private api : ApiService) {}
@@ -29,7 +28,7 @@ export class CustomerService {
   fetchUserName()
   {
     this.http.get(
-      this.apiHost + this.apiUrlRoot + 'userName', {responseType: 'text'}).
+      this.api.getAPI() + this.apiUrlRoot + 'userName', {responseType: 'text'}).
 	subscribe(
            (name : string) => {this.setName(name)}, 
            (err : HttpErrorResponse) => {this.logOut(err.error)});
@@ -37,7 +36,7 @@ export class CustomerService {
 
   logIn(name: string, password : string)  {
     this.http.post(	    
-       this.apiHost + this.apiUrlRoot + 'login',
+       this.api.getAPI() + this.apiUrlRoot + 'login',
        {'userName':name , 'password':password}, {responseType: 'text'}).
        subscribe( res=> {
 		this.setToken(res);
@@ -55,7 +54,7 @@ export class CustomerService {
   }
 
   isLoggedIn() {
-    return this.loggedIn_;
+    return this.getToken() != null
   }
 
   setLoggedIn(name : string)
@@ -73,7 +72,7 @@ export class CustomerService {
   {
     this.userName_ = '';
     this.loggedIn_ = false;
-    localStorage.removeItm('TOKEN');
+    localStorage.removeItem('TOKEN');
     this.router.navigateByUrl("login");
   }
 

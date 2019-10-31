@@ -9,7 +9,7 @@ import { MsgService } from '../msg.service';
 })
 export class LobbyComponent implements OnInit {
 
-  constructor(private customer : CustomerService, private msg : MsgService) { }
+  constructor(public customer : CustomerService, private msg : MsgService) { }
 
   ngOnInit() {
     this.msg.clearMsgs();

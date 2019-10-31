@@ -4,9 +4,10 @@
 
 export const environment = {
   production: false,
-  basePageServer: 'https://skeletor:8080',
+  basePageServer: 'http://skeletor:8080',
   localServer: false,
-  suffix: ''
+  suffix: '',
+  appRoot: '/'
 };
 
 /*

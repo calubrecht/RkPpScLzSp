@@ -19,6 +19,8 @@ import { MsgService } from './msg.service';
 import { NeedAuthGuardService } from './need-auth-guard.service';
 import { ApiService } from './api.service';
 
+import { environment } from '../environments/environment';
+
 
 @NgModule({
   imports:      [ 
@@ -39,6 +41,6 @@ import { ApiService } from './api.service';
                ApiService,
                NeedAuthGuardService,
                {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true },
-               {provide:APP_BASE_HREF, useValue : '/'}]
+               {provide:APP_BASE_HREF, useValue : environment.appRoot }]
 })
 export class AppModule { }
