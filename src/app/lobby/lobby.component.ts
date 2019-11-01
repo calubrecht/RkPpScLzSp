@@ -12,8 +12,6 @@ export class LobbyComponent implements OnInit {
   constructor(public customer : CustomerService, private msg : MsgService) { }
 
   ngOnInit() {
-    this.msg.clearMsgs();
-    this.customer.fetchUserName();
   }
 
 }

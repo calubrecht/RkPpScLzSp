@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from './auth.interceptor';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { APP_BASE_HREF } from '@angular/common';
 
 
@@ -13,6 +13,7 @@ import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { LobbyComponent } from './lobby/lobby.component';
 import { MsgComponent } from './msg/msg.component';
+import { AuthInterceptor } from './auth.interceptor';
 
 import { CustomerService } from './customer.service';
 import { MsgService } from './msg.service';
@@ -39,7 +40,8 @@ import { environment } from '../environments/environment';
 	       CustomerService,
 	       MsgService,
                ApiService,
-               NeedAuthGuardService,
+	       NeedAuthGuardService,
+	       {provide: LocationStrategy, useClass: HashLocationStrategy },
                {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true },
                {provide:APP_BASE_HREF, useValue : environment.appRoot }]
 })

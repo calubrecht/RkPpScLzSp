@@ -4,6 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {Observable } from 'rxjs';
 import {Subscription } from 'rxjs';
 import { ApiService } from './api.service';
+import { MsgService } from './msg.service';
 
  const TOKEN='TOKEN';
 
@@ -14,7 +15,7 @@ export class CustomerService {
   loggedIn_ = false;
   apiUrlRoot = '/api/v1/sessions/';
 
-  constructor(private router : Router, private http : HttpClient, private api : ApiService) {}
+  constructor(private router : Router, private http : HttpClient, private api : ApiService, private msg : MsgService) {}
  
   setName(name: string) : void{
     this.userName_ = name;
@@ -41,7 +42,9 @@ export class CustomerService {
        subscribe( res=> {
 		this.setToken(res);
                 this.setLoggedIn(name);
-		this.router.navigateByUrl("/lobby")});
+		this.msg.clearMsgs();
+		this.fetchUserName();
+		this.router.navigateByUrl("lobby")});
   }
 
   setToken(token)
@@ -73,6 +76,8 @@ export class CustomerService {
     this.userName_ = '';
     this.loggedIn_ = false;
     localStorage.removeItem('TOKEN');
+    this.msg.clearMsgs();
+    this.msg.setMessage(error);
     this.router.navigateByUrl("login");
   }
 
