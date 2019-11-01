@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
-import { tap } from "rxjs/operators";
+import { tap, catchError } from "rxjs/operators";
+import {  of } from "rxjs";
 import {
   HttpRequest,
   HttpHandler,
@@ -32,20 +33,24 @@ export class AuthInterceptor implements HttpInterceptor {
         }
         return next.handle(reqToHandle).pipe(
           tap(
-           event => {}, // success,
-           (err :any) => {
-              this.cust.logOutClient('ips');
-	      this.handleError(err)}));
+           event => {}), // success,
+          catchError((err :any, o: Observable<any>) => {
+	      this.handleError(err);
+              return of(); 
+	      }));
     }
 
   handleError(err : any)
   {
     if (err instanceof HttpErrorResponse)
     {
-      this.msgService.setError(err.error);
       if (err.status == 401)
       {
-        this.cust.logOutClient('ips') ;
+        this.cust.logOutClient(err.error);
+      }
+      else
+      {
+        this.msgService.setError(err.error);
       }
     }
     else
