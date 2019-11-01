@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CustomerService } from '../customer.service';
 import { MsgService } from '../msg.service';
+import { USERS } from '../mock-users.ts';
 
 @Component({
   selector: 'app-lobby',
@@ -8,7 +9,8 @@ import { MsgService } from '../msg.service';
   styleUrls: ['./lobby.component.css']
 })
 export class LobbyComponent implements OnInit {
-
+  
+  users = USERS;
   constructor(public customer : CustomerService, private msg : MsgService) { }
 
   ngOnInit() {

@@ -4,5 +4,14 @@
 </p>
 
 <app-chatbox></app-chatbox>
+<div class="floatbox">
+  <div class='userbox' #userScroll [scrollTop]="userScroll.scrollHeight">
+    <div *ngFor="let u of users" class='user {{u.color}}'>
+  	  {{u.userName}}
+    </div>
+  </div>
+</div>
+<div class='floatbreak'></div>
+<input type='text' class='chatInput'>
 
 <button (click)="this.customer.logOut('')">Log Out!</button>

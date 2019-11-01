@@ -1,4 +1,3 @@
-
 import { ChatMessage } from './chat-data';
 
 export const CHATS: ChatMessage[] = [
