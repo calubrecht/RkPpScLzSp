@@ -22,6 +22,7 @@ import { ApiService } from './api.service';
 
 import { environment } from '../environments/environment';
 import { ChatboxComponent } from './chatbox/chatbox.component';
+import { UserDetailComponent } from './user-detail/user-detail.component';
 
 
 @NgModule({
@@ -35,7 +36,7 @@ import { ChatboxComponent } from './chatbox/chatbox.component';
     ]),
     HttpClientModule,
      ],
-  declarations: [ AppComponent, HelloComponent, HeaderComponent, LoginComponent, LobbyComponent, MsgComponent, ChatboxComponent ],
+  declarations: [ AppComponent, HelloComponent, HeaderComponent, LoginComponent, LobbyComponent, MsgComponent, ChatboxComponent, UserDetailComponent ],
   bootstrap:    [ AppComponent ],
   providers: [
 	       CustomerService,
