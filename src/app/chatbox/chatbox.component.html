@@ -1,0 +1,5 @@
+<div class='chatbox' #chatboxScroll [scrollTop]="chatboxScroll.scrollHeight">
+  <div *ngFor="let c of chats">
+	  <span class='user'>{{c.user}}:</span>  {{c.message}}
+  </div>
+</div>

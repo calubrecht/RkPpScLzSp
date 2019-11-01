@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CustomerService } from '../customer.service';
 import { MsgService } from '../msg.service';
 
@@ -15,6 +15,7 @@ export class LobbyComponent implements OnInit {
 
 		this.customer.fetchUserName();
   }
+
 
 
 }

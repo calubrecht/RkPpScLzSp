@@ -21,6 +21,7 @@ import { NeedAuthGuardService } from './need-auth-guard.service';
 import { ApiService } from './api.service';
 
 import { environment } from '../environments/environment';
+import { ChatboxComponent } from './chatbox/chatbox.component';
 
 
 @NgModule({
@@ -34,7 +35,7 @@ import { environment } from '../environments/environment';
     ]),
     HttpClientModule,
      ],
-  declarations: [ AppComponent, HelloComponent, HeaderComponent, LoginComponent, LobbyComponent, MsgComponent ],
+  declarations: [ AppComponent, HelloComponent, HeaderComponent, LoginComponent, LobbyComponent, MsgComponent, ChatboxComponent ],
   bootstrap:    [ AppComponent ],
   providers: [
 	       CustomerService,
