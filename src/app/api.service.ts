@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 
 import { environment } from '../environments/environment';
 
@@ -10,7 +10,7 @@ import { environment } from '../environments/environment';
 })
 export class ApiService {
   API : string;
-  apiUrlRoot = '/api/v1/sessions/';
+  apiUrlRoot = '/api/v1/';
 
   constructor(@Inject(DOCUMENT) private document : Document, private http: HttpClient)
   {
@@ -30,19 +30,31 @@ export class ApiService {
     return this.API;
   }
 
-  sendGet(method : string) : Observable<string>
+  sendGet<T>(method : string) : Observable<T>
+  {
+    return this.http.get<T>(this.getAPI() + this.apiUrlRoot + method);
+  }
+  
+  sendGetString(method : string) : Observable<string>
   {
     return this.http.get(
        this.getAPI() + this.apiUrlRoot + method,
-       {responseType: 'text'});
+      {responseType:'text'});
   }
   
-  sendPost(method : string, data : any) : Observable<string>
+  sendPost<T>(method : string, data : any) : Observable<T>
+  {
+    return this.http.post<T>(
+       this.getAPI() + this.apiUrlRoot + method,
+       data);
+  }
+  
+  sendPostForString(method : string, data : any, params?) : Observable<string>
   {
     return this.http.post(
        this.getAPI() + this.apiUrlRoot + method,
        data,
-       {responseType: 'text'});
+       {responseType:'text'});
   }
  
 }

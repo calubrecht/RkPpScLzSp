@@ -26,13 +26,13 @@ export class UserLoginService {
 
   fetchUserName()
   {
-    this.api.sendGet('userName').
+    this.api.sendGetString('sessions/userName').
 	    subscribe((name : string) => {this.setName(name)});
   }
 
   logIn(name: string, password : string)  {
-    this.api.sendPost(
-       'login',
+    this.api.sendPostForString(
+       'sessions/login',
        {'userName':name , 'password':password}).
     subscribe( res=> {
       this.setToken(res);

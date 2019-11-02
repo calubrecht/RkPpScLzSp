@@ -13,6 +13,11 @@ export class ChatService {
 
   getChats() : Observable<ChatMessage[]>
   {
-    return of(CHATS);
+    return this.api.sendGet<ChatMessage[]>('chat/chats');
+  }
+  
+  sendChat(chat: ChatMessage) : Observable<ChatMessage>
+  {
+    return this.api.sendPost<ChatMessage>('chat/chat', chat);
   }
 }
