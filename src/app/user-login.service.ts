@@ -4,6 +4,8 @@ import {Observable } from 'rxjs';
 import {Subscription } from 'rxjs';
 import { ApiService } from './api.service';
 import { MsgService } from './msg.service';
+import { SubscriptionService } from './subscription.service';
+import { ChatService } from './chat.service';
 
  const TOKEN='TOKEN';
 
@@ -13,7 +15,8 @@ export class UserLoginService {
   userName_ = '';
   loggedIn_ = false;
 
-  constructor(private router : Router, private api : ApiService, private msg : MsgService) {}
+  constructor(private router : Router, private api : ApiService, private msg : MsgService, private sub : SubscriptionService) 
+  {}
  
   setName(name: string) : void{
     this.userName_ = name;
@@ -68,6 +71,7 @@ export class UserLoginService {
   }
   logOutClient(error : string)
   {
+    this.sub.unsubscribeAll();
     this.userName_ = '';
     this.loggedIn_ = false;
     localStorage.removeItem('TOKEN');

@@ -19,7 +19,7 @@ export class ChatboxComponent implements OnInit {
 
   getChats(): void 
   {
-    this.chatService.getChats().
+    this.chatService.subscribe().
       subscribe(chats => this.chatData.setChats(chats));
   }
 
