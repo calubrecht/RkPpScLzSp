@@ -1,4 +1,4 @@
-<hello name="{{ this.customer.getName() }}"></hello>
+<hello name="{{ this.loginService.getName() }}"></hello>
 <p>
   Have a chat while waiting for a game.
 </p>
@@ -15,4 +15,4 @@
 <div class='floatbreak'></div>
 <input type='text' class='chatInput'>
 
-<button (click)="this.customer.logOut('')">Log Out!</button>
+<button (click)="this.loginService.logOut('')">Log Out!</button>

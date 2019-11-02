@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { UserDetailComponent } from '../user-detail/user-detail.component';
-import { CustomerService } from '../customer.service';
+import { UserLoginService } from '../user-login.service';
 import { MsgService } from '../msg.service';
 import { UserData } from '../user-data';
 import { USERS } from '../mock-users';
@@ -14,11 +14,11 @@ export class LobbyComponent implements OnInit {
   
   users = USERS;
   selectedUser : UserData;
-  constructor(public customer : CustomerService, private msg : MsgService) { }
+  constructor(public loginService : UserLoginService, private msg : MsgService) { }
 
   ngOnInit() {
 
-		this.customer.fetchUserName();
+		this.loginService.fetchUserName();
   }
 
   onSelect(user : UserData) : void {

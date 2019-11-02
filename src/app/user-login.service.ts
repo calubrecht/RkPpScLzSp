@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {Router} from '@angular/router';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {Observable } from 'rxjs';
 import {Subscription } from 'rxjs';
 import { ApiService } from './api.service';
@@ -9,13 +8,12 @@ import { MsgService } from './msg.service';
  const TOKEN='TOKEN';
 
 @Injectable({providedIn:"root"})
-export class CustomerService {
+export class UserLoginService {
 
   userName_ = '';
   loggedIn_ = false;
-  apiUrlRoot = '/api/v1/sessions/';
 
-  constructor(private router : Router, private http : HttpClient, private api : ApiService, private msg : MsgService) {}
+  constructor(private router : Router, private api : ApiService, private msg : MsgService) {}
  
   setName(name: string) : void{
     this.userName_ = name;
@@ -28,23 +26,20 @@ export class CustomerService {
 
   fetchUserName()
   {
-    this.http.get(
-      this.api.getAPI() + this.apiUrlRoot + 'userName', {responseType: 'text'}).
-	subscribe(
-           (name : string) => {this.setName(name)}, 
-           (err : HttpErrorResponse) => {this.logOut(err.error)});
+    this.api.sendGet('userName').
+	    subscribe((name : string) => {this.setName(name)});
   }
 
   logIn(name: string, password : string)  {
-    this.http.post(	    
-       this.api.getAPI() + this.apiUrlRoot + 'login',
-       {'userName':name , 'password':password}, {responseType: 'text'}).
-       subscribe( res=> {
-		this.setToken(res);
-                this.setLoggedIn(name);
-		this.msg.clearMsgs();
-		this.fetchUserName();
-		this.router.navigateByUrl("lobby")});
+    this.api.sendPost(
+       'login',
+       {'userName':name , 'password':password}).
+    subscribe( res=> {
+      this.setToken(res);
+      this.setLoggedIn(name);
+      this.msg.clearMsgs();
+      this.fetchUserName();
+		  this.router.navigateByUrl("lobby")});
   }
 
   setToken(token)

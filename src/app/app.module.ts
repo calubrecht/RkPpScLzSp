@@ -15,7 +15,7 @@ import { LobbyComponent } from './lobby/lobby.component';
 import { MsgComponent } from './msg/msg.component';
 import { AuthInterceptor } from './auth.interceptor';
 
-import { CustomerService } from './customer.service';
+import { UserLoginService } from './user-login.service';
 import { MsgService } from './msg.service';
 import { NeedAuthGuardService } from './need-auth-guard.service';
 import { ApiService } from './api.service';
@@ -39,9 +39,9 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
   declarations: [ AppComponent, HelloComponent, HeaderComponent, LoginComponent, LobbyComponent, MsgComponent, ChatboxComponent, UserDetailComponent ],
   bootstrap:    [ AppComponent ],
   providers: [
-	       CustomerService,
+	       UserLoginService,
 	       MsgService,
-               ApiService,
+         ApiService,
 	       NeedAuthGuardService,
 	       {provide: LocationStrategy, useClass: HashLocationStrategy },
                {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true },

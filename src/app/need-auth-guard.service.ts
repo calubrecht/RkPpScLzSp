@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import {CanActivate, Router} from '@angular/router';
-import { CustomerService } from './customer.service';
+import { UserLoginService } from './user-login.service';
 import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 
 @Injectable()
 export class NeedAuthGuardService implements CanActivate{
 
-  constructor(private customerService: CustomerService, private router: Router) { }
+  constructor(private loginService: UserLoginService, private router: Router) { }
 
 canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
     const redirectUrl = route['_routerState']['url'];
 
-    if (this.customerService.isLoggedIn()) {
+    if (this.loginService.isLoggedIn()) {
       return true;
     }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import { CustomerService } from '../customer.service';
+import { UserLoginService } from '../user-login.service';
 import { FormsModule } from '@angular/forms' ;
 
 @Component({
@@ -10,14 +10,14 @@ import { FormsModule } from '@angular/forms' ;
 })
 export class LoginComponent implements OnInit {
 
-  constructor( private customer: CustomerService, private router: Router) {
+  constructor( private loginService: UserLoginService, private router: Router) {
   }
 
   email = 'not';
   password = 'not';
 
   ngOnInit() {
-    if(this.customer.isLoggedIn())
+    if(this.loginService.isLoggedIn())
     {
       this.navigateAway();
     }
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
 
   tryLogin()
   {
-    this.customer.logIn(this.email, this.password);
+    this.loginService.logIn(this.email, this.password);
   }
 
 }

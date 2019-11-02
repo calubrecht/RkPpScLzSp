@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatMessage} from '../chat-data';
-import { CHATS } from '../mock-chats';
+import { ChatService} from '../chat.service';
 import { USERS } from '../mock-users';
 
 @Component({
@@ -10,11 +10,18 @@ import { USERS } from '../mock-users';
 })
 export class ChatboxComponent implements OnInit {
 
-  chats = CHATS;
+  chats : ChatMessage[];
   users = USERS;
-  constructor() { }
+  constructor(private chatService : ChatService) { }
 
   ngOnInit() {
+    this.getChats();
+  }
+
+  getChats(): void 
+  {
+    this.chatService.getChats().
+      subscribe(chats => this.chats = chats);
   }
 
   getUserColor(user : string)

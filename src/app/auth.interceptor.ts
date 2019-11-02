@@ -10,17 +10,17 @@ import {
   HttpErrorResponse
 } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { CustomerService } from './customer.service';
+import { UserLoginService } from './user-login.service';
 import { MsgService } from './msg.service';
 
 @Injectable({providedIn:"root"})
 export class AuthInterceptor implements HttpInterceptor {
-    constructor(private cust : CustomerService, private msgService : MsgService) {}
+    constructor(private user : UserLoginService, private msgService : MsgService) {}
 
     intercept(req: HttpRequest<any>,
               next: HttpHandler): Observable<HttpEvent<any>> {
 
-        const idToken = this.cust.getToken();
+        const idToken = this.user.getToken();
 
         var reqToHandle = req;
 
@@ -46,7 +46,7 @@ export class AuthInterceptor implements HttpInterceptor {
     {
       if (err.status == 401)
       {
-        this.cust.logOutClient(err.error);
+        this.user.logOutClient(err.error);
       }
       else
       {
