@@ -35,7 +35,9 @@ export class LobbyComponent implements OnInit {
 
   sendChat()
   {
-    this.chatService.sendChat(new ChatMessage('', this.newChat)).
+    let msg = this.newChat;
+    this.newChat = '';
+    this.chatService .sendChat(new ChatMessage('', msg)).
       subscribe(cm => this.chatData.addChat(cm));
   }
 

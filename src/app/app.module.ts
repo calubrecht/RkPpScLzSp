@@ -19,6 +19,7 @@ import { UserLoginService } from './user-login.service';
 import { MsgService } from './msg.service';
 import { NeedAuthGuardService } from './need-auth-guard.service';
 import { ApiService } from './api.service';
+import { SubscriptionService } from './subscription.service';
 
 import { environment } from '../environments/environment';
 import { ChatboxComponent } from './chatbox/chatbox.component';
@@ -43,6 +44,7 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
 	       MsgService,
          ApiService,
 	       NeedAuthGuardService,
+         SubscriptionService,
 	       {provide: LocationStrategy, useClass: HashLocationStrategy },
                {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true },
                {provide:APP_BASE_HREF, useValue : environment.appRoot }]

@@ -5,6 +5,7 @@ export class ChatMessage
 {
   userName : string;
   chatText : string;
+  msgID : number;
 
   constructor (userName: string, chatText: string)
   {
@@ -19,10 +20,17 @@ export class ChatMessage
 export class ChatData
 {
   chatList : Array<ChatMessage> = [];
+  chatMap : Array<ChatMessage> = [];
 
   addChat(c : ChatMessage)
   {
+    if (c.msgID in this.chatMap)
+    {
+      // Don't Duplicate
+      return;
+    }
     this.chatList.push(c);
+    this.chatMap[c.msgID] = c;
   }
 
   getChats()
@@ -30,9 +38,17 @@ export class ChatData
     return this.chatList;
   } 
 
+  addChats(chats : ChatMessage[])
+  {
+    let chatData = this;
+    chats.forEach(function (c) {chatData.addChat(c);});
+  }
+
   setChats(cm : ChatMessage[])
   {
     this.chatList = cm;
+    let chatData = this;
+    this.chatList.forEach(function(c) {chatData.chatMap[c.msgID] = c;});
   }
 
 }

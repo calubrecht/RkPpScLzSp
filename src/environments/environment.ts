@@ -4,10 +4,12 @@
 
 export const environment = {
   production: false,
-  basePageServer: 'http://skeletor:8080',
   localServer: false,
+  basePageServer: 'http://skeletor:8080',
   suffix: '',
-  appRoot: '/'
+  appRoot: '/',
+  wsServer: 'ws://skeletor:8080',
+  wsEntry: 'socket'
 };
 
 /*

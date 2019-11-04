@@ -13,8 +13,8 @@ export class LoginComponent implements OnInit {
   constructor( private loginService: UserLoginService, private router: Router) {
   }
 
-  email = 'not';
-  password = 'not';
+  email : string;
+  password : string;
 
   ngOnInit() {
     if(this.loginService.isLoggedIn())

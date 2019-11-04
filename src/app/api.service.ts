@@ -10,6 +10,8 @@ import { environment } from '../environments/environment';
 })
 export class ApiService {
   API : string;
+  WSAPI : string;
+  WSENTRY : string;
   apiUrlRoot = '/api/v1/';
 
   constructor(@Inject(DOCUMENT) private document : Document, private http: HttpClient)
@@ -17,11 +19,15 @@ export class ApiService {
     if (environment.localServer)
     {
       this.API = document.location.protocol + '//' + document.location.hostname + environment.suffix;
+      let wsProtocol = document.location.protocol == 'http' ? 'ws' : 'wss';
+      this.WSAPI = wsProtocol + '://' + document.location.hostname + environment.suffix;
     }
     else
     {
       this.API = environment.basePageServer;
+      this.WSAPI = environment.wsServer;
     }
+    this.WSENTRY = environment.wsEntry;
   }
 
 
