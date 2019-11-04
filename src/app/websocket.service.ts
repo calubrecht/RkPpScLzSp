@@ -18,6 +18,14 @@ export class WebsocketService {
     }
   }
 
+  public disconnect() : void 
+  {
+    if (this.stompClient) {
+      this.stompClient.deactivate();
+      this.stompClient = null;
+    }
+  }
+
   private create(url): RxStomp {
     let config =
       {

@@ -33,14 +33,11 @@ export class SubscriptionService {
   {
 
     let o = this.wsService.subscribe<T>(this.WSAPI, method);
-    this.subscriptions.push(o);
     return o;
   }
 
   unsubscribeAll()
   {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
-    this.subscriptions = [];
+    this.wsService.disconnect();
   }
 }

@@ -38,6 +38,12 @@ export class ChatData
     return this.chatList;
   } 
 
+  clear()
+  {
+    chatList  = [];
+    chatMap  = [];
+  }
+
   addChats(chats : ChatMessage[])
   {
     let chatData = this;
