@@ -10,17 +10,18 @@ import {
   HttpErrorResponse
 } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { UserLoginService } from './user-login.service';
 import { MsgService } from './msg.service';
+import { StorageService } from './storage.service';
+import { UserLoginService } from './user-login.service';
 
 @Injectable({providedIn:"root"})
 export class AuthInterceptor implements HttpInterceptor {
-    constructor(private user : UserLoginService, private msgService : MsgService) {}
+    constructor(private storage : StorageService, private msgService : MsgService, private user : UserLoginService) {}
 
     intercept(req: HttpRequest<any>,
               next: HttpHandler): Observable<HttpEvent<any>> {
 
-        const idToken = this.user.getToken();
+        const idToken = this.storage.getToken();
 
         var reqToHandle = req;
 

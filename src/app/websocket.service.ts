@@ -3,13 +3,30 @@ import { Observable } from 'rxjs';
 import { RxStomp }  from '@stomp/rx-stomp';
 import { map }  from 'rxjs/operators';
 
+
+import { StorageService } from './storage.service';
+
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketService {
-  constructor() {}
+  constructor(private storage : StorageService) {}
 
   private stompClient : RxStomp;
+
+  private getAuth() : string
+  {
+    return "Bearer " + this.storage.getToken();
+  }
+  
+  private getUser() : string
+  {
+    return "bozo";
+  }
+  private getPass() : string
+  {
+    return this.storage.getToken();
+  }
 
   public connect(url): void  {
     if (!this.stompClient) {
@@ -31,6 +48,8 @@ export class WebsocketService {
       {
         brokerURL: url,
         reconnectDelay: 200,
+        connectHeaders: { Authorization: this.getAuth() }, 
+        //debug: (msg: string): void => { console.log(new Date(), msg); }
       };
     let rxStomp = new RxStomp();
     rxStomp.configure(config);

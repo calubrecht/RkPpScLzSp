@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
   constructor( private loginService: UserLoginService, private router: Router) {
   }
 
-  email : string;
+  userName : string;
   password : string;
 
   ngOnInit() {
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
 
   tryLogin()
   {
-    this.loginService.logIn(this.email, this.password);
+    this.loginService.logIn(this.userName, this.password);
   }
 
 }

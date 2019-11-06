@@ -6,6 +6,7 @@ import { ApiService } from './api.service';
 import { MsgService } from './msg.service';
 import { SubscriptionService } from './subscription.service';
 import { ChatService } from './chat.service';
+import { StorageService } from './storage.service';
 
  const TOKEN='TOKEN';
 
@@ -15,11 +16,12 @@ export class UserLoginService {
   userName_ = '';
   loggedIn_ = false;
 
-  constructor(private router : Router, private api : ApiService, private msg : MsgService, private sub : SubscriptionService) 
+  constructor(private router : Router, private api : ApiService, private msg : MsgService, private sub : SubscriptionService, private storage : StorageService) 
   {}
  
   setName(name: string) : void{
     this.userName_ = name;
+    this.storage.setName(name);
   }
 
   getName() : string 
@@ -38,24 +40,15 @@ export class UserLoginService {
        'sessions/login',
        {'userName':name , 'password':password}).
     subscribe( res=> {
-      this.setToken(res);
+      this.storage.setToken(res);
       this.setLoggedIn(name);
       this.msg.clearMsgs();
       this.fetchUserName();
 		  this.router.navigateByUrl("lobby")});
   }
 
-  setToken(token)
-  {
-    localStorage.setItem('TOKEN', token);
-  }
-  getToken()
-  {
-    return localStorage.getItem('TOKEN');
-  }
-
   isLoggedIn() {
-    return this.getToken() != null
+    return this.storage.getToken() != null
   }
 
   setLoggedIn(name : string)
@@ -74,7 +67,7 @@ export class UserLoginService {
     this.sub.unsubscribeAll();
     this.userName_ = '';
     this.loggedIn_ = false;
-    localStorage.removeItem('TOKEN');
+    this.storage.clearToken();
     this.msg.clearMsgs();
     this.msg.setMessage(error);
     this.router.navigateByUrl("login");

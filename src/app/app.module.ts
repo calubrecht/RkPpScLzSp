@@ -20,10 +20,12 @@ import { MsgService } from './msg.service';
 import { NeedAuthGuardService } from './need-auth-guard.service';
 import { ApiService } from './api.service';
 import { SubscriptionService } from './subscription.service';
+import { GameService } from './game.service';
 
 import { environment } from '../environments/environment';
 import { ChatboxComponent } from './chatbox/chatbox.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
+import { FindGameWidgetComponent } from './find-game-widget/find-game-widget.component';
 
 
 @NgModule({
@@ -37,7 +39,7 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
     ]),
     HttpClientModule,
      ],
-  declarations: [ AppComponent, HelloComponent, HeaderComponent, LoginComponent, LobbyComponent, MsgComponent, ChatboxComponent, UserDetailComponent ],
+  declarations: [ AppComponent, HelloComponent, HeaderComponent, LoginComponent, LobbyComponent, MsgComponent, ChatboxComponent, UserDetailComponent, FindGameWidgetComponent ],
   bootstrap:    [ AppComponent ],
   providers: [
 	       UserLoginService,
@@ -45,6 +47,7 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
          ApiService,
 	       NeedAuthGuardService,
          SubscriptionService,
+         GameService,
 	       {provide: LocationStrategy, useClass: HashLocationStrategy },
                {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true },
                {provide:APP_BASE_HREF, useValue : environment.appRoot }]

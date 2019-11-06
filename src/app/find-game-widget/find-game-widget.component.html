@@ -1,0 +1,12 @@
+<div class='findGameWidget'>
+  <div *ngIf="isSeeking">
+    Waiting for a match... <button (click)="endSeek()">Cancel</button>
+  </div>
+  <div *ngIf="!isSeeking && !inGame">
+    <button (click)="startSeek()">Find a game</button>
+  </div>
+  <div *ngIf="inGame">
+    <div>Ready to start game<span class="gameName">{{gameDesc}}</span></div>
+    <button (click)="cancelGame()">Cancel Game</button>
+  </div>
+</div>

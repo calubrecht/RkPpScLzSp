@@ -40,8 +40,8 @@ export class ChatData
 
   clear()
   {
-    chatList  = [];
-    chatMap  = [];
+    this.chatList  = [];
+    this.chatMap  = [];
   }
 
   addChats(chats : ChatMessage[])

@@ -31,7 +31,6 @@ export class SubscriptionService {
 
   subscribe<T>(method: string ) : Observable<T>
   {
-
     let o = this.wsService.subscribe<T>(this.WSAPI, method);
     return o;
   }
