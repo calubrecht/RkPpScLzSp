@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GameService, GameMessage } from '../game.service';
+import { GameService, GameMessage, GameListener } from '../game.service';
 import { Subscription} from 'rxjs';
 
 @Component({
@@ -7,23 +7,23 @@ import { Subscription} from 'rxjs';
   templateUrl: './find-game-widget.component.html',
   styleUrls: ['./find-game-widget.component.css']
 })
-export class FindGameWidgetComponent implements OnInit {
+export class FindGameWidgetComponent implements OnInit, GameListener {
 
   isSeeking = false;
   inGame = false;
   seekingSubs : Subscription;
   gameDesc = '';
+  listenerFunc;
 
   constructor( private game : GameService) { }
-
+  
   ngOnInit() {
-  }
+    this.game.onInit();}
 
   endSeek()
   {
     this.isSeeking = false;
-    this.game.endSeekGame();
-    this.seekingSubs.unsubscribe();
+    this.game.endSeekGame('findGameWidget');
   }
 
   cancelGame()
@@ -32,30 +32,25 @@ export class FindGameWidgetComponent implements OnInit {
     this.gameDesc = '';
   }
 
-  cLog(msg )
-  {
-    console.log(msg);
-  }
-
   startSeek()
   {
     this.isSeeking= true;
     let localThis = this;
     // XXX:Start seeking animation
-    this.seekingSubs = this.game.seekGame().
-      subscribe(
-        e=> { this.processMsg(e)});
-
+    this.game.seekGame('findGameWidget', this);
   }
 
-  processMsg(e : GameMessage)
+  onMessage(e : GameMessage)
   {
+    console.log ('Got a game message')
+    console.log ('GM.action=' + e.action);
+    console.log ('GM.detail=' + e.detail);
     if (e.action == 'startGame')
     {
       this.inGame = true;
       this.gameDesc = e.detail;
       this.isSeeking = false;
-      this.seekingSubs.unsubscribe();
+      this.game.stopListen('findGameWidget');
     }
   }
 }

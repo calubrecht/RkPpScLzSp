@@ -13,6 +13,7 @@ export class WebsocketService {
   constructor(private storage : StorageService) {}
 
   private stompClient : RxStomp;
+  private sessionID : string;
 
   private getAuth() : string
   {
@@ -23,9 +24,24 @@ export class WebsocketService {
   {
     return "bozo";
   }
-  private getPass() : string
+
+  private makeid(length) {
+     let result           = '';
+     let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+     let charactersLength = characters.length;
+     for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+     }
+     return result;
+  }
+
+  private getClientSessionID() : string
   {
-    return this.storage.getToken();
+    if (!this.sessionID)
+    {
+      this.sessionID = this.makeid(6);
+    }
+    return this.sessionID;
   }
 
   public connect(url): void  {
@@ -40,6 +56,7 @@ export class WebsocketService {
     if (this.stompClient) {
       this.stompClient.deactivate();
       this.stompClient = null;
+      this.sessionID = null;
     }
   }
 
@@ -48,7 +65,7 @@ export class WebsocketService {
       {
         brokerURL: url,
         reconnectDelay: 200,
-        connectHeaders: { Authorization: this.getAuth() }, 
+        connectHeaders: { Authorization: this.getAuth(), ClientSessionID: this.getClientSessionID() }, 
         //debug: (msg: string): void => { console.log(new Date(), msg); }
       };
     let rxStomp = new RxStomp();
@@ -62,6 +79,12 @@ export class WebsocketService {
   {
     this.connect(url);
     return this.stompClient.watch(topic).pipe(map(function(message) { return JSON.parse(message.body) }));
+  }
+  
+  public subscribeUserChannel<T>(url: string, topic:string)  : Observable<T>
+  {
+    this.connect(url);
+    return this.stompClient.watch(topic + "-" + this.getClientSessionID()).pipe(map(function(message) { return JSON.parse(message.body) }));
   }
 
   public publish(topic: string, message : string)

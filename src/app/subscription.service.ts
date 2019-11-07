@@ -34,6 +34,12 @@ export class SubscriptionService {
     let o = this.wsService.subscribe<T>(this.WSAPI, method);
     return o;
   }
+  
+  subscribeUserChannel<T>(method: string ) : Observable<T>
+  {
+    let o = this.wsService.subscribeUserChannel<T>(this.WSAPI, method);
+    return o;
+  }
 
   unsubscribeAll()
   {

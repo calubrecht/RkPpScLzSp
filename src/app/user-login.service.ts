@@ -4,6 +4,7 @@ import {Observable } from 'rxjs';
 import {Subscription } from 'rxjs';
 import { ApiService } from './api.service';
 import { MsgService } from './msg.service';
+import { GameService } from './game.service';
 import { SubscriptionService } from './subscription.service';
 import { ChatService } from './chat.service';
 import { StorageService } from './storage.service';
@@ -16,7 +17,7 @@ export class UserLoginService {
   userName_ = '';
   loggedIn_ = false;
 
-  constructor(private router : Router, private api : ApiService, private msg : MsgService, private sub : SubscriptionService, private storage : StorageService) 
+  constructor(private router : Router, private api : ApiService, private msg : MsgService, private sub : SubscriptionService, private storage : StorageService, private game: GameService) 
   {}
  
   setName(name: string) : void{
@@ -65,6 +66,7 @@ export class UserLoginService {
   logOutClient(error : string)
   {
     this.sub.unsubscribeAll();
+    this.game.unsubscribe();
     this.userName_ = '';
     this.loggedIn_ = false;
     this.storage.clearToken();
