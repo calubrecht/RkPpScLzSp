@@ -32,5 +32,10 @@ export class LoginComponent implements OnInit {
   {
     this.loginService.logIn(this.userName, this.password);
   }
+  
+  tryLoginGuest()
+  {
+    this.loginService.logInGuest();
+  }
 
 }

@@ -1,3 +1,6 @@
+import { Injectable } from '@angular/core';
+
+
 export class UserData
 {
   userName : string;
@@ -5,6 +8,15 @@ export class UserData
   system: boolean;
 }
 
+export class UserMessage
+{
+  userName: string;
+  token: string;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
 export class UsersData
 {
   userList : Array<UserData> = [];
@@ -12,6 +24,15 @@ export class UsersData
   addUser(c : UserData)
   {
     this.userList.push(c);
+  }
+
+  createUser(userName: string)
+  {
+    let ud = new UserData();
+    ud.userName = userName;
+    ud.color = 'blue';
+    ud.system = false;
+    this.addUser(ud);
   }
 
   getUsers()

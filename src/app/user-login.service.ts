@@ -8,6 +8,7 @@ import { GameService } from './game.service';
 import { SubscriptionService } from './subscription.service';
 import { ChatService } from './chat.service';
 import { StorageService } from './storage.service';
+import { UsersData, UserMessage } from './user-data';
 
  const TOKEN='TOKEN';
 
@@ -17,7 +18,7 @@ export class UserLoginService {
   userName_ = '';
   loggedIn_ = false;
 
-  constructor(private router : Router, private api : ApiService, private msg : MsgService, private sub : SubscriptionService, private storage : StorageService, private game: GameService) 
+  constructor(private router : Router, private api : ApiService, private msg : MsgService, private sub : SubscriptionService, private storage : StorageService, private game: GameService, private userData : UsersData) 
   {}
  
   setName(name: string) : void{
@@ -37,12 +38,25 @@ export class UserLoginService {
   }
 
   logIn(name: string, password : string)  {
-    this.api.sendPostForString(
+    this.api.sendPost<UserMessage>(
        'sessions/login',
        {'userName':name , 'password':password}).
     subscribe( res=> {
-      this.storage.setToken(res);
+      this.storage.setToken(res.token);
       this.setLoggedIn(name);
+      this.msg.clearMsgs();
+      this.fetchUserName();
+		  this.router.navigateByUrl("lobby")});
+  }
+  
+  logInGuest()  {
+    this.api.sendPost<UserMessage>(
+       'sessions/loginGuest',
+       {}).
+    subscribe( res=> {
+      this.storage.setToken(res.token);
+      this.setLoggedIn(res.userName);
+      this.userData.createUser(res.userName);
       this.msg.clearMsgs();
       this.fetchUserName();
 		  this.router.navigateByUrl("lobby")});
