@@ -8,7 +8,7 @@ import { GameService } from '../game.service';
 })
 export class GameComponent implements OnInit {
 
-  choices = ['rock', 'paper', 'scissors', 'spock', 'lizard'];
+  choices = ['scissors', 'paper', 'rock', 'paper', 'lizard', 'spock'];
   selectedElement :string;
 
   constructor(private game : GameService) { }

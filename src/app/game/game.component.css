@@ -5,10 +5,10 @@
 
 #gameBack { position:absolute; right:28px; bottom:28px}
 
-#game_rock { position:absolute; right:310px; bottom:190px}
-#game_scissors { position:absolute; right:160px; bottom:290px}
-#game_paper { position:absolute; right:10px; bottom:190px}
-#game_spock { position:absolute; right:60px; bottom:15px}
-#game_lizard { position:absolute; right:260px; bottom:15px}
+#game_scissors { position:absolute; right:310px; bottom:190px}
+#game_paper { position:absolute; right:160px; bottom:290px}
+#game_rock { position:absolute; right:10px; bottom:190px}
+#game_lizard { position:absolute; right:60px; bottom:15px}
+#game_spock { position:absolute; right:260px; bottom:15px}
 
 img.selected { border-color:red; border-width:2px; border-style:solid; border-radius: 40px}
