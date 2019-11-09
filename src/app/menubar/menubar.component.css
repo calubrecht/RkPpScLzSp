@@ -1,0 +1,7 @@
+.menuButtonBorder{border-width: 1px 1px 1px 0px; border-style:solid; border-color:black; margin:6px 6px 4px 0px; background-color:#555555; width: auto;  padding: 6px 4px 6px 8px; }
+
+.menuButtonBorder.active{border-width: 1px 1px 1px 0px; border-style:solid; border-color:black; margin:6px 6px 4px -2px; background-color:gray; width: auto;  padding: 6px 4px 6px 8px;}
+
+.menuButton{border-width: 3px 3px 3px 3px; border-style:outset; border-color:#888888; margin:2px 2px 2px 2px; background-color:silver; width: auto;  padding: 6px 4px 6px 8px; }
+
+:host { float:left;}

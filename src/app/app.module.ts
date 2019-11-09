@@ -18,6 +18,7 @@ import { AuthInterceptor } from './auth.interceptor';
 import { UserLoginService } from './user-login.service';
 import { MsgService } from './msg.service';
 import { NeedAuthGuardService } from './need-auth-guard.service';
+import { GameActiveGuard} from './game-active-guard';
 import { ApiService } from './api.service';
 import { SubscriptionService } from './subscription.service';
 import { GameService } from './game.service';
@@ -26,6 +27,8 @@ import { environment } from '../environments/environment';
 import { ChatboxComponent } from './chatbox/chatbox.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { FindGameWidgetComponent } from './find-game-widget/find-game-widget.component';
+import { GameComponent } from './game/game.component';
+import { MenubarComponent } from './menubar/menubar.component';
 
 
 @NgModule({
@@ -35,17 +38,19 @@ import { FindGameWidgetComponent } from './find-game-widget/find-game-widget.com
     RouterModule.forRoot([
       { path: '', component: LoginComponent },
       { path: 'login', component: LoginComponent },
+      { path: 'game', component: GameComponent, canActivate: [GameActiveGuard] },
       { path: 'lobby', component:LobbyComponent,    canActivate: [NeedAuthGuardService]  },
     ]),
     HttpClientModule,
      ],
-  declarations: [ AppComponent, HelloComponent, HeaderComponent, LoginComponent, LobbyComponent, MsgComponent, ChatboxComponent, UserDetailComponent, FindGameWidgetComponent ],
+  declarations: [ AppComponent, HelloComponent, HeaderComponent, LoginComponent, LobbyComponent, MsgComponent, ChatboxComponent, UserDetailComponent, FindGameWidgetComponent, GameComponent, MenubarComponent ],
   bootstrap:    [ AppComponent ],
   providers: [
 	       UserLoginService,
 	       MsgService,
          ApiService,
 	       NeedAuthGuardService,
+	       GameActiveGuard,
          SubscriptionService,
          GameService,
 	       {provide: LocationStrategy, useClass: HashLocationStrategy },

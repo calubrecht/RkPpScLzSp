@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService, GameMessage, GameListener } from '../game.service';
 import { Subscription} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-find-game-widget',
@@ -15,7 +16,7 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
   gameDesc = '';
   listenerFunc;
 
-  constructor( private game : GameService) { }
+  constructor( private game : GameService, private router : Router) { }
   
   ngOnInit() {
     this.game.onInit();}
@@ -51,6 +52,8 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
       this.gameDesc = e.detail;
       this.isSeeking = false;
       this.game.stopListen('findGameWidget');
+      this.game.startGame(this.gameDesc);
+      this.router.navigateByUrl("game");
     }
   }
 }

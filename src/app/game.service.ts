@@ -20,7 +20,12 @@ export interface GameListener
   onMessage(msg : GameMessage);
 }
 
-
+export class GameStatus
+{
+  gameName : string;
+  round : number;
+  gameStatus : string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +35,7 @@ export class GameService {
   gameListeners = [];
   inited = false;
   subscription : Subscription;
+  gameStatus = new GameStatus();
 
   constructor(private api : ApiService,  private subs : SubscriptionService, private msg : MsgService, private storage : StorageService) { }
 
@@ -51,6 +57,8 @@ export class GameService {
       this.subscription = this.subs.subscribeUserChannel<GameMessage>('/queue/game').
        subscribe(e => this.onMessage(e));
       this.inited = true;
+      //this.gameStatus.gameStatus= 'started';
+      //this.gameStatus.gameName= 'Black v. White';
     }
   }
 
@@ -79,5 +87,16 @@ export class GameService {
     {
       this.gameListeners[key].onMessage(msg);
     }
+  }
+
+  startGame(name : string)
+  {
+    this.gameStatus.gameName = name;
+    this.gameStatus.gameStatus = 'started'
+  }
+
+  getGameStatus()
+  {
+    return this.gameStatus.gameStatus;
   }
 }

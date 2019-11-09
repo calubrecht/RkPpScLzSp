@@ -1,0 +1,14 @@
+
+.gameBox { background-color:gray; width:680px; height:550px; border:1px black solid; float:left}
+
+.gameCanvas { position:relative; background-color:silver; width:400px; height:400px; border:1px black solid; margin: 0 auto}
+
+#gameBack { position:absolute; right:28px; bottom:28px}
+
+#game_rock { position:absolute; right:310px; bottom:190px}
+#game_scissors { position:absolute; right:160px; bottom:290px}
+#game_paper { position:absolute; right:10px; bottom:190px}
+#game_spock { position:absolute; right:60px; bottom:15px}
+#game_lizard { position:absolute; right:260px; bottom:15px}
+
+img.selected { border-color:red; border-width:2px; border-style:solid; border-radius: 40px}

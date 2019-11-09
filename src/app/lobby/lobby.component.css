@@ -9,3 +9,5 @@
 .userbox .user.blue {  background:blue ; color:white}
 .userbox .user.green {  background:green ; color:white}
 .userbox .user.white {  background:white ; color:black}
+
+.lobby { background-color:gray; width:680px; height:550px; border:1px black solid; float:left}

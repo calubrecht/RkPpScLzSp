@@ -1,0 +1,11 @@
+<div class="gameBox">
+
+<h1>{{game.gameStatus.gameName}}</h1>
+
+
+<div class="gameCanvas">
+  <img id='gameBack' src='assets/pentagonArrows.png'>
+  <div *ngFor="let choice of getChoices()" >
+    <img src='assets/{{choice}}.png' id='game_{{choice}}' (click)='select($event.target)'>
+  </div>
+</div>
