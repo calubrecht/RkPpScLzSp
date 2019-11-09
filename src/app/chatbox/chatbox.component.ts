@@ -29,6 +29,14 @@ export class ChatboxComponent implements OnInit {
 
   getUserColor(user : string)
   {
+    if (user.startsWith("Guest-"))
+    {
+      let guestID = user.substring(6);
+      let guestInt =  parseInt(guestID);
+      let guestIdx = guestInt % 6;
+      let guestColors = ["orange", "yellow", "white", "black", "blue", "green"];
+      return guestColors[guestIdx];
+    }
     for (let i in this.users)
     {
       let thisUser = this.users[i];

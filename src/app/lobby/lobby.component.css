@@ -8,6 +8,9 @@
 .userbox .user.red {  background:red ; color:white}
 .userbox .user.blue {  background:blue ; color:white}
 .userbox .user.green {  background:green ; color:white}
+.userbox .user.orange {  background:orange ; color:black}
+.userbox .user.yellow {  background:yellow ; color:black}
 .userbox .user.white {  background:white ; color:black}
+.userbox .user.black {  background:black ; color:white}
 
 .lobby { background-color:gray; width:680px; height:550px; border:1px black solid; float:left}
