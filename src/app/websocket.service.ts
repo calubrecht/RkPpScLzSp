@@ -91,5 +91,10 @@ export class WebsocketService {
   {
     this.stompClient.publish({destination: topic, body:message});
   }
+  
+  public publishMsg<T>(topic: string, message : T)
+  {
+    this.stompClient.publish({destination: topic, body:JSON.stringify(message)});
+  }
     
 }

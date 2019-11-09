@@ -52,7 +52,7 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
       this.gameDesc = e.detail;
       this.isSeeking = false;
       this.game.stopListen('findGameWidget');
-      this.game.startGame(this.gameDesc);
+      this.game.startGame(this.gameDesc, e.id);
       this.router.navigateByUrl("game");
     }
   }

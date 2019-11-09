@@ -41,6 +41,11 @@ export class SubscriptionService {
     return o;
   }
 
+  sendMessage<T>(topic: string, msg : T)
+  {
+    this.wsService.publishMsg<T>(topic, msg); 
+  }
+
   unsubscribeAll()
   {
     this.wsService.disconnect();

@@ -13,6 +13,8 @@ export class GameMessage
   action: string;
   detail: string;
   players: string[];
+  winner: string;
+  choices: string[];
 }
 
 export interface GameListener
@@ -25,6 +27,7 @@ export class GameStatus
   gameName : string;
   round : number;
   gameStatus : string;
+  gameID : string;
 }
 
 @Injectable({
@@ -89,10 +92,16 @@ export class GameService {
     }
   }
 
-  startGame(name : string)
+  sendMessage(msg : GameMessage)
+  {
+    this.subs.sendMessage<GameMessage>("/send/gameMessage", msg);
+  }
+
+  startGame(name : string, id:string)
   {
     this.gameStatus.gameName = name;
     this.gameStatus.gameStatus = 'started'
+    this.gameStatus.gameID = id;
   }
 
   getGameStatus()

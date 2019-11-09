@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { GameService } from '../game.service';
+import { GameMessage, GameService } from '../game.service';
+import { MsgService } from '../msg.service';
 
 @Component({
   selector: 'app-game',
@@ -11,9 +12,10 @@ export class GameComponent implements OnInit {
   choices = ['scissors', 'paper', 'rock', 'paper', 'lizard', 'spock'];
   selectedElement;
 
-  constructor(public game : GameService) { }
+  constructor(public game : GameService, private msgService : MsgService) { }
 
   ngOnInit() {
+    this.game.listen('gameWidget', this);
   }
 
   getChoices() : string[]
@@ -36,6 +38,25 @@ export class GameComponent implements OnInit {
     this.unselect();
     this.selectedElement = el;
     this.selectedElement.classList.add('selected');
-    // this.callSelect(stripPrefix(id);
+    this.callSelect(this.stripPrefix(id));
+  }
+
+  stripPrefix(id : string)
+  {
+    return id.substring(5);
+  }
+
+  callSelect(choice : string)
+  {
+    let gm = new GameMessage();
+    gm.id = this.game.gameStatus.gameID;
+    gm.action = 'makeChoice';
+    gm.detail = choice;
+    this.game.sendMessage(gm);
+  }
+  
+  onMessage(e : GameMessage)
+  {
+    this.msgService.setMessage(e.detail);
   }
 }
