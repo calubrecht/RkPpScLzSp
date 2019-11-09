@@ -47,7 +47,14 @@ export class AuthInterceptor implements HttpInterceptor {
     {
       if (err.status == 401)
       {
-        this.user.logOutClient(err.error);
+        if (typeof err.error == 'object')
+        {
+          this.user.logOutClient(err.error.userName);
+        }
+        else
+        {
+          this.user.logOutClient(err.error);
+        }
       }
       else
       {

@@ -9,9 +9,9 @@ import { GameService } from '../game.service';
 export class GameComponent implements OnInit {
 
   choices = ['scissors', 'paper', 'rock', 'paper', 'lizard', 'spock'];
-  selectedElement :string;
+  selectedElement;
 
-  constructor(private game : GameService) { }
+  constructor(public game : GameService) { }
 
   ngOnInit() {
   }

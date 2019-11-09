@@ -10,7 +10,7 @@ import { GameService } from '../game.service';
 })
 export class MenubarComponent implements OnInit {
 
-  constructor(private router:Router, private game:GameService) { }
+  constructor(private router:Router, public game:GameService) { }
 
   ngOnInit() {
   }
