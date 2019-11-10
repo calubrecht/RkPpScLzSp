@@ -4,8 +4,7 @@ import { UserLoginService } from '../user-login.service';
 import { ChatMessage, ChatData } from '../chat-data';
 import { ChatService } from '../chat.service';
 import { MsgService } from '../msg.service';
-import { UserData } from '../user-data';
-import { USERS } from '../mock-users';
+import { UsersData, UserData } from '../user-data';
 
 @Component({
   selector: 'app-lobby',
@@ -14,11 +13,10 @@ import { USERS } from '../mock-users';
 })
 export class LobbyComponent implements OnInit {
   
-  users = USERS;
   selectedUser : UserData;
   newChat: string;
 
-  constructor(public loginService : UserLoginService, private msg : MsgService, private chatService : ChatService, private chatData : ChatData) { }
+  constructor(public loginService : UserLoginService, private msg : MsgService, private chatService : ChatService, private chatData : ChatData, public userData: UsersData) { }
 
   ngOnInit() {
 
@@ -29,10 +27,6 @@ export class LobbyComponent implements OnInit {
    this.selectedUser = user; 
   }
   
-  nonSystemUsers() {
-   return this.users.filter(function(el) { return !el.system});
-  }
-
   sendChat()
   {
     let msg = this.newChat;

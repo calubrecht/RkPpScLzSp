@@ -1,4 +1,4 @@
-<div class="lobby">
+<div class="lobby mainbox">
 <hello name="{{ this.loginService.getName() }}"></hello>
 <p>
   Have a chat while waiting for a game.
@@ -8,7 +8,7 @@
 <app-chatbox></app-chatbox>
 <div class="floatbox">
   <div class='userbox' #userScroll [scrollTop]="userScroll.scrollHeight">
-     <div *ngFor="let u of nonSystemUsers()" class='user {{u.color}}' (click)="onSelect(u)">
+     <div *ngFor="let u of userData.getActiveUsers()" class='user {{u.color}}' (click)="onSelect(u)">
   	  {{u.userName}}
     </div>
   </div>

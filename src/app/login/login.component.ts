@@ -28,6 +28,11 @@ export class LoginComponent implements OnInit {
     this.router.navigateByUrl("lobby");
   }
 
+  register()
+  {
+    this.router.navigateByUrl("register");
+  }
+
   tryLogin()
   {
     this.loginService.logIn(this.userName, this.password);

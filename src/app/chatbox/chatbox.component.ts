@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatMessage, ChatData} from '../chat-data';
 import { ChatService} from '../chat.service';
-import { USERS } from '../mock-users';
+import { UsersData } from '../user-data';
 
 @Component({
   selector: 'app-chatbox',
@@ -10,8 +10,8 @@ import { USERS } from '../mock-users';
 })
 export class ChatboxComponent implements OnInit {
 
-  users = USERS;
-  constructor(private chatService : ChatService, private chatData : ChatData) { }
+  users = this.userData.userList;
+  constructor(private chatService : ChatService, private chatData : ChatData, private userData : UsersData) { }
 
   ngOnInit() {
     this.getChats();
@@ -27,16 +27,16 @@ export class ChatboxComponent implements OnInit {
     return this.chatData.getChats();
   }
 
+  private hashCode(s) {
+    let h =0;
+    for(let i = 0, h = 0; i < s.length; i++)
+        h = Math.imul(31, h) + s.charCodeAt(i) | 0;
+
+    return h;
+  }
+
   getUserColor(user : string)
   {
-    if (user.startsWith("Guest-"))
-    {
-      let guestID = user.substring(6);
-      let guestInt =  parseInt(guestID);
-      let guestIdx = guestInt % 6;
-      let guestColors = ["orange", "yellow", "white", "black", "blue", "green"];
-      return guestColors[guestIdx];
-    }
     for (let i in this.users)
     {
       let thisUser = this.users[i];
@@ -45,6 +45,8 @@ export class ChatboxComponent implements OnInit {
         return thisUser.color;
       }
     }
+    let guestColors = ["orange", "yellow", "white", "black", "blue", "green"];
+    return guestColors[this.hashCode(user) % guestColors.length]
     return 'white';
   }
   

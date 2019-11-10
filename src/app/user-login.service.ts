@@ -49,6 +49,18 @@ export class UserLoginService {
 		  this.router.navigateByUrl("lobby")});
   }
   
+  register(name: string, password : string, color:string)  {
+    this.api.sendPost<UserMessage>(
+       'sessions/register',
+       {'userName':name , 'password':password, color:'color'}).
+    subscribe( res=> {
+      this.storage.setToken(res.token);
+      this.setLoggedIn(name);
+      this.msg.clearMsgs();
+      this.fetchUserName();
+		  this.router.navigateByUrl("lobby")});
+  }
+  
   logInGuest()  {
     this.api.sendPost<UserMessage>(
        'sessions/loginGuest',
@@ -78,6 +90,12 @@ export class UserLoginService {
     this.logOutClient(error);
   }
   logOutClient(error : string)
+  {
+    this.logOutClientLocal(error);
+    // Send logout message to server?
+  }
+  
+  logOutClientLocal(error : string)
   {
     this.game.unsubscribe();
     this.chat.unsubscribe();

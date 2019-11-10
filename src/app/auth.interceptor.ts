@@ -56,6 +56,10 @@ export class AuthInterceptor implements HttpInterceptor {
           this.user.logOutClient(err.error);
         }
       }
+      if (err.status == 0)
+      {
+        this.user.logOutClientLocal("Error communicating with server.")
+      }
       else
       {
         this.msgService.setError(err.error);

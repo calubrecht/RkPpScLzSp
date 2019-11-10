@@ -1,7 +1,4 @@
 
-.login { background-color:gray; width:680px; height:550px; border:1px black solid; float:left}
-
-
 .login form div { margin:8px; width: 280px; position:relative}
 .login form div label { margin:5px}
 .login form div input { position:absolute; right:0; padding:1px 5px 1px 5px; background-color:#dddddd}

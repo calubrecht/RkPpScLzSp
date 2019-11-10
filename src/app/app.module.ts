@@ -29,6 +29,7 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
 import { FindGameWidgetComponent } from './find-game-widget/find-game-widget.component';
 import { GameComponent } from './game/game.component';
 import { MenubarComponent } from './menubar/menubar.component';
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
@@ -38,12 +39,13 @@ import { MenubarComponent } from './menubar/menubar.component';
     RouterModule.forRoot([
       { path: '', component: LoginComponent },
       { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
       { path: 'game', component: GameComponent, canActivate: [GameActiveGuard] },
       { path: 'lobby', component:LobbyComponent,    canActivate: [NeedAuthGuardService]  },
     ]),
     HttpClientModule,
      ],
-  declarations: [ AppComponent, HelloComponent, HeaderComponent, LoginComponent, LobbyComponent, MsgComponent, ChatboxComponent, UserDetailComponent, FindGameWidgetComponent, GameComponent, MenubarComponent ],
+  declarations: [ AppComponent, HelloComponent, HeaderComponent, LoginComponent, LobbyComponent, MsgComponent, ChatboxComponent, UserDetailComponent, FindGameWidgetComponent, GameComponent, MenubarComponent, RegisterComponent ],
   bootstrap:    [ AppComponent ],
   providers: [
 	       UserLoginService,

@@ -1,1 +1,12 @@
 /* Add application styles & imports to this file! */
+
+
+.mainBox { background-color:gray; width:680px; height:550px; border:1px black solid; float:left}
+
+.red {  background:red ; color:white}
+.blue {  background:blue ; color:white}
+.green {  background:green ; color:white}
+.orange {  background:orange ; color:black}
+.yellow {  background:yellow ; color:black}
+.white {  background:white ; color:black}
+.black {  background:black ; color:white}

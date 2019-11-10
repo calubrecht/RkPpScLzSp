@@ -1,0 +1,28 @@
+<div class='register'>
+  <app-msg></app-msg>
+  <form  >
+    <h2 >Register</h2>
+    <div >
+      <label for="userName">User Name</label>
+      <input type="text" id="userName" name="userNAme" placeholder="User Name" [(ngModel)]="userName">
+    </div>
+    <div>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Password" [(ngModel)]="password">
+    </div>
+    <div>
+      <label for="confirmPass">Confirm Password</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" [(ngModel)]="confirmPassword">
+    </div>
+    <div>
+      <label for="color">Color</label>
+      <select id="selectColor" name="color" [(ngModel)] = "color">
+        <option *ngFor="let c of colors" value={{c}}>{{c}}</option>
+      </select>
+    </div>
+    <div class="buttonPanel">
+      <button type="submit"  (click)="tryRegister()">Register</button>
+      <button  (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>
