@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ChatMessage, ChatData } from './chat-data';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { ApiService } from './api.service';
 import { SubscriptionService } from './subscription.service';
 
@@ -9,6 +9,7 @@ import { SubscriptionService } from './subscription.service';
 })
 export class ChatService {
 
+  private subscription : Subscription;
   constructor(private api : ApiService, private subs: SubscriptionService,
    private chatData : ChatData) { }
 
@@ -24,7 +25,12 @@ export class ChatService {
 
   subscribe()
   {
-    return this.subs.subscribe<ChatMessage>('/topic/chat')
+    return this.subs.subscribe<ChatMessage>('/topic/chat');
+  }
+
+  unsubscribe()
+  {
+    this.subscription.unsubscribe();
   }
 
   public getAndSubscribeChats()
@@ -32,7 +38,7 @@ export class ChatService {
     let thisNow = this;
     this.getChats().
       subscribe(chats => thisNow.chatData.addChats(chats));
-    this.subscribe().
+    this.subscription = this.subscribe().
       subscribe(chat => thisNow.chatData.addChat(chat));
   }
 }

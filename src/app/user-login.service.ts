@@ -18,7 +18,7 @@ export class UserLoginService {
   userName_ = '';
   loggedIn_ = false;
 
-  constructor(private router : Router, private api : ApiService, private msg : MsgService, private sub : SubscriptionService, private storage : StorageService, private game: GameService, private userData : UsersData) 
+  constructor(private router : Router, private api : ApiService, private msg : MsgService, private sub : SubscriptionService, private storage : StorageService, private game: GameService, private userData : UsersData, private chat:ChatService) 
   {}
  
   setName(name: string) : void{
@@ -79,8 +79,9 @@ export class UserLoginService {
   }
   logOutClient(error : string)
   {
-    this.sub.unsubscribeAll();
     this.game.unsubscribe();
+    this.chat.unsubscribe();
+    this.sub.unsubscribeAll();
     this.userName_ = '';
     this.loggedIn_ = false;
     this.storage.clearToken();
