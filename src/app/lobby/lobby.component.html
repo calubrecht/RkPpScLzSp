@@ -15,14 +15,14 @@
 </div>
 <app-user-detail [user]="selectedUser"></app-user-detail>
 <div class='floatbreak'></div>
-<input type='text' class='chatInput' [(ngModel)]="newChat" (keyup.enter)="sendChat()"><button (click)="sendChat()">Send</button>
-
-<div>
-<button (click)="this.loginService.logOut('')">Log Out!</button>
-</div>
-
-<div>
+<div class="findGame">
   <app-find-game-widget></app-find-game-widget>
 </div>
+<input type='text' class='chatInput' [(ngModel)]="newChat" (keyup.enter)="sendChat()"><button class='defButton' (click)="sendChat()">Send</button>
+
+<div>
+<button class="logoutButton" (click)="this.loginService.logOut('')">Log Out!</button>
+</div>
+
 
 </div>
