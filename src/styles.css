@@ -12,3 +12,5 @@
 .black {  background:black ; color:white}
 
 div.break {clear:both}
+
+button.defButton {border-width:4px; background-color:darkgrey; border-color:darkgrey}
