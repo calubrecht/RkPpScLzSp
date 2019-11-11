@@ -55,6 +55,12 @@ export class GameService {
      this.api.sendPost<GameMessage>('game/endSeek', {}).subscribe(e=> { /* noop */}); 
      this.stopListen(key);
   }
+
+  cancel()
+  {
+    this.api.sendPost<GameMessage>('game/cancel', {id:this.gameStatus.gameID}).subscribe(e=> { /* noop */}); 
+
+  }
   
   onInit() {
     if (!this.inited)

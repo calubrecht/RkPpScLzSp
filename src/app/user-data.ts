@@ -7,6 +7,8 @@ export class UserData
   color : string;
   status : string;
   system: boolean;
+  wins: number;
+  losses: number;
 
   constructor(d)
   {

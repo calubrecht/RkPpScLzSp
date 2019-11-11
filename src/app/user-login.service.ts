@@ -52,7 +52,7 @@ export class UserLoginService {
   register(name: string, password : string, color:string)  {
     this.api.sendPost<UserMessage>(
        'sessions/register',
-       {'userName':name , 'password':password, color:'color'}).
+       {'userName':name , 'password':password, color:color}).
     subscribe( res=> {
       this.storage.setToken(res.token);
       this.setLoggedIn(name);

@@ -15,7 +15,7 @@ canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
       return false;
     }
 
-    if (this.game.getGameStatus() == 'started')
+    if (this.game.getGameStatus() == 'started' || this.game.getGameStatus() == 'finished')
     {
       return true;
     }

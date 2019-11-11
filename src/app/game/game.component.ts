@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GameMessage, GameService } from '../game.service';
 import { MsgService } from '../msg.service';
 import { UserLoginService } from '../user-login.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -17,8 +18,9 @@ export class GameComponent implements OnInit {
   resultText : string = '';
   roundText : string = '';
   scoreText : string = '';
+  cancelButtonName = 'Cancel Game';
 
-  constructor(public game : GameService, private msgService : MsgService, private loginService : UserLoginService) { }
+  constructor(public game : GameService, private msgService : MsgService, private loginService : UserLoginService, private router : Router) { }
 
   ngOnInit() {
     this.game.listen('gameWidget', this);
@@ -46,7 +48,7 @@ export class GameComponent implements OnInit {
       this.msgService.setMessage("Already selected for this round.");
       return;
     }
-    if (this.game.gameStatus.gameStatus == 'Finished')
+    if (this.game.gameStatus.gameStatus == 'finished')
     {
       return ;
     }
@@ -74,6 +76,18 @@ export class GameComponent implements OnInit {
     this.game.sendMessage(gm);
   }
 
+  close()
+  {
+    this.game.stopListen('gameWidget');
+    if (this.game.getGameStatus() == 'started')
+    {
+      // Canceling active game
+      this.game.cancel();
+    }
+    this.game.gameStatus.gameStatus = 'closed';
+    this.router.navigateByUrl('/lobby');
+  }
+
   setScore(roundNumber : number, playerScore : number, oppScore : number, oppName : string)
   {
     this.roundText = 'Round ' + roundNumber;
@@ -99,6 +113,24 @@ export class GameComponent implements OnInit {
     }
     if (e.action == "Finished" || e.action == "Canceled")
     {
+      this.game.gameStatus.gameStatus='finished';
+      if (this.selectedElement)
+      { 
+        this.selectedElement.classList.remove('selected');
+        this.selectedElement = null;
+      }
+      this.cancelButtonName = 'Close Game';
+      if (e.action == 'Canceled')
+      {
+        this.roundText = ''
+        this.scoreText = "Game Canceled";
+      }
+      else
+      {
+        this.roundText = 'Game Over'
+        this.scoreText = e.detail;
+      }
+      return;
     }
     this.msgService.setMessage(e.detail);
   }
