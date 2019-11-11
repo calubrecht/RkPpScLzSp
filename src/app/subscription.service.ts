@@ -4,7 +4,6 @@ import { Observable, Subject } from 'rxjs';
 import { tap, takeUntil } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { WebsocketService } from './websocket.service';
-import polling from 'rx-polling';
 
 @Injectable({
   providedIn: 'root'
