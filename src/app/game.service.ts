@@ -30,6 +30,12 @@ export class GameStatus
   round : number;
   gameStatus : string;
   gameID : string;
+
+  selectedName: string;
+  opponentSelectedName : string;
+  resultText: string;
+  roundText: string;
+  scoreText: string;
 }
 
 @Injectable({
@@ -84,7 +90,10 @@ export class GameService {
 
   listen(key: string, listener : GameListener)
   {
-    this.gameListeners[key] = listener;
+    if (!this.gameListeners[key])
+    {
+      this.gameListeners[key] = listener;
+    }
   }
 
   stopListen(key:string)
@@ -110,6 +119,11 @@ export class GameService {
     this.gameStatus.gameName = name;
     this.gameStatus.gameStatus = 'started'
     this.gameStatus.gameID = id;
+    this.gameStatus.selectedName = 'placeholder';
+    this.gameStatus.opponentSelectedName = 'placeholder';
+    this.gameStatus.resultText = '';
+    this.gameStatus.roundText = '';
+    this.gameStatus.scoreText = '';
   }
   
   endGame(name : string, id:string)

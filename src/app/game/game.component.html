@@ -7,15 +7,15 @@
 <div class="gameCanvas">
   <img id='gameBack' src='assets/pentagonArrows.png'>
   <div *ngFor="let choice of getChoices()" >
-    <img src='assets/{{choice}}.png' id='game_{{choice}}' (click)='select($event.target)'>
+    <img src='assets/{{choice}}.png' class='game_choice' id='game_{{choice}}' (click)='select($event.target)'>
   </div>
 </div>
     <div class="break"></div>
     <div class="results">
-      <div> <img src='assets/{{selectedName}}.png'>  V.  <img src='assets/{{opponentSelectedName}}.png'></div>
-      <div class="resultText"> {{resultText}}</div>
-      <div class="round"> {{roundText}} </div>
-      <div class="scores"> {{scoreText}} </div>
+      <div> <img src='assets/{{game.gameStatus.selectedName}}.png'>  V.  <img src='assets/{{game.gameStatus.opponentSelectedName}}.png'></div>
+      <div class="resultText"> {{this.game.gameStatus.resultText}}</div>
+      <div class="round"> {{game.gameStatus.roundText}} </div>
+      <div class="scores"> {{game.gameStatus.scoreText}} </div>
     </div>
     <div>
       <button (click)="close()">{{cancelButtonName}}</button>

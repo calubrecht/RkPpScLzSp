@@ -13,17 +13,17 @@ export class GameComponent implements OnInit {
 
   choices = ['scissors', 'paper', 'rock', 'paper', 'lizard', 'spock'];
   selectedElement;
-  selectedName : string = 'placeholder';
-  opponentSelectedName : string = 'placeholder';
-  resultText : string = '';
-  roundText : string = '';
-  scoreText : string = '';
+
   cancelButtonName = 'Cancel Game';
 
   constructor(public game : GameService, private msgService : MsgService, private loginService : UserLoginService, private router : Router) { }
 
   ngOnInit() {
     this.game.listen('gameWidget', this);
+    if (this.game.gameStatus.gameStatus=='finished')
+    {
+      this.cancelButtonName = 'Close Game';
+    }
   }
 
   getChoices() : string[]
@@ -37,7 +37,7 @@ export class GameComponent implements OnInit {
     {
       this.selectedElement.classList.remove('selected');
       this.selectedElement = null;
-      this.selectedName = null;
+      this.game.gameStatus.selectedName = null;
     }
   }
 
@@ -52,14 +52,14 @@ export class GameComponent implements OnInit {
     {
       return ;
     }
-    this.resultText = '';
-    this.opponentSelectedName = 'placeholder';
+    this.game.gameStatus.resultText = '';
+    this.game.gameStatus.opponentSelectedName = 'placeholder';
     let id = el.id;
     this.unselect();
     this.selectedElement = el;
     this.selectedElement.classList.add('selected');
-    this.selectedName = this.stripPrefix(id);
-    this.callSelect(this.selectedName);
+    this.game.gameStatus.selectedName = this.stripPrefix(id);
+    this.callSelect(this.game.gameStatus.selectedName);
   }
 
   stripPrefix(id : string)
@@ -90,8 +90,8 @@ export class GameComponent implements OnInit {
 
   setScore(roundNumber : number, playerScore : number, oppScore : number, oppName : string)
   {
-    this.roundText = 'Round ' + roundNumber;
-    this.scoreText = "You: " + playerScore + " " + oppName + ": " + oppScore;
+    this.game.gameStatus.roundText = 'Round ' + roundNumber;
+    this.game.gameStatus.scoreText = "You: " + playerScore + " " + oppName + ": " + oppScore;
   }
   
   onMessage(e : GameMessage)
@@ -102,9 +102,9 @@ export class GameComponent implements OnInit {
       this.unselect();
       let playerIdx = (e.players[0] == this.loginService.getName()) ? 0 : 1;
       let oppIdx = playerIdx == 0 ? 1 : 0;
-      this.resultText = e.detail;
-      this.selectedName = e.choices[playerIdx];
-      this.opponentSelectedName = e.choices[oppIdx];
+      this.game.gameStatus.resultText = e.detail;
+      this.game.gameStatus.selectedName = e.choices[playerIdx];
+      this.game.gameStatus.opponentSelectedName = e.choices[oppIdx];
       if (e.action == 'point')
       {
         this.setScore(e.round, e.scores[playerIdx], e.scores[oppIdx], e.players[oppIdx]);
@@ -122,13 +122,13 @@ export class GameComponent implements OnInit {
       this.cancelButtonName = 'Close Game';
       if (e.action == 'Canceled')
       {
-        this.roundText = ''
-        this.scoreText = "Game Canceled";
+        this.game.gameStatus.roundText = ''
+        this.game.gameStatus.scoreText = "Game Canceled";
       }
       else
       {
-        this.roundText = 'Game Over'
-        this.scoreText = e.detail;
+        this.game.gameStatus.roundText = 'Game Over'
+        this.game.gameStatus.scoreText = e.detail;
       }
       return;
     }
