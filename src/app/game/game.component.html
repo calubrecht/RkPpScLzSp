@@ -10,3 +10,12 @@
     <img src='assets/{{choice}}.png' id='game_{{choice}}' (click)='select($event.target)'>
   </div>
 </div>
+    <div class="break"></div>
+    <div class="results">
+      <div> <img src='assets/{{selectedName}}.png'>  V.  <img src='assets/{{opponentSelectedName}}.png'></div>
+      <div class="resultText"> {{resultText}}</div>
+      <div class="round"> {{roundText}} </div>
+      <div class="scores"> {{scoreText}} </div>
+    </div>
+
+</div>

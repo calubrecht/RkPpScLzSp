@@ -15,6 +15,8 @@ export class GameMessage
   players: string[];
   winner: string;
   choices: string[];
+  round: number;
+  scores: number[];
 }
 
 export interface GameListener
@@ -102,6 +104,13 @@ export class GameService {
     this.gameStatus.gameName = name;
     this.gameStatus.gameStatus = 'started'
     this.gameStatus.gameID = id;
+  }
+  
+  endGame(name : string, id:string)
+  {
+    this.gameStatus.gameName = null;
+    this.gameStatus.gameStatus = null;
+    this.gameStatus.gameID = null;
   }
 
   getGameStatus()
