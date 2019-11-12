@@ -1,4 +1,4 @@
-<div *ngIf="game.getGameStatus()=='started' || game.getGameStatus()=='finished'">
+<div class='menubar' *ngIf="game.getGameStatus()=='started' || game.getGameStatus()=='finished'">
   <div [ngClass]="{menuButtonBorder: true, active: inLobby()}" (click)="toLobby()"><div class="menuButton">Game Lobby</div></div>
   <div [ngClass]="{menuButtonBorder: true, active: !inLobby()}" (click)="toGame()"><div class="menuButton"> {{game.gameStatus.gameName}}</div></div>
 </div>
