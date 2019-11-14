@@ -3,7 +3,7 @@ export const environment = {
   localServer: true,
   basePageServer: '' ,
   suffix: '/app/basePage',  // Can be used for port or if API is not mounted at root of host
-  appRoot: '/app/rock',
+  appRoot: '',
   wsServer: '',
   wsProtocol: 'ws',
   wsEntry: 'socket'
