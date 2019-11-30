@@ -9,14 +9,14 @@ import { StorageService } from './storage.service';
 
 export class GameMessage
 {
-  id: string;
+  id?: string;
   action: string;
-  detail: string;
-  players: string[];
-  winner: string;
-  choices: string[];
-  round: number;
-  scores: number[];
+  detail?: string;
+  players?: string[];
+  winner?: string;
+  choices?: string[];
+  round?: number;
+  scores?: number[];
 }
 
 export interface GameListener
@@ -36,6 +36,9 @@ export class GameStatus
   resultText: string;
   roundText: string;
   scoreText: string;
+  invited= false;
+  inGame= false;
+  inviter: string;
 }
 
 @Injectable({
@@ -52,14 +55,25 @@ export class GameService {
 
   seekGame(key: string, listener : GameListener) 
   {
-    this.listen(key, listener);
     this.api.sendPost<GameMessage>('game/seek', {}).subscribe(e=> { /* noop */}); 
+  }
+  
+  invite(inviter: string, invitee : string)
+  {
+   // this.listen(key, listener);
+    let inviteMessage : GameMessage = {action:'invite', players:[inviter, invitee]};
+    this.api.sendPost<GameMessage>('game/invite', inviteMessage).subscribe(e=> { /* noop */}); 
+  }
+  
+  acceptInvite(gameDesc: string, gameID : string)
+  {
+    let acceptMessage : GameMessage = {action:'acceptInvite', id:gameID};
+    this.api.sendPost<GameMessage>('game/acceptInvite', acceptMessage).subscribe(e=> { /* noop */}); 
   }
   
   endSeekGame(key: string) : void
   {
      this.api.sendPost<GameMessage>('game/endSeek', {}).subscribe(e=> { /* noop */}); 
-     this.stopListen(key);
   }
 
   cancel()
@@ -124,6 +138,8 @@ export class GameService {
     this.gameStatus.resultText = '';
     this.gameStatus.roundText = '';
     this.gameStatus.scoreText = '';
+    this.gameStatus.invited = false;
+    this.gameStatus.inGame = false;
   }
   
   endGame(name : string, id:string)

@@ -11,26 +11,38 @@ import {Router} from '@angular/router';
 export class FindGameWidgetComponent implements OnInit, GameListener {
 
   isSeeking = false;
-  inGame = false;
   seekingSubs : Subscription;
-  gameDesc = '';
   listenerFunc;
 
-  constructor( private game : GameService, private router : Router) { }
+  constructor( public game : GameService, private router : Router) { }
   
   ngOnInit() {
-    this.game.onInit();}
+    this.game.onInit();
+    this.game.listen('findGameWidget', this);
+  }
 
   endSeek()
   {
     this.isSeeking = false;
     this.game.endSeekGame('findGameWidget');
+    this.game.gameStatus.inGame = false;
+    this.game.gameStatus.invited = false;
   }
 
   cancelGame()
   {
-    this.inGame = false;
-    this.gameDesc = '';
+    this.game.gameStatus.inGame = false;
+    this.game.gameStatus.gameName= '';
+    this.game.gameStatus.invited = false;
+  }
+
+  acceptInvite()
+  {
+    this.game.gameStatus.inGame = true;
+    this.game.startGame(this.game.gameStatus.gameName, this.game.gameStatus.gameID);
+    this.game.acceptInvite(this.game.gameStatus.gameName, this.game.gameStatus.gameID);
+    this.game.gameStatus.inviter = '';
+    this.router.navigateByUrl("game");
   }
 
   startSeek()
@@ -43,16 +55,28 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
 
   onMessage(e : GameMessage)
   {
-    console.log ('Got a game message')
-    console.log ('GM.action=' + e.action);
-    console.log ('GM.detail=' + e.detail);
     if (e.action == 'startGame')
     {
-      this.inGame = true;
-      this.gameDesc = e.detail;
+      this.game.gameStatus.inGame = true;
+      this.game.gameStatus.gameName = e.detail;
       this.isSeeking = false;
-      this.game.stopListen('findGameWidget');
-      this.game.startGame(this.gameDesc, e.id);
+      this.game.startGame(this.game.gameStatus.gameName, e.id);
+      this.router.navigateByUrl("game");
+    }
+    if (e.action == 'invite' && !this.game.gameStatus.inGame && !this.game.gameStatus.invited)
+    {
+      this.game.gameStatus.invited = true;
+      this.game.gameStatus.gameName = e.detail;
+      this.game.gameStatus.gameID = e.id;
+      this.game.gameStatus.inviter = e.players[1];
+    }
+    if (e.action == 'acceptedInvite' && !this.game.gameStatus.inGame )
+    {
+      this.game.gameStatus.inGame = true;
+      this.game.gameStatus.invited = false;
+      this.game.gameStatus.gameName = e.detail;
+      this.game.startGame(this.game.gameStatus.gameName, e.id);
+      this.game.gameStatus.inviter = '';
       this.router.navigateByUrl("game");
     }
   }

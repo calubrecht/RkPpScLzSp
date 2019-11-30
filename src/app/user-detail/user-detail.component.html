@@ -3,7 +3,7 @@
     <h2>{{user.userName | uppercase}} Details</h2>
     <div>Record W:{{user.wins}} L:{{user.losses}}</div>
     <div *ngIf="user.userName != loginService.getName()">
-      <button>Invite to game</button>
+      <button (click)="invite()">Invite to game</button>
     </div>
   </div>
 </div>

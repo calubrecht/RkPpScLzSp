@@ -1,6 +1,7 @@
 import { Input, Component, OnInit } from '@angular/core';
 import { UserData } from '../user-data';
 import { UserLoginService } from '../user-login.service';
+import { GameService } from '../game.service';
 
 @Component({
   selector: 'app-user-detail',
@@ -9,11 +10,15 @@ import { UserLoginService } from '../user-login.service';
 })
 export class UserDetailComponent implements OnInit {
 
-  constructor(public loginService : UserLoginService) { }
+  constructor(public loginService : UserLoginService, private game : GameService) { }
 
   ngOnInit() {
   }
 
   @Input() user : UserData;
+
+  invite() {
+    this.game.invite(this.loginService.getName(), this.user.userName);
+  }
 
 }
