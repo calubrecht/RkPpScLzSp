@@ -10,14 +10,14 @@ import { WebsocketService } from './websocket.service';
 })
 export class SubscriptionService {
 
-  private subscriptions : Observable<any>[] = [];
+  private subscriptions: Observable<any>[] = [];
   private unsubscribe = new Subject<void>();
 
   private lastSub = 0;
 
   private WSAPI;
 
-  constructor(private api: ApiService, private wsService : WebsocketService)
+  constructor(private api: ApiService, private wsService: WebsocketService)
   {
     this.WSAPI = this.api.WSAPI + '/' + this.api.WSENTRY;
   }
@@ -28,21 +28,19 @@ export class SubscriptionService {
   }
 
 
-  subscribe<T>(method: string ) : Observable<T>
+  subscribe<T>(method: string ): Observable<T>
   {
-    let o = this.wsService.subscribe<T>(this.WSAPI, method);
-    return o;
-  }
-  
-  subscribeUserChannel<T>(method: string ) : Observable<T>
-  {
-    let o = this.wsService.subscribeUserChannel<T>(this.WSAPI, method);
-    return o;
+    return this.wsService.subscribe<T>(this.WSAPI, method);
   }
 
-  sendMessage<T>(topic: string, msg : T)
+  subscribeUserChannel<T>(method: string ): Observable<T>
   {
-    this.wsService.publishMsg<T>(topic, msg); 
+    return this.wsService.subscribeUserChannel<T>(this.WSAPI, method);
+  }
+
+  sendMessage<T>(topic: string, msg: T)
+  {
+    this.wsService.publishMsg<T>(topic, msg);
   }
 
   unsubscribeAll()

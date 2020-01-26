@@ -11,22 +11,22 @@ import { SubscriptionService } from './subscription.service';
 })
 export class ChatService {
 
-  private subscription : Subscription;
-  private usersSubscription : Subscription;
-  constructor(private api : ApiService, private subs: SubscriptionService,
-   private chatData : ChatData, private userData : UsersData) { }
+  private subscription: Subscription;
+  private usersSubscription: Subscription;
+  constructor(private api: ApiService, private subs: SubscriptionService,
+              private chatData: ChatData, private userData: UsersData) { }
 
-  getChats() : Observable<ChatMessage[]>
+  getChats(): Observable<ChatMessage[]>
   {
     return this.api.sendGet<ChatMessage[]>('chat/chats');
   }
-  
-  getUsers() : Observable<UserData[]>
+
+  getUsers(): Observable<UserData[]>
   {
     return this.api.sendGet<UserData[]>('users/');
   }
-  
-  sendChat(chat: ChatMessage) : Observable<ChatMessage>
+
+  sendChat(chat: ChatMessage): Observable<ChatMessage>
   {
     return this.api.sendPost<ChatMessage>('chat/chat', chat);
   }
@@ -35,12 +35,12 @@ export class ChatService {
   {
     return this.subs.subscribe<ChatMessage>('/topic/chat');
   }
-  
+
   subscribeUsers()
   {
     return this.subs.subscribe<UserData>('/topic/users');
   }
- 
+
   unsubscribe()
   {
     if (this.subscription)
@@ -55,7 +55,7 @@ export class ChatService {
 
   public getAndSubscribeChats()
   {
-    let thisNow = this;
+    const thisNow = this;
     this.getChats().
       subscribe(chats => thisNow.chatData.addChats(chats));
     this.getUsers().

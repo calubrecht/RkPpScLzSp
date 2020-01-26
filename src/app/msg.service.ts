@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class MsgService {
-  error_ : string = '';
-  msg_  : string = '';
+  error = '';
+  msg  = '';
 
 
   constructor() { }
@@ -16,23 +16,23 @@ export class MsgService {
     this.setError('');
   }
 
-  setMessage(msg : string)
+  setMessage(msg: string)
   {
-    this.msg_ = msg;
+    this.msg = msg;
   }
 
-  getMessage() : string
+  getMessage(): string
   {
-    return this.msg_;
+    return this.msg;
   }
 
-  setError(err : string)
+  setError(err: string)
   {
-    this.error_ = err;
+    this.error = err;
   }
-  
-  getError() : string
+
+  getError(): string
   {
-    return this.error_;
+    return this.error;
   }
 }

@@ -21,23 +21,23 @@ export class GameMessage
 
 export interface GameListener
 {
-  onMessage(msg : GameMessage);
+  onMessage(msg: GameMessage);
 }
 
 export class GameStatus
 {
-  gameName : string;
-  round : number;
-  gameStatus : string;
-  gameID : string;
+  gameName: string;
+  round: number;
+  gameStatus: string;
+  gameID: string;
 
   selectedName: string;
-  opponentSelectedName : string;
+  opponentSelectedName: string;
   resultText: string;
   roundText: string;
   scoreText: string;
-  invited= false;
-  inGame= false;
+  invited = false;
+  inGame = false;
   inviter: string;
 }
 
@@ -48,48 +48,47 @@ export class GameService {
 
   gameListeners = [];
   inited = false;
-  subscription : Subscription;
+  subscription: Subscription;
   gameStatus = new GameStatus();
 
-  constructor(private api : ApiService,  private subs : SubscriptionService, private msg : MsgService, private storage : StorageService) { }
+  constructor(private api: ApiService,  private subs: SubscriptionService, private msg: MsgService, private storage: StorageService) { }
 
-  seekGame(key: string, listener : GameListener) 
+  seekGame(key: string, listener: GameListener)
   {
-    this.api.sendPost<GameMessage>('game/seek', {}).subscribe(e=> { /* noop */}); 
+    this.api.sendPost<GameMessage>('game/seek', {}).subscribe(e => { /* noop */});
   }
-  
-  invite(inviter: string, invitee : string)
+
+  invite(inviter: string, invitee: string)
   {
-   // this.listen(key, listener);
-    let inviteMessage : GameMessage = {action:'invite', players:[inviter, invitee]};
-    this.api.sendPost<GameMessage>('game/invite', inviteMessage).subscribe(e=> { /* noop */}); 
+    const inviteMessage: GameMessage = {action: 'invite', players: [inviter, invitee]};
+    this.api.sendPost<GameMessage>('game/invite', inviteMessage).subscribe(e => { /* noop */});
   }
-  
-  acceptInvite(gameDesc: string, gameID : string)
+
+  acceptInvite(gameDesc: string, gameID: string)
   {
-    let acceptMessage : GameMessage = {action:'acceptInvite', id:gameID};
-    this.api.sendPost<GameMessage>('game/acceptInvite', acceptMessage).subscribe(e=> { /* noop */}); 
+    const acceptMessage: GameMessage = {action: 'acceptInvite', id: gameID};
+    this.api.sendPost<GameMessage>('game/acceptInvite', acceptMessage).subscribe(e => { /* noop */});
   }
-  
-  endSeekGame(key: string) : void
+
+  endSeekGame(key: string): void
   {
-     this.api.sendPost<GameMessage>('game/endSeek', {}).subscribe(e=> { /* noop */}); 
+     this.api.sendPost<GameMessage>('game/endSeek', {}).subscribe(e => { /* noop */});
   }
 
   cancel()
   {
-    this.api.sendPost<GameMessage>('game/cancel', {id:this.gameStatus.gameID}).subscribe(e=> { /* noop */}); 
+    this.api.sendPost<GameMessage>('game/cancel', {id: this.gameStatus.gameID}).subscribe(e => { /* noop */});
 
   }
-  
+
   onInit() {
     if (!this.inited)
     {
       this.subscription = this.subs.subscribeUserChannel<GameMessage>('/queue/game').
        subscribe(e => this.onMessage(e));
       this.inited = true;
-      //this.gameStatus.gameStatus= 'started';
-      //this.gameStatus.gameName= 'Black v. White';
+      // this.gameStatus.gameStatus= 'started';
+      // this.gameStatus.gameName= 'Black v. White';
     }
   }
 
@@ -102,7 +101,7 @@ export class GameService {
     this.inited = false;
   }
 
-  listen(key: string, listener : GameListener)
+  listen(key: string, listener: GameListener)
   {
     if (!this.gameListeners[key])
     {
@@ -110,28 +109,28 @@ export class GameService {
     }
   }
 
-  stopListen(key:string)
+  stopListen(key: string)
   {
     delete this.gameListeners[key];
   }
 
-  onMessage(msg : GameMessage)
+  onMessage(msg: GameMessage)
   {
-    for (let key in this.gameListeners)
+    for (const key of Object.keys(this.gameListeners))
     {
       this.gameListeners[key].onMessage(msg);
     }
   }
 
-  sendMessage(msg : GameMessage)
+  sendMessage(msg: GameMessage)
   {
-    this.subs.sendMessage<GameMessage>("/send/gameMessage", msg);
+    this.subs.sendMessage<GameMessage>('/send/gameMessage', msg);
   }
 
-  startGame(name : string, id:string)
+  startGame(name: string, id: string)
   {
     this.gameStatus.gameName = name;
-    this.gameStatus.gameStatus = 'started'
+    this.gameStatus.gameStatus = 'started';
     this.gameStatus.gameID = id;
     this.gameStatus.selectedName = 'placeholder';
     this.gameStatus.opponentSelectedName = 'placeholder';
@@ -141,8 +140,8 @@ export class GameService {
     this.gameStatus.invited = false;
     this.gameStatus.inGame = false;
   }
-  
-  endGame(name : string, id:string)
+
+  endGame(name: string, id: string)
   {
     this.gameStatus.gameName = null;
     this.gameStatus.gameStatus = null;

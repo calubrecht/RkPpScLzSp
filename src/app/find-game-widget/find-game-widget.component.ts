@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService, GameMessage, GameListener } from '../game.service';
+import { UsersData } from '../user-data';
 import { Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 
@@ -11,11 +12,11 @@ import {Router} from '@angular/router';
 export class FindGameWidgetComponent implements OnInit, GameListener {
 
   isSeeking = false;
-  seekingSubs : Subscription;
+  seekingSubs: Subscription;
   listenerFunc;
 
-  constructor( public game : GameService, private router : Router) { }
-  
+  constructor( public game: GameService, private router: Router, public userData: UsersData) { }
+
   ngOnInit() {
     this.game.onInit();
     this.game.listen('findGameWidget', this);
@@ -32,7 +33,7 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
   cancelGame()
   {
     this.game.gameStatus.inGame = false;
-    this.game.gameStatus.gameName= '';
+    this.game.gameStatus.gameName = '';
     this.game.gameStatus.invited = false;
   }
 
@@ -42,42 +43,41 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
     this.game.startGame(this.game.gameStatus.gameName, this.game.gameStatus.gameID);
     this.game.acceptInvite(this.game.gameStatus.gameName, this.game.gameStatus.gameID);
     this.game.gameStatus.inviter = '';
-    this.router.navigateByUrl("game");
+    this.router.navigateByUrl('game');
   }
 
   startSeek()
   {
-    this.isSeeking= true;
-    let localThis = this;
+    this.isSeeking = true;
     // XXX:Start seeking animation
     this.game.seekGame('findGameWidget', this);
   }
 
-  onMessage(e : GameMessage)
+  onMessage(e: GameMessage)
   {
-    if (e.action == 'startGame')
+    if (e.action === 'startGame')
     {
       this.game.gameStatus.inGame = true;
       this.game.gameStatus.gameName = e.detail;
       this.isSeeking = false;
       this.game.startGame(this.game.gameStatus.gameName, e.id);
-      this.router.navigateByUrl("game");
+      this.router.navigateByUrl('game');
     }
-    if (e.action == 'invite' && !this.game.gameStatus.inGame && !this.game.gameStatus.invited)
+    if (e.action === 'invite' && !this.game.gameStatus.inGame && !this.game.gameStatus.invited)
     {
       this.game.gameStatus.invited = true;
       this.game.gameStatus.gameName = e.detail;
       this.game.gameStatus.gameID = e.id;
       this.game.gameStatus.inviter = e.players[1];
     }
-    if (e.action == 'acceptedInvite' && !this.game.gameStatus.inGame )
+    if (e.action === 'acceptedInvite' && !this.game.gameStatus.inGame )
     {
       this.game.gameStatus.inGame = true;
       this.game.gameStatus.invited = false;
       this.game.gameStatus.gameName = e.detail;
       this.game.startGame(this.game.gameStatus.gameName, e.id);
       this.game.gameStatus.inviter = '';
-      this.router.navigateByUrl("game");
+      this.router.navigateByUrl('game');
     }
   }
 }

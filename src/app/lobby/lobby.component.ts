@@ -12,24 +12,27 @@ import { UsersData, UserData } from '../user-data';
   styleUrls: ['./lobby.component.css']
 })
 export class LobbyComponent implements OnInit {
-  
-  selectedUser : UserData;
+
+  selectedUser: UserData;
   newChat: string;
 
-  constructor(public loginService : UserLoginService, private msg : MsgService, private chatService : ChatService, private chatData : ChatData, public userData: UsersData) { }
+  constructor(
+    public loginService: UserLoginService, private msg: MsgService,
+    private chatService: ChatService, private chatData: ChatData,
+    public userData: UsersData) { }
 
   ngOnInit() {
 
-		this.loginService.fetchUserName();
+    this.loginService.fetchUserName();
   }
 
-  onSelect(user : UserData) : void {
-   this.selectedUser = user; 
+  onSelect(user: UserData): void {
+    this.selectedUser = user;
   }
-  
+
   sendChat()
   {
-    let msg = this.newChat;
+    const msg = this.newChat;
     this.newChat = '';
     this.chatService .sendChat(new ChatMessage('', msg)).
       subscribe(cm => this.chatData.addChat(cm));

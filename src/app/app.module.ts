@@ -33,7 +33,7 @@ import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
-  imports:      [ 
+  imports:      [
     BrowserModule,
     FormsModule,
     RouterModule.forRoot([
@@ -41,22 +41,25 @@ import { RegisterComponent } from './register/register.component';
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
       { path: 'game', component: GameComponent, canActivate: [GameActiveGuard] },
-      { path: 'lobby', component:LobbyComponent,    canActivate: [NeedAuthGuardService]  },
+      { path: 'lobby', component: LobbyComponent, canActivate: [NeedAuthGuardService]  },
     ]),
     HttpClientModule,
      ],
-  declarations: [ AppComponent, HelloComponent, HeaderComponent, LoginComponent, LobbyComponent, MsgComponent, ChatboxComponent, UserDetailComponent, FindGameWidgetComponent, GameComponent, MenubarComponent, RegisterComponent ],
+  declarations: [
+    AppComponent, HelloComponent, HeaderComponent, LoginComponent, LobbyComponent,
+    MsgComponent, ChatboxComponent, UserDetailComponent, FindGameWidgetComponent,
+    GameComponent, MenubarComponent, RegisterComponent ],
   bootstrap:    [ AppComponent ],
   providers: [
-	       UserLoginService,
-	       MsgService,
+         UserLoginService,
+         MsgService,
          ApiService,
-	       NeedAuthGuardService,
-	       GameActiveGuard,
+         NeedAuthGuardService,
+         GameActiveGuard,
          SubscriptionService,
          GameService,
-	       {provide: LocationStrategy, useClass: HashLocationStrategy },
-               {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true },
-               {provide:APP_BASE_HREF, useValue : environment.appRoot }]
+         {provide: LocationStrategy, useClass: HashLocationStrategy },
+         {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+         {provide: APP_BASE_HREF, useValue: environment.appRoot }]
 })
 export class AppModule { }

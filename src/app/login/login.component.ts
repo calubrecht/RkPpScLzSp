@@ -13,11 +13,11 @@ export class LoginComponent implements OnInit {
   constructor( private loginService: UserLoginService, private router: Router) {
   }
 
-  userName : string;
-  password : string;
+  userName: string;
+  password: string;
 
   ngOnInit() {
-    if(this.loginService.isLoggedIn())
+    if (this.loginService.isLoggedIn())
     {
       this.navigateAway();
     }
@@ -25,19 +25,19 @@ export class LoginComponent implements OnInit {
 
   navigateAway()
   {
-    this.router.navigateByUrl("lobby");
+    this.router.navigateByUrl('lobby');
   }
 
   register()
   {
-    this.router.navigateByUrl("register");
+    this.router.navigateByUrl('register');
   }
 
   tryLogin()
   {
     this.loginService.logIn(this.userName, this.password);
   }
-  
+
   tryLoginGuest()
   {
     this.loginService.logInGuest();

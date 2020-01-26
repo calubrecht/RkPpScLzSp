@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 
 
-export class ChatMessage 
+export class ChatMessage
 {
-  userName : string;
-  chatText : string;
-  msgID : number;
+  userName: string;
+  chatText: string;
+  msgID: number;
 
-  constructor (userName: string, chatText: string)
+  constructor(userName: string, chatText: string)
   {
      this.userName = userName;
      this.chatText = chatText;
@@ -19,10 +19,10 @@ export class ChatMessage
 })
 export class ChatData
 {
-  chatList : Array<ChatMessage> = [];
-  chatMap : Array<ChatMessage> = [];
+  chatList: Array<ChatMessage> = [];
+  chatMap: Array<ChatMessage> = [];
 
-  addChat(c : ChatMessage)
+  addChat(c: ChatMessage)
   {
     if (c.msgID in this.chatMap)
     {
@@ -36,7 +36,7 @@ export class ChatData
   getChats()
   {
     return this.chatList;
-  } 
+  }
 
   clear()
   {
@@ -44,17 +44,17 @@ export class ChatData
     this.chatMap  = [];
   }
 
-  addChats(chats : ChatMessage[])
+  addChats(chats: ChatMessage[])
   {
-    let chatData = this;
-    chats.forEach(function (c) {chatData.addChat(c);});
+    const chatData = this;
+    chats.forEach(c => {chatData.addChat(c); });
   }
 
-  setChats(cm : ChatMessage[])
+  setChats(cm: ChatMessage[])
   {
     this.chatList = cm;
-    let chatData = this;
-    this.chatList.forEach(function(c) {chatData.chatMap[c.msgID] = c;});
+    const chatData = this;
+    this.chatList.forEach(c => {chatData.chatMap[c.msgID] = c; });
   }
 
 }

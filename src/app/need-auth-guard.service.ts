@@ -3,6 +3,10 @@ import {CanActivate, Router} from '@angular/router';
 import { UserLoginService } from './user-login.service';
 import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 
+
+const ROUTER_STATE = '_routerState';
+const URL = 'url';
+
 @Injectable()
 export class NeedAuthGuardService implements CanActivate{
 
@@ -10,7 +14,7 @@ export class NeedAuthGuardService implements CanActivate{
 
 canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
-    const redirectUrl = route['_routerState']['url'];
+    const redirectUrl = route[ROUTER_STATE][URL];
 
     if (this.loginService.isLoggedIn()) {
       return true;

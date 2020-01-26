@@ -10,102 +10,105 @@ import { ChatService } from './chat.service';
 import { StorageService } from './storage.service';
 import { UsersData, UserMessage } from './user-data';
 
- const TOKEN='TOKEN';
+const TOKEN = 'TOKEN';
 
-@Injectable({providedIn:"root"})
+@Injectable({providedIn: 'root'})
 export class UserLoginService {
 
-  userName_ = '';
-  loggedIn_ = false;
+  userName = '';
+  loggedIn = false;
 
-  constructor(private router : Router, private api : ApiService, private msg : MsgService, private sub : SubscriptionService, private storage : StorageService, private game: GameService, private userData : UsersData, private chat:ChatService) 
+  constructor(
+    private router: Router, private api: ApiService, private msg: MsgService,
+    private sub: SubscriptionService, private storage: StorageService,
+    private game: GameService, private userData: UsersData, private chat: ChatService)
   {}
- 
-  setName(name: string) : void{
-    this.userName_ = name;
+
+  setName(name: string): void{
+    this.userName = name;
     this.storage.setName(name);
   }
 
-  getName() : string 
+  getName(): string
   {
-    return this.userName_;
+    return this.userName;
   }
 
   fetchUserName()
   {
     this.api.sendGetString('sessions/userName').
-	    subscribe((name : string) => {this.setName(name)});
+      subscribe((name: string) => {this.setName(name); });
   }
 
-  logIn(name: string, password : string)  {
+  logIn(name: string, userPassword: string)  {
     this.api.sendPost<UserMessage>(
        'sessions/login',
-       {'userName':name , 'password':password}).
-    subscribe( res=> {
+       {userName: name , password: userPassword}).
+    subscribe( res => {
       this.storage.setToken(res.token);
       this.setLoggedIn(name);
       this.msg.clearMsgs();
       this.fetchUserName();
-		  this.router.navigateByUrl("lobby")});
+      this.router.navigateByUrl('lobby'); });
   }
-  
-  register(name: string, password : string, color:string)  {
+
+  register(name: string, userPassword: string, userColor: string)  {
     this.api.sendPost<UserMessage>(
        'sessions/register',
-       {'userName':name , 'password':password, color:color}).
-    subscribe( res=> {
+       {userName: name , password: userPassword, color: userColor}).
+    subscribe( res => {
       this.storage.setToken(res.token);
       this.setLoggedIn(name);
       this.msg.clearMsgs();
       this.fetchUserName();
-		  this.router.navigateByUrl("lobby")});
+      this.router.navigateByUrl('lobby'); });
   }
-  
+
   logInGuest()  {
     this.api.sendPost<UserMessage>(
        'sessions/loginGuest',
        {}).
-    subscribe( res=> {
+    subscribe( res => {
       this.storage.setToken(res.token);
       this.setLoggedIn(res.userName);
       this.userData.createUser(res.userName);
       this.msg.clearMsgs();
       this.fetchUserName();
-		  this.router.navigateByUrl("lobby")});
+      this.router.navigateByUrl('lobby'); });
   }
 
   isLoggedIn() {
-    return this.storage.getToken() != null
+    return this.storage.getToken() != null;
   }
 
-  setLoggedIn(name : string)
+  setLoggedIn(name: string)
   {
-    this.userName_ = name;
-    this.loggedIn_ = true;
+    this.userName = name;
+    this.loggedIn = true;
   }
 
-  logOut(error : string)
+  logOut(error: string)
   {
     // http logout
     this.logOutClient(error);
   }
-  logOutClient(error : string)
+  logOutClient(error: string)
   {
     this.logOutClientLocal(error);
     // Send logout message to server?
   }
-  
-  logOutClientLocal(error : string)
+
+  logOutClientLocal(error: string)
   {
     this.game.unsubscribe();
     this.chat.unsubscribe();
     this.sub.unsubscribeAll();
-    this.userName_ = '';
-    this.loggedIn_ = false;
+    this.userName = '';
+    this.loggedIn = false;
     this.storage.clearToken();
     this.msg.clearMsgs();
     this.msg.setMessage(error);
-    this.router.navigateByUrl("login");
+    this.router.navigateByUrl('login');
   }
 
 

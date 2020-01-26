@@ -7,7 +7,7 @@ import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 @Injectable()
 export class GameActiveGuard implements CanActivate{
 
-  constructor(private game: GameService, private router: Router, private needAuth : NeedAuthGuardService) { }
+  constructor(private game: GameService, private router: Router, private needAuth: NeedAuthGuardService) { }
 
 canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (!this.needAuth.canActivate(route, state))
@@ -15,7 +15,7 @@ canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
       return false;
     }
 
-    if (this.game.getGameStatus() == 'started' || this.game.getGameStatus() == 'finished')
+    if (this.game.getGameStatus() === 'started' || this.game.getGameStatus() === 'finished')
     {
       return true;
     }

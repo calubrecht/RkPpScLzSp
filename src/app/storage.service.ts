@@ -5,10 +5,10 @@ import { Injectable } from '@angular/core';
 })
 export class StorageService {
 
-  name_: string;
+  name: string;
 
   constructor() { }
-  
+
   setToken(token)
   {
     localStorage.setItem('TOKEN', token);
@@ -33,12 +33,12 @@ export class StorageService {
 
   setName(name: string)
   {
-    this.name_ = name;
+    this.name = name;
   }
 
-  getName() : string
+  getName(): string
   {
-    return this.name_;
+    return this.name;
   }
 
 }

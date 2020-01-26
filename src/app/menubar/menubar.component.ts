@@ -10,28 +10,28 @@ import { GameService } from '../game.service';
 })
 export class MenubarComponent implements OnInit {
 
-  constructor(private router:Router, public game:GameService) { }
+  constructor(private router: Router, public game: GameService) { }
 
   ngOnInit() {
   }
 
   inLobby()
   {
-    return this.router.url.endsWith("/lobby");
+    return this.router.url.endsWith('/lobby');
   }
 
   toLobby()
   {
     if (!this.inLobby())
     {
-      this.router.navigateByUrl("lobby");
+      this.router.navigateByUrl('lobby');
     }
   }
   toGame()
   {
     if (this.inLobby())
     {
-      this.router.navigateByUrl("game");
+      this.router.navigateByUrl('game');
     }
   }
 }
