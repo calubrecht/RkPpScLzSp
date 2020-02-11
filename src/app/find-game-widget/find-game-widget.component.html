@@ -1,9 +1,10 @@
 <div class='findGameWidget'>
   <div *ngIf="isSeeking">
-    Waiting for a match... <button (click)="endSeek()">Cancel</button>
+    Waiting for a match... <button (click)="endSeek()">Cancel</button><button (click)="aiGame()">Play AI</button>
+
   </div>
   <div *ngIf="!isSeeking && !game.gameStatus.inGame && !game.gameStatus.invited">
-    <button (click)="startSeek()">Find a game</button>
+    <button (click)="startSeek()">Find a game</button><button (click)="aiGame()">Play AI</button>
   </div>
   <div *ngIf="game.gameStatus.invited">
     <div><span class="inviter {{userData.getUser(game.gameStatus.inviter).color}}">{{game.gameStatus.inviter}}</span> has invited you to a game</div>

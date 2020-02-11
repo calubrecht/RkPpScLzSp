@@ -53,6 +53,13 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
     this.game.seekGame('findGameWidget', this);
   }
 
+  aiGame()
+  {
+    this.isSeeking = false
+    this.game.endSeekGame('findGameWidget');
+    this.game.startAIGame('findGameWidget', this);
+  }
+
   onMessage(e: GameMessage)
   {
     if (e.action === 'startGame')
