@@ -1,6 +1,7 @@
 <div class='findGameWidget'>
   <div *ngIf="isSeeking">
-    Waiting for a match... <button (click)="endSeek()">Cancel</button><button (click)="aiGame()">Play AI</button>
+    <div>Waiting for a match... <button (click)="endSeek()">Cancel</button><button (click)="aiGame()">Play AI</button></div>
+    <div *ngIf="seekingLongTime" class='seekingLongTime'>Seeking Game is taking a long time. Would you prefer to play the AI?</div>
 
   </div>
   <div *ngIf="!isSeeking && !game.gameStatus.inGame && !game.gameStatus.invited">

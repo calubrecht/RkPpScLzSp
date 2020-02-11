@@ -12,6 +12,8 @@ import {Router} from '@angular/router';
 export class FindGameWidgetComponent implements OnInit, GameListener {
 
   isSeeking = false;
+  seekingLongTime = false;
+  seekingTimer : number;
   seekingSubs: Subscription;
   listenerFunc;
 
@@ -25,9 +27,12 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
   endSeek()
   {
     this.isSeeking = false;
+    this.seekingLongTime = false;
     this.game.endSeekGame('findGameWidget');
     this.game.gameStatus.inGame = false;
     this.game.gameStatus.invited = false;
+    clearInterval(this.seekingTimer);
+    this.seekingTimer = null;
   }
 
   cancelGame()
@@ -49,8 +54,16 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
   startSeek()
   {
     this.isSeeking = true;
+    this.seekingLongTime = false;
     // XXX:Start seeking animation
     this.game.seekGame('findGameWidget', this);
+    if (this.seekingTimer)
+    {
+      clearInterval(this.seekingTimer);
+    }
+    this.seekingTimer = setInterval(() => {
+      this.seekingLongTime = true;
+    },30000);
   }
 
   aiGame()
