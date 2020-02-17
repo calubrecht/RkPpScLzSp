@@ -12,7 +12,10 @@
 img.selected { border-color:red; border-width:2px; border-style:solid; border-radius: 40px}
 
 .results { margin: 5px auto 5px auto; width:400px; border:1px black solid; height: 205px}
-.results div { margin: 5px auto 5px auto; width:184px}
+.results div { margin: 5px auto 5px auto; width:190px}
 .results div.resultText { margin: 5px auto 5px auto; width:260px ; font-size: 1.5em; text-align:center; height:27px}
 .results div.round {width:400px ; font-size: 1.8em; text-align:center; font-weight:bold}
 .results div.scores {width:400px ; font-size: 1.8em; text-align:center}
+
+.results img.winner { border-color:red; border-width:2px; border-style:solid; border-radius: 40px; margin:0px }
+.results img { margin:2px }

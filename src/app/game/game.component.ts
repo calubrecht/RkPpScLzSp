@@ -15,6 +15,9 @@ export class GameComponent implements OnInit {
   selectedElement;
 
   cancelButtonName = 'Cancel Game';
+  
+  private pointWinner : string;
+
 
   constructor(public game: GameService, private msgService: MsgService, private loginService: UserLoginService, private router: Router) { }
 
@@ -52,6 +55,7 @@ export class GameComponent implements OnInit {
     {
       return ;
     }
+    this.pointWinner = null;
     this.game.gameStatus.resultText = '';
     this.game.gameStatus.opponentSelectedName = 'placeholder';
     const id = el.id;
@@ -94,6 +98,24 @@ export class GameComponent implements OnInit {
     this.game.gameStatus.scoreText = 'You: ' + playerScore + ' ' + oppName + ': ' + oppScore;
   }
 
+  selfClass()
+  {
+    if (this.pointWinner == this.loginService.getName())
+    {
+      return "winner";
+    }
+    return "";
+  }
+  
+  otherClass()
+  {
+    if (this.pointWinner != null && this.pointWinner != this.loginService.getName())
+    {
+      return "winner";
+    }
+    return "";
+  }
+
   onMessage(e: GameMessage)
   {
     this.msgService.clearMsgs();
@@ -108,6 +130,11 @@ export class GameComponent implements OnInit {
       if (e.action === 'point')
       {
         this.setScore(e.round, e.scores[playerIdx], e.scores[oppIdx], e.players[oppIdx]);
+        this.pointWinner = e.winner;
+      }
+      else
+      {
+        this.pointWinner = null;
       }
       return;
     }

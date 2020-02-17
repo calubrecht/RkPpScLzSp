@@ -12,7 +12,7 @@
 </div>
     <div class="break"></div>
     <div class="results">
-      <div> <img src='assets/{{game.gameStatus.selectedName}}.png'>  V.  <img src='assets/{{game.gameStatus.opponentSelectedName}}.png'></div>
+      <div> <img class="{{selfClass()}}" src='assets/{{game.gameStatus.selectedName}}.png'>  V.  <img class="{{otherClass()}}" src='assets/{{game.gameStatus.opponentSelectedName}}.png'></div>
       <div class="resultText"> {{this.game.gameStatus.resultText}}</div>
       <div class="round"> {{game.gameStatus.roundText}} </div>
       <div class="scores"> {{game.gameStatus.scoreText}} </div>
