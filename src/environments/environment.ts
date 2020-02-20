@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   localServer: false,
-  basePageServer: 'http://skeletor:8080',
+  basePageServer: '',
   suffix: '',
   appRoot: '/',
   wsServer: 'ws://skeletor:8080',

@@ -22,7 +22,7 @@ export class LobbyComponent implements OnInit {
     public userData: UsersData) { }
 
   ngOnInit() {
-
+    this.loginService.initSession();
     this.loginService.fetchUserName();
   }
 

@@ -1,0 +1,8 @@
+{
+  "/api/*": {
+    "target": "http://skeletor:8080/",
+    "secure": false,
+    "logLevel": "warning",
+    "changeOrigin": true
+  }
+}

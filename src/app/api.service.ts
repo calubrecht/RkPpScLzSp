@@ -52,7 +52,8 @@ export class ApiService {
   {
     return this.http.post<T>(
        this.getAPI() + this.apiUrlRoot + method,
-       data);
+       data,
+       {withCredentials: true});
   }
 
   sendPostForString(method: string, data: any, params?): Observable<string>
@@ -60,7 +61,7 @@ export class ApiService {
     return this.http.post(
        this.getAPI() + this.apiUrlRoot + method,
        data,
-       {responseType: 'text'});
+       {responseType: 'text', withCredentials:true});
   }
 
 }

@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   password: string;
 
   ngOnInit() {
+    this.loginService.initSession();
     if (this.loginService.isLoggedIn())
     {
       this.navigateAway();
