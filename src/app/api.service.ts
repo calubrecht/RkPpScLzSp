@@ -18,7 +18,7 @@ export class ApiService {
   {
     if (environment.localServer)
     {
-      this.API = document.location.protocol + '//' + document.location.hostname + environment.suffix;
+      this.API = environment.suffix;
       const wsProtocol = document.location.protocol === 'http' ? 'ws' : 'wss';
       this.WSAPI = wsProtocol + '://' + document.location.hostname + environment.suffix;
     }
@@ -52,8 +52,7 @@ export class ApiService {
   {
     return this.http.post<T>(
        this.getAPI() + this.apiUrlRoot + method,
-       data,
-       {withCredentials: true});
+       data);
   }
 
   sendPostForString(method: string, data: any, params?): Observable<string>
@@ -61,7 +60,7 @@ export class ApiService {
     return this.http.post(
        this.getAPI() + this.apiUrlRoot + method,
        data,
-       {responseType: 'text', withCredentials:true});
+       {responseType: 'text'});
   }
 
 }
