@@ -74,7 +74,7 @@ export class GameService {
   {
      this.api.sendPost<GameMessage>('game/endSeek', {}).subscribe(e => { /* noop */});
   }
-  
+
   startAIGame(key: string, listener: GameListener)
   {
     this.api.sendPost<GameMessage>('game/startAIGame', {}).subscribe(e => { /* noop */});

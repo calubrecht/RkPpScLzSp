@@ -23,15 +23,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
         const idToken = this.storage.getToken();
 
-        let reqToHandle = req;
+        const reqToHandle = req;
 
-        if (idToken) {
-            const cloned = req.clone({
-                headers: req.headers.set('Authorization',
-                    'Bearer ' + idToken)
-            });
-            reqToHandle = cloned;
-        }
         return next.handle(reqToHandle).pipe(
           tap(
            event => {}), // success,
@@ -45,7 +38,7 @@ export class AuthInterceptor implements HttpInterceptor {
   {
     if (err instanceof HttpErrorResponse)
     {
-      if (err.status === 401)
+      if (err.status === 401 || err.status === 403)
       {
         if (typeof err.error === 'object')
         {

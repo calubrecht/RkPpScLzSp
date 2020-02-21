@@ -15,8 +15,8 @@ export class GameComponent implements OnInit {
   selectedElement;
 
   cancelButtonName = 'Cancel Game';
-  
-  private pointWinner : string;
+
+  private pointWinner: string;
 
 
   constructor(public game: GameService, private msgService: MsgService, private loginService: UserLoginService, private router: Router) { }
@@ -100,20 +100,20 @@ export class GameComponent implements OnInit {
 
   selfClass()
   {
-    if (this.pointWinner == this.loginService.getName())
+    if (this.pointWinner === this.loginService.getName())
     {
-      return "winner";
+      return 'winner';
     }
-    return "";
+    return '';
   }
-  
+
   otherClass()
   {
-    if (this.pointWinner != null && this.pointWinner != this.loginService.getName())
+    if (this.pointWinner != null && this.pointWinner !== this.loginService.getName())
     {
-      return "winner";
+      return 'winner';
     }
-    return "";
+    return '';
   }
 
   onMessage(e: GameMessage)

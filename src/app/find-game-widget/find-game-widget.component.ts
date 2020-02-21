@@ -13,7 +13,7 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
 
   isSeeking = false;
   seekingLongTime = false;
-  seekingTimer : number;
+  seekingTimer: number;
   seekingSubs: Subscription;
   listenerFunc;
 
@@ -63,12 +63,12 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
     }
     this.seekingTimer = setInterval(() => {
       this.seekingLongTime = true;
-    },30000);
+    }, 30000);
   }
 
   aiGame()
   {
-    this.isSeeking = false
+    this.isSeeking = false;
     this.game.endSeekGame('findGameWidget');
     this.game.startAIGame('findGameWidget', this);
   }

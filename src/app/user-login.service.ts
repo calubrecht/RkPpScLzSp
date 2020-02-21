@@ -39,7 +39,7 @@ export class UserLoginService {
     this.api.sendGetString('sessions/userName').
       subscribe((name: string) => {this.setName(name); });
   }
-  
+
   initSession()
   {
     this.api.sendGetString('sessions/init').
