@@ -97,6 +97,9 @@ export class UserLoginService {
   {
     // http logout
     this.logOutClient(error);
+    this.api.sendPost<UserMessage>(
+       'sessions/logout').
+    subscribe( res => { });
   }
   logOutClient(error: string)
   {

@@ -48,7 +48,7 @@ export class ApiService {
       {responseType: 'text'});
   }
 
-  sendPost<T>(method: string, data: any): Observable<T>
+  sendPost<T>(method: string, data?: any): Observable<T>
   {
     return this.http.post<T>(
        this.getAPI() + this.apiUrlRoot + method,
