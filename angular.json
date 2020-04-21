@@ -64,7 +64,7 @@
           "options": {
             "browserTarget": "ng-rock:build",
             "host": "::",
-            "publicHost": "triklops",
+            "disableHostCheck": true,
             "proxyConfig": "src/proxy.conf.json"
           },
           "configurations": {
