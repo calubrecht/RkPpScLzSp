@@ -2,6 +2,7 @@
 Rock Paper Scissors Lizard Spock
 
 A simple Angular/Spring Boot application, used to explore the use of both technologies.
+Relies on https://github.com/calubrecht/RockPaperServer for the backend.
 
 # NgRock
 
