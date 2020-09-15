@@ -30,6 +30,11 @@ import { FindGameWidgetComponent } from './find-game-widget/find-game-widget.com
 import { GameComponent } from './game/game.component';
 import { MenubarComponent } from './menubar/menubar.component';
 import { RegisterComponent } from './register/register.component';
+import { enableProdMode } from '@angular/core';
+
+if (environment.production) {
+  enableProdMode();
+}
 
 
 @NgModule({
