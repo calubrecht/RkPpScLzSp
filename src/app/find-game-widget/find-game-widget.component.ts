@@ -13,7 +13,7 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
 
   isSeeking = false;
   seekingLongTime = false;
-  seekingTimer: number;
+  seekingTimer: any;
   seekingSubs: Subscription;
   listenerFunc;
 
