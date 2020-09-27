@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { version } from '../../package.json';
 
 @Component({
   selector: 'app-rock',
@@ -7,4 +8,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent  {
   name = 'Angular';
+  
+  ngOnInit() {
+    console.log("Version:" + version);
+  }
 }
