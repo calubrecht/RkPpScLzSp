@@ -43,7 +43,13 @@ export class UserLoginService {
   initSession()
   {
     this.api.sendGetString('sessions/init').
-      subscribe((name: string) => { });
+      subscribe((name: string) => { this.fetchVersion() });
+  }
+  
+  fetchVersion()
+  {
+    this.api.sendGetString('version').
+      subscribe((version: string) => { console.log('Server-version:' +version) });
   }
 
   logIn(name: string, userPassword: string)  {
