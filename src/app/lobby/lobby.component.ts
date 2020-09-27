@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { UserDetailComponent } from '../user-detail/user-detail.component';
 import { UserLoginService } from '../user-login.service';
 import { ChatMessage, ChatData } from '../chat-data';
@@ -12,6 +12,9 @@ import { UsersData, UserData } from '../user-data';
   styleUrls: ['./lobby.component.css']
 })
 export class LobbyComponent implements OnInit {
+
+  @ViewChild("userScroll") scrollRef : ElementRef;
+  private lastHeight = -1;
 
   selectedUser: UserData;
   newChat: string;
@@ -36,6 +39,15 @@ export class LobbyComponent implements OnInit {
     this.newChat = '';
     this.chatService .sendChat(new ChatMessage('', msg)).
       subscribe(cm => this.chatData.addChat(cm));
+  }
+  
+  ngAfterViewChecked()
+  {
+    if (this.lastHeight != this.scrollRef.nativeElement.scrollHeight)
+    {
+      this.lastHeight = this.scrollRef.nativeElement.scrollHeight;
+      this.scrollRef.nativeElement.scrollTop = this.lastHeight;
+    }
   }
 
 }

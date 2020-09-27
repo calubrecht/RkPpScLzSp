@@ -1,4 +1,4 @@
-<div class='chatbox' #chatboxScroll [scrollTop]="chatboxScroll.scrollHeight">
+<div class='chatbox' #chatboxScroll >
   <div *ngFor="let c of chats()" class='chatline'>
 	  <span class='user {{this.getUserColor(c.userName)}}'>{{c.userName}}:</span>  {{c.chatText}}
   </div>

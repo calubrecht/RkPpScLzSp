@@ -7,7 +7,7 @@
 
 <app-chatbox></app-chatbox>
 <div class="floatbox">
-  <div class='userbox' #userScroll [scrollTop]="userScroll.scrollHeight">
+  <div class='userbox' #userScroll >
      <div *ngFor="let u of userData.getActiveUsers()" class='user {{u.color}}' (click)="onSelect(u)">
   	  {{u.userName}}
     </div>

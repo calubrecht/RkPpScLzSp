@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ChatMessage, ChatData} from '../chat-data';
 import { ChatService} from '../chat.service';
 import { UsersData } from '../user-data';
@@ -9,6 +9,8 @@ import { UsersData } from '../user-data';
   styleUrls: ['./chatbox.component.css']
 })
 export class ChatboxComponent implements OnInit {
+  @ViewChild("chatboxScroll") scrollRef : ElementRef;
+  private lastHeight = -1;
 
   users = this.userData.userList;
   constructor(private chatService: ChatService, private chatData: ChatData, private userData: UsersData) { }
@@ -50,5 +52,13 @@ export class ChatboxComponent implements OnInit {
     return guestColors[this.hashCode(user) % guestColors.length];
     return 'white';
   }
-
+  
+  ngAfterViewChecked()
+  {
+    if (this.lastHeight != this.scrollRef.nativeElement.scrollHeight)
+    {
+      this.lastHeight = this.scrollRef.nativeElement.scrollHeight;
+      this.scrollRef.nativeElement.scrollTop = this.lastHeight;
+    }
+  }
 }
