@@ -49,7 +49,9 @@ export class UserLoginService {
   fetchVersion()
   {
     this.api.sendGetString('version').
-      subscribe((version: string) => { console.log('Server-version:' +version) });
+      subscribe(
+        (version: string) => { console.log('Server-version:' +version) },
+        (err) =>{});
   }
 
   logIn(name: string, userPassword: string)  {
