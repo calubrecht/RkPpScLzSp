@@ -49,9 +49,7 @@ export class UserLoginService {
   fetchVersion()
   {
     this.api.sendGetString('version').
-      subscribe(
-        (version: string) => { console.log('Server-version:' +version) },
-        (err) =>{});
+      subscribe( (version: string) => { console.log('Server-version:' +version) });
   }
 
   logIn(name: string, userPassword: string)  {
@@ -115,6 +113,15 @@ export class UserLoginService {
     // Send logout message to server?
   }
 
+  parseMsg(error: string)
+  {
+    if (error.startsWith("<html>"))
+    {
+      return "Unable to authenticate. Please login";
+    }
+    return error;
+  }
+
   logOutClientLocal(error: string)
   {
     this.game.unsubscribe();
@@ -124,7 +131,7 @@ export class UserLoginService {
     this.loggedIn = false;
     this.storage.clearToken();
     this.msg.clearMsgs();
-    this.msg.setMessage(error);
+    this.msg.setMessage(this.parseMsg(error));
     this.router.navigateByUrl('login');
   }
 
