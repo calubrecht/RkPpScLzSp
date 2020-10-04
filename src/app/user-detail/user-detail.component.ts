@@ -1,14 +1,14 @@
 import { Input, Component, OnInit } from '@angular/core';
 import { UserData } from '../user-data';
 import { UserLoginService } from '../user-login.service';
-import { GameService } from '../game.service';
+import { GameService, GameListener, GameMessage } from '../game.service';
 
 @Component({
   selector: 'app-user-detail',
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.css']
 })
-export class UserDetailComponent implements OnInit {
+export class UserDetailComponent implements OnInit, GameListener{
   @Input() user: UserData;
   inviteStatus = "";
 
@@ -19,7 +19,15 @@ export class UserDetailComponent implements OnInit {
 
   invite() {
     this.inviteStatus = "You invited " + this.user.userName + " to a game";
-    this.game.invite(this.loginService.getName(), this.user.userName);
+    this.game.invite(this.loginService.getName(), this.user.userName, this);
+  }
+  
+  onMessage(msg: GameMessage)
+  {
+    if (msg.action === "refuseInvite" && msg.detail === this.user.userName)
+    {
+      this.inviteStatus = "Invitation refused";
+    }
   }
 
 }

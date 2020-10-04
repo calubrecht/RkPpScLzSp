@@ -58,8 +58,9 @@ export class GameService {
     this.api.sendPost<GameMessage>('game/seek', {}).subscribe(e => { /* noop */});
   }
 
-  invite(inviter: string, invitee: string)
+  invite(inviter: string, invitee: string, listener: GameListener)
   {
+    this.listen("invite-" + invitee, listener);
     const inviteMessage: GameMessage = {action: 'invite', players: [inviter, invitee]};
     this.api.sendPost<GameMessage>('game/invite', inviteMessage).subscribe(e => { /* noop */});
   }

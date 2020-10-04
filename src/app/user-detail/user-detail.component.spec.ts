@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { UserDetailComponent } from './user-detail.component';
-import { GameService } from '../game.service';
+import { GameService, GameListener, GameMessage } from '../game.service';
 import { UserLoginService } from '../user-login.service';
 import { UserData } from '../user-data';
 
@@ -14,10 +14,19 @@ class MockLoginService {
 }
 
 class MockGameService {
-  invite(inviter: string, invitee: string)
+  listener: GameListener;
+  invite(inviter: string, invitee: string, listener: GameListener)
   {
+    this.listener = listener;
   }
 
+  onMessage(msg: GameMessage)
+  {
+    if (this.listener)
+    {
+      this.listener.onMessage(msg);
+    }
+  }
 }
 
 describe('UserDetailComponent', () => {
@@ -82,7 +91,32 @@ describe('UserDetailComponent', () => {
     fixture.detectChanges();
     expect(status.textContent).toEqual("You invited Frank to a game");
 
-    //expect(fixture.componentInstance.invite).toHaveBeenCalled();
     expect(inviteFunc).toHaveBeenCalled();
+  });
+  
+  it('should send invite', () => {
+    const fixture = TestBed.createComponent(UserDetailComponent);
+    const element  = fixture.nativeElement;
+    let userData = new UserData({userName:'Frank', color:'red', system:false, status:'ok'});
+    userData.wins = 10;
+    userData.losses = 2;
+    fixture.componentInstance.user = userData;
+
+    let gameSvc = (fixture.componentInstance as any).game;
+    fixture.detectChanges();
+    let button = element.querySelector("button");
+    button.click();
+    fixture.detectChanges();
+    let status = element.querySelector(".userInviteStatus");
+    expect(status.textContent).toEqual("You invited Frank to a game");
+
+    //Refuse Message
+    let msg = new GameMessage();
+    msg.action = "refuseInvite"
+    msg.detail = "Frank";
+    gameSvc.onMessage(msg);
+    fixture.detectChanges();
+    expect(status.textContent).toEqual("Invitation refused");
+
   });
 });
