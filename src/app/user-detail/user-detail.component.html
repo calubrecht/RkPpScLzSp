@@ -1,9 +1,10 @@
 <div *ngIf="user" class="floatbox">
   <div class="userDetails">
     <h2>{{user.userName | uppercase}} Details</h2>
-    <div>Record W:{{user.wins}} L:{{user.losses}}</div>
-    <div *ngIf="user.userName != loginService.getName()">
+    <div class="userWinRecord">Record W:{{user.wins}} L:{{user.losses}}</div>
+    <div class="inviteWidget" *ngIf="user.userName != loginService.getName()">
       <button (click)="invite()">Invite to game</button>
+      <div class="userInviteStatus">{{inviteStatus}}</div>
     </div>
   </div>
 </div>

@@ -10,6 +10,7 @@ import { GameService } from '../game.service';
 })
 export class UserDetailComponent implements OnInit {
   @Input() user: UserData;
+  inviteStatus = "";
 
   constructor(public loginService: UserLoginService, private game: GameService) { }
 
@@ -17,6 +18,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   invite() {
+    this.inviteStatus = "You invited " + this.user.userName + " to a game";
     this.game.invite(this.loginService.getName(), this.user.userName);
   }
 
