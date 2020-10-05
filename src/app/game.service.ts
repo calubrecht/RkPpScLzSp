@@ -12,6 +12,7 @@ export class GameMessage
   id?: string;
   action: string;
   detail?: string;
+  detail2?: string;
   players?: string[];
   winner?: string;
   choices?: string[];
@@ -39,6 +40,8 @@ export class GameStatus
   invited = false;
   inGame = false;
   inviter: string;
+
+  lastWinner: string;
 }
 
 @Injectable({
@@ -93,8 +96,7 @@ export class GameService {
       this.subscription = this.subs.subscribeUserChannel<GameMessage>('/queue/game').
        subscribe(e => this.onMessage(e));
       this.inited = true;
-      // this.gameStatus.gameStatus= 'started';
-      // this.gameStatus.gameName= 'Black v. White';
+      this.subs.onConnection(() =>  this.api.sendPost<GameMessage>('game/resendActive').subscribe(e => { /* noop */}));
     }
   }
 
@@ -145,6 +147,7 @@ export class GameService {
     this.gameStatus.scoreText = '';
     this.gameStatus.invited = false;
     this.gameStatus.inGame = false;
+    this.gameStatus.lastWinner = undefined;
   }
 
   endGame(name: string, id: string)

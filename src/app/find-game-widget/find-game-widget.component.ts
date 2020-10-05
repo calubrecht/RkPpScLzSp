@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GameService, GameMessage, GameListener } from '../game.service';
 import { UsersData } from '../user-data';
 import { Subscription} from 'rxjs';
+import { UserLoginService } from '../user-login.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -17,7 +18,7 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
   seekingSubs: Subscription;
   listenerFunc;
 
-  constructor( public game: GameService, private router: Router, public userData: UsersData) { }
+  constructor( public game: GameService, private router: Router, public userData: UsersData, private loginService: UserLoginService) { }
 
   ngOnInit() {
     this.game.onInit();
@@ -97,6 +98,39 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
       this.game.gameStatus.gameName = e.detail;
       this.game.startGame(this.game.gameStatus.gameName, e.id);
       this.game.gameStatus.inviter = '';
+      this.router.navigateByUrl('game');
+    }
+    if (e.action === 'resendGame' && !this.game.gameStatus.inGame )
+    {
+      this.game.startGame(e.detail, e.id);
+      let playerIdx = (e.players[0] === this.loginService.getName()) ? 0 : 1;
+      let oppIdx = playerIdx === 0 ? 1 : 0;
+      this.game.gameStatus.selectedName = e.choices[playerIdx];
+      this.game.gameStatus.opponentSelectedName = e.choices[oppIdx];
+      if (this.game.gameStatus.selectedName === null)
+      {
+        this.game.gameStatus.selectedName = 'placeholder';
+      }
+      if (this.game.gameStatus.opponentSelectedName === null)
+      {
+        this.game.gameStatus.opponentSelectedName = 'placeholder';
+      }
+      if (e.winner !== null)
+      {
+        this.game.gameStatus.lastWinner = e.winner;
+      }
+      if (e.detail2 !== null)
+      {
+        this.game.gameStatus.resultText = e.detail2;
+      }
+      if (e.round !== null)
+      {
+        this.game.gameStatus.roundText = 'Round ' + e.round;
+      }
+      if (e.scores !== null)
+      {
+        this.game.gameStatus.scoreText = 'You: ' + e.scores[playerIdx] + ' ' + e.players[oppIdx] +': ' + e.scores[oppIdx];
+      }
       this.router.navigateByUrl('game');
     }
   }

@@ -67,7 +67,7 @@ export class WebsocketService {
         reconnectDelay: 200,
         connectHeaders: { Authorization: this.getAuth(), ClientSessionID: this.getClientSessionID() },
         // debug: (msg: string): void => { console.log(new Date(), msg); }
-      };
+      }//;
     const rxStomp = new RxStomp();
     rxStomp.configure(config);
     rxStomp.activate();
@@ -95,6 +95,16 @@ export class WebsocketService {
   public publishMsg<T>(topic: string, message: T)
   {
     this.stompClient.publish({destination: topic, body: JSON.stringify(message)});
+  }
+  
+  onConnection(callback : () => any)
+  {
+    if (this.stompClient !== null && this.stompClient.connected())
+    {
+      callback();
+      return;
+    }
+    setTimeout(() => this.onConnection(callback), 500);
   }
 
 }

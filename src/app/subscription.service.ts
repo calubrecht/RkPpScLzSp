@@ -43,6 +43,11 @@ export class SubscriptionService {
     this.wsService.publishMsg<T>(topic, msg);
   }
 
+  onConnection(callback : () => any)
+  {
+    this.wsService.onConnection(callback);
+  }
+
   unsubscribeAll()
   {
     this.wsService.disconnect();

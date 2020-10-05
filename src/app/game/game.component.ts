@@ -27,6 +27,17 @@ export class GameComponent implements OnInit {
     {
       this.cancelButtonName = 'Close Game';
     }
+    this.pointWinner = this.game.gameStatus.lastWinner;
+    this.msgService.clearMsgs();
+  }
+
+  ngAfterViewInit() {
+    if (this.game.gameStatus.selectedName !==  'placeholder' && this.game.gameStatus.opponentSelectedName === 'placeholder')
+    {
+      this.selectedElement = document.getElementById('game_' + this.game.gameStatus.selectedName);
+      this.selectedElement.classList.add('selected');
+    }
+    // Pull point description
   }
 
   getChoices(): string[]
