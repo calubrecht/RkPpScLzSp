@@ -17,6 +17,8 @@ export class UserLoginService {
 
   userName = '';
   loggedIn = false;
+  initted = false;
+  versionFetched = false;
 
   constructor(
     private router: Router, private api: ApiService, private msg: MsgService,
@@ -42,14 +44,22 @@ export class UserLoginService {
 
   initSession()
   {
+    if (this.initted)
+    {
+      return;
+    }
     this.api.sendGetString('sessions/init').
-      subscribe((name: string) => { this.fetchVersion() });
+      subscribe((name: string) => { this.fetchVersion(); this.initted = true; });
   }
   
   fetchVersion()
   {
+    if (this.versionFetched)
+    {
+      return;
+    }
     this.api.sendGetString('version').
-      subscribe( (version: string) => { console.log('Server-version:' +version) });
+      subscribe( (version: string) => { console.log('Server-version:' +version); this.versionFetched = true; });
   }
 
   logIn(name: string, userPassword: string)  {
@@ -109,6 +119,7 @@ export class UserLoginService {
   }
   logOutClient(error: string)
   {
+    this.initted = false;
     this.logOutClientLocal(error);
     // Send logout message to server?
   }
