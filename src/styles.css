@@ -2,7 +2,7 @@
 
 body {background-color:#dddddd; font-family:'Georgia'}
 
-.mainBox { background-image:linear-gradient(to right, #dddddd, #5555dd); width:680px; height:750px; border-width:1px 1px 1px 0px; border-color:black; border-style:solid; float:left; border-radius: 0px 20px 20px 0px}
+.mainBox { background-image:linear-gradient(to right, #dddddd, #5555dd); width:680px; height:780px; border-width:1px 1px 1px 0px; border-color:black; border-style:solid; float:left; border-radius: 0px 20px 20px 0px}
 
 .red {  background:red ; color:white}
 .blue {  background:blue ; color:white}
