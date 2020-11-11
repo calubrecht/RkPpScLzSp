@@ -28,10 +28,11 @@
     "stompjs": "^2.3.3",
     "text-encoding": "^0.7.0",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "webpack-subresource-integrity": ">=1.5.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.901.0",
+    "@angular-devkit/build-angular": "^0.1002.0",
     "@angular-devkit/build-ng-packagr": "~0.901.0",
     "@angular/cli": "^9.1.0",
     "@angular/compiler-cli": "^9.1.0",
@@ -42,7 +43,7 @@
     "codelyzer": "^5.1.2",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
-    "karma": "^4.4.1",
+    "karma": "^5.2.3",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
@@ -50,7 +51,7 @@
     "karma-junit-reporter": "^2.0.1",
     "karma-spec-reporter": "0.0.32",
     "ng-packagr": "^9.0.0",
-    "protractor": "^5.4.3",
+    "protractor": "^7.0.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.8.3"
