@@ -8,7 +8,7 @@ export const environment = {
   basePageServer: '',
   suffix: '',
   appRoot: '/',
-  wsServer: 'ws://skeletor:8080',
+  wsServer: 'ws://mumm-ra:8080',
   wsEntry: 'socket'
 };
 
