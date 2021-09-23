@@ -48,6 +48,7 @@
     "karma-jasmine-html-reporter": "^1.5.4",
     "karma-junit-reporter": "^2.0.1",
     "karma-spec-reporter": "0.0.32",
+    "react-scripts": "^5.0.0-next.37",
     "protractor": "~7.0.0",
     "ts-node": "~7.0.0",
     "tslint": "~6.1.0",
