@@ -8,6 +8,8 @@
 /bazel-out
 /testResults
 
+.angular/
+
 # dependencies
 /node_modules
 
