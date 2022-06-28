@@ -1,9 +1,8 @@
 import { Injectable, Inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
-import { environment } from '../environments/environment';
+import { EnvService} from './env.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +13,14 @@ export class ApiService {
   WSENTRY: string;
   apiUrlRoot = '/api/v1/';
 
-  constructor(@Inject(DOCUMENT) private document: Document, private http: HttpClient)
+  constructor(private http: HttpClient, private env : EnvService)
   {
+    let environment = env.env;
     if (environment.localServer)
     {
       this.API = environment.suffix;
-      const wsProtocol = document.location.protocol === 'http' ? 'ws' : 'wss';
-      this.WSAPI = wsProtocol + '://' + document.location.hostname + environment.suffix;
+      const wsProtocol = environment.protocol === 'http' ? 'ws' : 'wss';
+      this.WSAPI = wsProtocol + '://' + environment.hostName + environment.suffix;
     }
     else
     {

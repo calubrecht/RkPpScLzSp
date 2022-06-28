@@ -35,7 +35,6 @@ describe('ChatData', () => {
   
   it('should add multiple chats', () => {
     const service: ChatData = TestBed.get(ChatData);
-   console.log("should add mutlple chats");
     let c : ChatMessage = new ChatMessage('loser', 'loser says what?');
     c.msgID = 0;
     let c2 : ChatMessage = new ChatMessage('winner', 'bring it');

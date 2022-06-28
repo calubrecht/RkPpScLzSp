@@ -17,6 +17,7 @@ import { AuthInterceptor } from './auth.interceptor';
 
 import { UserLoginService } from './user-login.service';
 import { MsgService } from './msg.service';
+import { EnvService } from './env.service';
 import { NeedAuthGuardService } from './need-auth-guard.service';
 import { GameActiveGuard} from './game-active-guard';
 import { ApiService } from './api.service';
@@ -63,6 +64,7 @@ if (environment.production) {
          GameActiveGuard,
          SubscriptionService,
          GameService,
+         EnvService,
          {provide: LocationStrategy, useClass: HashLocationStrategy },
          {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
          {provide: APP_BASE_HREF, useValue: environment.appRoot }]
