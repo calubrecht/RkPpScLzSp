@@ -1,18 +1,22 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {Component} from '@angular/core';
 import { Injectable } from '@angular/core';
-import {MockComponent} from 'ng-mocks';
 import { EnvService} from './env.service';
+import { of } from 'rxjs';
 
 import { ApiService } from './api.service';
 
-@Component({
-  selector: "document",
-  template: "",
-})
-class MockDocument {
-  location = {protocol : 'http'};
+class MockHttpClient {
+  get(request: string)
+  {
+    return of("Something");
+  }
+  
+  post(request: string, data: string)
+  {
+    return of("Something");
+  }
 }
 
 var localEnv= 
@@ -36,11 +40,10 @@ class MockEnvService {
 describe('ApiService', () => {
   beforeEach( () =>  {
     TestBed.configureTestingModule({
-      imports: [ HttpClientModule],
       providers: [
         {
-          provide: Document,
-          useClass: MockDocument
+          provide: HttpClient,
+          useClass: MockHttpClient
         },
         {
           provide: EnvService,
@@ -80,5 +83,50 @@ describe('ApiService', () => {
     expect(service.API).toBe("/API");
     expect(service.WSAPI).toBe("wss://otherHost/API");
     expect(service.WSENTRY).toBe("entryPoint");
+  });
+  
+  it('should provide API', () => {
+    const service: ApiService = TestBed.get(ApiService);
+    expect(service.getAPI()).toBe("basePage");
+  });
+  
+  it('should sendGet', () => {
+    const service: ApiService = TestBed.get(ApiService);
+    const http = TestBed.get(HttpClient);
+
+    spyOn(http, "get");
+
+    let obsv = service.sendGet("bing");
+    expect(http.get).toHaveBeenCalledWith("basePage/api/v1/bing");
+  });
+  
+  it('should sendGetString', () => {
+    const service: ApiService = TestBed.get(ApiService);
+    const http = TestBed.get(HttpClient);
+
+    spyOn(http, "get");
+
+    let obsv = service.sendGetString("bing");
+    expect(http.get).toHaveBeenCalledWith("basePage/api/v1/bing", {responseType: 'text'});
+  });
+  
+  it('should sendPost', () => {
+    const service: ApiService = TestBed.get(ApiService);
+    const http = TestBed.get(HttpClient);
+
+    spyOn(http, "post");
+
+    let obsv = service.sendPost("bing", "bong");
+    expect(http.post).toHaveBeenCalledWith("basePage/api/v1/bing", "bong");
+  });
+  
+  it('should sendPost for string', () => {
+    const service: ApiService = TestBed.get(ApiService);
+    const http = TestBed.get(HttpClient);
+
+    spyOn(http, "post");
+
+    let obsv = service.sendPostForString("bing", "bong");
+    expect(http.post).toHaveBeenCalledWith("basePage/api/v1/bing", "bong", {responseType: 'text'});
   });
 });
