@@ -18,7 +18,6 @@ class MockHeader {
 class MockMenu {
 }
   
-
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -33,6 +32,16 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
+  });
+
+  it('should log version', () => {
+    let logged =  [];
+    spyOn(console, "log").and.callFake(l => logged.push(l));
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    app.ngOnInit();
+    expect(console.log).toHaveBeenCalled();
+    expect(logged[0].split(":")[0]).toBe("Version");
   });
 
 });
