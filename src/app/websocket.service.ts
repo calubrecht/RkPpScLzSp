@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RxStomp } from '@stomp/rx-stomp';
+import { IFrame } from '@stomp/stompjs';
 import { map } from 'rxjs/operators';
 
 
@@ -14,6 +15,8 @@ export class WebsocketService {
 
   private stompClient: RxStomp;
   private sessionID: string;
+
+  private disconnectListeners : { (): any } [] = [];
 
   private getAuth(): string
   {
@@ -72,6 +75,7 @@ export class WebsocketService {
     rxStomp.configure(config);
     rxStomp.activate();
 
+    rxStomp.stompErrors$.subscribe(e => this.manageStompError(e));
     return rxStomp;
   }
 
@@ -107,4 +111,20 @@ export class WebsocketService {
     setTimeout(() => this.onConnection(callback), 500);
   }
 
+  manageStompError(e : IFrame)
+  {
+    let message = e.headers.message;
+    if (message.includes("Please log in again"))
+    {
+      console.log("Session expired. Pleae log in again");
+      this.disconnectListeners.forEach(cb => cb());
+      return;
+    }
+    console.log("Stomp Error - " + e.headers.message);
+  }
+
+  onWSDisconnect(callback : () => void)
+  {
+     this.disconnectListeners.push(callback);
+  }
 }

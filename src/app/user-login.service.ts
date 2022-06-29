@@ -50,6 +50,7 @@ export class UserLoginService {
     }
     this.api.sendGetString('sessions/init').
       subscribe((name: string) => { this.fetchVersion(); this.initted = true; });
+    this.sub.onWSDisconnect(() => this.logOut("Stomp Error"));
   }
   
   fetchVersion()

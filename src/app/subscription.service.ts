@@ -52,4 +52,9 @@ export class SubscriptionService {
   {
     this.wsService.disconnect();
   }
+
+  onWSDisconnect(callback : () => void)
+  {
+    this.wsService.onWSDisconnect(callback);
+  }
 }
