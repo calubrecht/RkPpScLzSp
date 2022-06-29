@@ -209,4 +209,26 @@ describe('GameService', () => {
     expect(service.getGameStatus()).toBe(null);
     expect(service.gameStatus.gameID).toBe(null);
   });
+  
+  it('onConnect sends post', () => {
+    const service: GameService = TestBed.get(GameService);
+    const subsService: SubscriptionService = TestBed.get(SubscriptionService);
+    const apiService: ApiService = TestBed.get(ApiService);
+
+    let subscription = MockService(Subscription);
+    let message = new GameMessage();
+
+    let callback : {():void} = null;
+
+    spyOn(subsService, "subscribeUserChannel").and.returnValue(of(subscription));
+    spyOn(subsService, "onConnection").and.callFake(c => callback = c);
+    spyOn(apiService, "sendPost").and.returnValue(of(message));
+
+    service.onInit();
+
+    callback();
+
+    expect(apiService.sendPost).toHaveBeenCalledWith('game/resendActive');
+
+  });
 });

@@ -96,7 +96,7 @@
               "src/styles.css"
             ],
             "scripts": [],
-            "codeCoverageExclude": ["src/polyfills.ts", "src/env.service.ts"]
+            "codeCoverageExclude": ["src/polyfills.ts", "src/app/env.service.ts"]
           }
         }
       }
