@@ -46,10 +46,12 @@ export class ChatService {
     if (this.subscription)
     {
       this.subscription.unsubscribe();
+      this.subscription = null;
     }
     if (this.usersSubscription)
     {
       this.usersSubscription.unsubscribe();
+      this.usersSubscription = null;
     }
   }
 
