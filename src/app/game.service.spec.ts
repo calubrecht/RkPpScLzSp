@@ -6,7 +6,6 @@ import { Observable, Subscription } from 'rxjs';
 
 import { SubscriptionService } from './subscription.service';
 import { ApiService } from './api.service';
-import { MsgService } from './msg.service';
 import { StorageService } from './storage.service';
 
 import { GameService, GameStatus, GameMessage, GameListener } from './game.service';
@@ -17,7 +16,6 @@ describe('GameService', () => {
       providers: [
         MockProvider(ApiService),
         MockProvider(SubscriptionService),
-        MockProvider(MsgService),
         MockProvider(StorageService)
         ]
   }

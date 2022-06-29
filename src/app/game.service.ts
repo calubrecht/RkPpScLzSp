@@ -3,7 +3,6 @@ import { Observable, Subscription } from 'rxjs';
 
 import { SubscriptionService } from './subscription.service';
 import { ApiService } from './api.service';
-import { MsgService } from './msg.service';
 import { StorageService } from './storage.service';
 
 
@@ -54,7 +53,7 @@ export class GameService {
   subscription: Subscription;
   gameStatus = new GameStatus();
 
-  constructor(private api: ApiService,  private subs: SubscriptionService, private msg: MsgService, private storage: StorageService) { }
+  constructor(private api: ApiService,  private subs: SubscriptionService, private storage: StorageService) { }
 
   seekGame(key: string, listener: GameListener)
   {
