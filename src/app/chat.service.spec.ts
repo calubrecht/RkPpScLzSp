@@ -44,4 +44,32 @@ describe('ChatService', () => {
     expect(obs).toBeTruthy();
   });
 
+  it('getUsers should call api', () => {
+    const service: ChatService = TestBed.get(ChatService);
+    const apiService: ApiService = TestBed.get(ApiService);
+
+    let users :UserData[] = [];
+
+    spyOn(apiService, "sendGet").and.returnValue(of(users));
+
+    let obs = service.getUsers();
+
+    expect(apiService.sendGet).toHaveBeenCalledWith('users/');
+    expect(obs).toBeTruthy();
+  });
+
+  it('sencChat should call api', () => {
+    const service: ChatService = TestBed.get(ChatService);
+    const apiService: ApiService = TestBed.get(ApiService);
+
+    let message: ChatMessage = new ChatMessage("userName", "a message");
+
+    spyOn(apiService, "sendPost").and.returnValue(of(message));
+
+    let obs = service.sendChat(message);
+
+    expect(apiService.sendPost).toHaveBeenCalledWith('chat/chat', message);
+    expect(obs).toBeTruthy();
+  });
+
 });
