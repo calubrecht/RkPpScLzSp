@@ -105,6 +105,7 @@ export class GameService {
     if (this.subscription)
     {
       this.subscription.unsubscribe();
+      this.subscription = null;
     }
     this.inited = false;
   }
