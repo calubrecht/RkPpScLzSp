@@ -29,4 +29,33 @@ describe('ChatboxComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('getUserColor for db user', () => {
+    expect(component).toBeTruthy();
+
+    component.users = [{userName: 'user1', color: 'red', status:'online', system:false, wins:0, losses:0}]
+
+    expect(component.getUserColor('user1')).toBe('red');
+  });
+
+  it('getUserColor for guest user', () => {
+    component.users = [{userName: 'user1', color: 'red', status:'online', system:false, wins:0, losses:0}]
+
+    // Hash the user and look up
+    expect(component.getUserColor('Guest User')).toBe('black');
+  });
+
+  it('render 2 chats', () => {
+    let chatData = TestBed.get(ChatData);
+    spyOn(chatData, 'getChats').and.returnValue([
+      {userName:'user1', chatText:'Hi'},
+      {userName:'user2', chatText:'Hi yourself'}]);
+    component.users = [{userName: 'user1', color: 'red', status:'online', system:false, wins:0, losses:0}]
+    fixture.detectChanges();
+
+
+    const element = fixture.debugElement.nativeElement;
+    let userEls = element.getElementsByClassName('chatline');
+    expect(userEls.length).toBe(2);
+  });
 });
