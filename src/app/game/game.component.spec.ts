@@ -6,6 +6,8 @@ import { GameMessage, GameService } from '../game.service';
 
 import { GameComponent } from './game.component';
 
+import { By } from "@angular/platform-browser";
+
 @Component({
   selector: 'app-msg',
   template: '<p>Msg</p>'
@@ -13,9 +15,11 @@ import { GameComponent } from './game.component';
 class MockMsg {}
 
 let mockListen = jasmine.createSpy("listen");
+let mockSend = jasmine.createSpy("sendMessage");
 
 class MockGame {
-  gameStatus = {gameStatus: 'active'};
+  gameStatus = {gameStatus: 'active', gameID:"id1"};
+  sendMessage = mockSend;
   listen = mockListen;
 }
 class MockGameFinished {
@@ -46,6 +50,23 @@ describe('GameComponent', () => {
     expect(component).toBeTruthy();
     expect(fixture.debugElement.nativeElement.getElementsByTagName('button')[0].innerText).toBe('Cancel Game');
     expect(mockListen).toHaveBeenCalled();
+  });
+  
+  it('should select', () => {
+    expect(component).toBeTruthy();
+    
+    let scissors = fixture.debugElement.query(By.css("#game_scissors"));
+    scissors.nativeElement.click();
+    fixture.detectChanges();
+    let gm = new GameMessage();
+    gm.id = "id1";
+    gm.action = "makeChoice";
+    gm.detail = "scissors";
+
+    expect(mockSend).toHaveBeenCalledWith(gm);
+    let root = "http://localhost:9876/assets/";
+    expect(fixture.debugElement.queryAll(By.css(".results div img"))[0].nativeElement.src).toBe(root + "scissors.png");
+    expect(fixture.debugElement.queryAll(By.css(".results div img"))[1].nativeElement.src).toBe(root + "placeholder.png");
   });
 });
 
