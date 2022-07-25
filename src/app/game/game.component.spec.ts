@@ -3,6 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { GameMessage, GameService } from '../game.service';
+import { UserLoginService } from '../user-login.service';
 
 import { GameComponent } from './game.component';
 
@@ -26,6 +27,11 @@ class MockGameFinished {
   gameStatus = {gameStatus: 'finished'};
   listen = mockListen;
 }
+class MockLoginUser {
+  getName() {
+    return "player1";
+  }
+}
 
 describe('GameComponent', () => {
   let component: GameComponent;
@@ -36,7 +42,8 @@ describe('GameComponent', () => {
       declarations: [ GameComponent, MockMsg ],
       imports: [RouterTestingModule, HttpClientModule],
       providers: [
-        {provide: GameService, useClass: MockGame}
+        {provide: GameService, useClass: MockGame},
+        {provide: UserLoginService, useClass: MockLoginUser}
       ],
     })
     .compileComponents();
@@ -67,6 +74,30 @@ describe('GameComponent', () => {
     let root = "http://localhost:9876/assets/";
     expect(fixture.debugElement.queryAll(By.css(".results div img"))[0].nativeElement.src).toBe(root + "scissors.png");
     expect(fixture.debugElement.queryAll(By.css(".results div img"))[1].nativeElement.src).toBe(root + "placeholder.png");
+  });
+  
+  it('should react to opponent turn', () => {
+    expect(component).toBeTruthy();
+    
+    let scissors = fixture.debugElement.query(By.css("#game_scissors"));
+    scissors.nativeElement.click();
+    fixture.detectChanges();
+    let gm = new GameMessage();
+    gm.id = "id1";
+    gm.action = "makeChoice";
+    gm.detail = "scissors";
+
+    expect(mockSend).toHaveBeenCalledWith(gm);
+    let root = "http://localhost:9876/assets/";
+    expect(fixture.debugElement.query(By.css("#game_scissors")).nativeElement.className).toBe("game_choice selected");
+    gm = {action:'point', detail:'point for the win', players:['player1','player2'], choices:['scissors', 'paper'], scores:[1,1], winner: 'player2', round:2};
+    component.onMessage(gm);
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css(".results div img"))[0].nativeElement.src).toBe(root + "scissors.png");
+    expect(fixture.debugElement.queryAll(By.css(".results div img"))[1].nativeElement.src).toBe(root + "paper.png");
+    expect(fixture.debugElement.queryAll(By.css(".results div.resultText"))[0].nativeElement.innerText).toBe("point for the win");
+    expect(fixture.debugElement.queryAll(By.css(".results div.round"))[0].nativeElement.innerText).toBe("Round 2")
+    expect(fixture.debugElement.queryAll(By.css(".results div.scores"))[0].nativeElement.innerText).toBe("You: 1 player2: 1");
   });
 });
 
