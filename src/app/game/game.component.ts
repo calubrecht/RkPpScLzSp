@@ -19,7 +19,7 @@ export class GameComponent implements OnInit {
   private pointWinner: string;
 
 
-  constructor(public game: GameService, private msgService: MsgService, private loginService: UserLoginService, private router: Router) { }
+  constructor(public game: GameService, public msgService: MsgService, private loginService: UserLoginService, private router: Router) { }
 
   ngOnInit() {
     this.game.listen('gameWidget', this);
