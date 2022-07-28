@@ -8,6 +8,7 @@ import { UserLoginService } from '../user-login.service';
 import { GameComponent } from './game.component';
 
 import { By } from "@angular/platform-browser";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-msg',
@@ -17,11 +18,17 @@ class MockMsg {}
 
 let mockListen = jasmine.createSpy("listen");
 let mockSend = jasmine.createSpy("sendMessage");
+let mockCancel = jasmine.createSpy("cancel");
+let mockRoute = jasmine.createSpy("route");
+let mockStopListen = jasmine.createSpy("stopListen");
 
 class MockGame {
-  gameStatus = {gameStatus: 'active', gameID:"id1"};
+  gameStatus = {gameStatus: 'started', gameID:"id1"};
+  getGameStatus = () => this.gameStatus.gameStatus;
   sendMessage = mockSend;
   listen = mockListen;
+  cancel = mockCancel;
+  stopListen = mockStopListen;;
 }
 class MockGameFinished {
   gameStatus = {gameStatus: 'finished'};
@@ -37,6 +44,10 @@ class MockLoginUser {
   }
 }
 
+class MockRouter {
+  navigateByUrl = mockRoute;
+}
+
 describe('GameComponent', () => {
   let component: GameComponent;
   let fixture: ComponentFixture<GameComponent>;
@@ -48,7 +59,8 @@ describe('GameComponent', () => {
       imports: [RouterTestingModule, HttpClientModule],
       providers: [
         {provide: GameService, useClass: MockGame},
-        {provide: UserLoginService, useClass: MockLoginUser}
+        {provide: UserLoginService, useClass: MockLoginUser},
+        {provide: Router, useClass: MockRouter}
       ],
     })
     .compileComponents();
@@ -151,6 +163,79 @@ describe('GameComponent', () => {
     expect(mockSend).toHaveBeenCalledTimes(0);
     expect(fixture.debugElement.queryAll(By.css(".results div img"))[0].nativeElement.src).toBe(root + "scissors.png");
     expect(fixture.debugElement.queryAll(By.css(".results div img"))[1].nativeElement.src).toBe(root + "paper.png");
+  });
+  
+  it('should close or cancel', () => {
+    expect(component).toBeTruthy();
+    
+    let closeGame = fixture.debugElement.query(By.css("#closeGame"));
+    closeGame.nativeElement.click();
+
+    expect(mockCancel).toHaveBeenCalledTimes(1);
+    expect(mockStopListen).toHaveBeenCalledTimes(1);
+    expect(mockRoute).toHaveBeenCalledTimes(1);
+    expect(mockRoute).toHaveBeenCalledWith("/lobby");
+    
+    let gm = {action:'Finished', detail:'point for the win', players:['player1','player2'], choices:['scissors', 'paper'], scores:[3,1], winner: 'player2', round:3};
+    component.onMessage(gm);
+    fixture.detectChanges();
+
+    closeGame.nativeElement.click();
+
+    expect(mockCancel).toHaveBeenCalledTimes(1);
+    expect(mockStopListen).toHaveBeenCalledTimes(2);
+    expect(mockRoute).toHaveBeenCalledTimes(2);
+    expect(mockRoute).toHaveBeenCalledWith("/lobby");
+  });
+  
+  it('should show winner class', () => {
+    expect(component).toBeTruthy();
+    
+    let gm = {action:'point', detail:'point for the win', players:['player1','player2'], choices:['scissors', 'paper'], scores:[3,1], winner: 'player2', round:2};
+    component.onMessage(gm);
+    fixture.detectChanges();
+    
+    expect(fixture.debugElement.queryAll(By.css(".results div img"))[0].nativeElement.className).toBe("");
+    expect(fixture.debugElement.queryAll(By.css(".results div img"))[1].nativeElement.className).toBe("winner");
+
+    gm = {action:'point', detail:'point for the win', players:['player2','player1'], choices:['scissors', 'paper'], scores:[3,1], winner: 'player1', round:3};
+    component.onMessage(gm);
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.queryAll(By.css(".results div img"))[0].nativeElement.className).toBe("winner");
+    expect(fixture.debugElement.queryAll(By.css(".results div img"))[1].nativeElement.className).toBe("");
+    
+    gm = {action:'TIE', detail:'point for the win', players:['player2','player1'], choices:['scissors', 'paper'], scores:[3,1], winner: '', round:3};
+    component.onMessage(gm);
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.queryAll(By.css(".results div img"))[0].nativeElement.className).toBe("");
+    expect(fixture.debugElement.queryAll(By.css(".results div img"))[1].nativeElement.className).toBe("");
+  });
+  
+  it('should react to cancel', () => {
+    expect(component).toBeTruthy();
+    
+    let scissors = fixture.debugElement.query(By.css("#game_scissors"));
+    scissors.nativeElement.click();
+    fixture.detectChanges();
+    
+    let root = "http://localhost:9876/assets/";
+    expect(scissors.nativeElement.className).toBe("game_choice selected");
+    
+    let gm = {action:'Canceled', detail:'point for the win', players:['player2','player1'], choices:['scissors', 'paper'], scores:[3,1], winner: '', round:3};
+    component.onMessage(gm);
+    fixture.detectChanges();
+    expect(scissors.nativeElement.className).toBe("game_choice");
+  });
+    
+  it('should react to msg', () => {
+    expect(component).toBeTruthy();
+    
+    let gm = {action:'Mussage', detail:'What message?'};
+    component.onMessage(gm);
+    fixture.detectChanges();
+    expect(component.msgService.getMessage()).toBe('What message?');
   });
 });
 
