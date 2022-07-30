@@ -14,6 +14,7 @@ import { UsersData, UserMessage } from './user-data';
 
 const mockStorage = MockService(StorageService);
 const mockApi = MockService(ApiService);
+const mockSub = MockService(SubscriptionService);
 
 
 describe('UserLoginService', () => {
@@ -23,7 +24,7 @@ describe('UserLoginService', () => {
         MockProvider(ApiService, mockApi),
         MockProvider(Router),
         MockProvider(MsgService),
-        MockProvider(SubscriptionService),
+        MockProvider(SubscriptionService, mockSub),
         MockProvider(StorageService, mockStorage),
         MockProvider(GameService),
         MockProvider(UsersData),
@@ -63,6 +64,37 @@ describe('UserLoginService', () => {
     service.fetchUserName();
     mockPromise.trigger();
     expect(service.getName()).toBe("aName");
+
+  });
+  
+  it('should initSession', () => {
+    let callback: (name) => {} = null;
+    let wsCallback: () => void;
+    let mockPromise = jasmine.createSpyObj('Observable',['subscribe']);
+    mockPromise.subscribe = (cb) => callback = cb;
+    mockPromise.trigger = () => callback('aName');
+
+    spyOn(mockApi, 'sendGetString').and.returnValue(mockPromise);
+    spyOn(mockSub, 'onWSDisconnect').and.callFake((cb) => {wsCallback = cb;});
+    const service: UserLoginService = TestBed.get(UserLoginService);
+    spyOn(service, 'logOut');
+    spyOn(service, 'fetchVersion').and.callFake(() => {});
+
+    service.initSession();
+    
+    expect(callback).not.toBe(null);
+    
+    wsCallback();
+    expect(service.logOut).toHaveBeenCalledTimes(1);
+    
+    mockPromise.trigger();
+    expect(service.fetchVersion).toHaveBeenCalledTimes(1);
+    callback = null;
+    
+    // Second call does nothing
+    service.initSession();
+    
+    expect(callback).toBe(null);
 
   });
     
