@@ -97,5 +97,32 @@ describe('UserLoginService', () => {
     expect(callback).toBe(null);
 
   });
+  
+  it('should fetch Version', () => {
+    let callback: (name) => {} = null;
+    let mockPromise = jasmine.createSpyObj('Observable',['subscribe']);
+    let oldLog = console.log;
+    console.log = jasmine.createSpy();
+    mockPromise.subscribe = (cb) => callback = cb;
+
+    spyOn(mockApi, 'sendGetString').and.returnValue(mockPromise);
+    const service: UserLoginService = TestBed.get(UserLoginService);
+
+    service.fetchVersion();
+    
+    expect(callback).not.toBe(null);
+    expect(console.log).not.toHaveBeenCalled();
+    callback('whaha');
+    expect(console.log).toHaveBeenCalled();
+    console.log = oldLog;
+
+    callback = null;
+    
+    // Second call does nothing
+    service.fetchVersion();
+    
+    expect(callback).toBe(null);
+
+  });
     
 });
