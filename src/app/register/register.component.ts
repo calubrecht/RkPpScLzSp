@@ -34,8 +34,10 @@ export class RegisterComponent implements OnInit {
 
   tryRegister()
   {
+    console.log("Try register");
     if (this.validate())
     {
+      console.log("avlidagted");
       this.loginService.register(this.userName, this.password, this.color);
     }
   }
