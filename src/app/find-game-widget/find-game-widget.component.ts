@@ -17,6 +17,7 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
   seekingTimer: any;
   seekingSubs: Subscription;
   listenerFunc;
+  longTime = 30000;
 
   constructor( public game: GameService, private router: Router, public userData: UsersData, private loginService: UserLoginService) { }
 
@@ -64,7 +65,7 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
     }
     this.seekingTimer = setInterval(() => {
       this.seekingLongTime = true;
-    }, 30000);
+    }, this.longTime);
   }
 
   aiGame()
