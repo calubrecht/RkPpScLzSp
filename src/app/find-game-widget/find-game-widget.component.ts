@@ -128,7 +128,7 @@ export class FindGameWidgetComponent implements OnInit, GameListener {
       {
         this.game.gameStatus.roundText = 'Round ' + e.round;
       }
-      if (e.scores !== null)
+      if ('scores' in e)
       {
         this.game.gameStatus.scoreText = 'You: ' + e.scores[playerIdx] + ' ' + e.players[oppIdx] +': ' + e.scores[oppIdx];
       }
