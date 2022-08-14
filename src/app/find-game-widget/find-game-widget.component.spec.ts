@@ -113,4 +113,50 @@ describe('FindGameWidgetComponent', () => {
     expect(gameSpy.endSeekGame).toHaveBeenCalled();
     expect(gameSpy.startAIGame).toHaveBeenCalled();
   });
+
+  it('accept startGame message', () => {
+    component.game.gameStatus.inGame = false;
+    component.isSeeking = true;
+    let msg : GameMessage = { action: 'startGame', detail: 'quick game', id:'55'};
+    component.onMessage(msg);
+    fixture.detectChanges();
+
+    expect(component.isSeeking).toBe(false);
+    expect(component.game.gameStatus.inGame).toBe(true);
+    expect(component.game.gameStatus.gameName).toBe('quick game');
+    expect(gameSpy.startGame).toHaveBeenCalledWith('quick game', '55');
+    expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('game');
+  });
+  
+  it('accept invite message', () => {
+    component.game.gameStatus.inGame = false;
+    component.isSeeking = true;
+    let msg : GameMessage = { action: 'invite', detail: 'quick game', id:'55', players:['you', 'some guy']};
+    component.onMessage(msg);
+    fixture.detectChanges();
+
+    expect(component.game.gameStatus.invited).toBe(true);
+    expect(component.game.gameStatus.gameName).toBe('quick game');
+    expect(component.game.gameStatus.gameID).toBe('55');
+    expect(component.game.gameStatus.inviter).toBe('some guy');
+    expect(fixture.nativeElement.querySelector(".inviter").innerText).toBe("some guy");
+   
+    // Message while already invited does nothing.
+    let msg2 : GameMessage = { action: 'invite', detail: 'quick game', id:'58', players:['you', 'some other guy']};
+    component.onMessage(msg2);
+    fixture.detectChanges();
+    expect(component.game.gameStatus.invited).toBe(true);
+    expect(component.game.gameStatus.gameName).toBe('quick game');
+    expect(component.game.gameStatus.gameID).toBe('55');
+    expect(component.game.gameStatus.inviter).toBe('some guy');
+    expect(fixture.nativeElement.querySelector(".inviter").innerText).toBe("some guy");
+    
+    // Message while already in in game does nothing
+    component.game.gameStatus.inGame = true;
+    component.game.gameStatus.invited = false;
+    fixture.detectChanges();
+    expect(component.game.gameStatus.gameName).toBe('quick game');
+    expect(component.game.gameStatus.gameID).toBe('55');
+    expect(component.game.gameStatus.inviter).toBe('some guy');
+  });
 });
