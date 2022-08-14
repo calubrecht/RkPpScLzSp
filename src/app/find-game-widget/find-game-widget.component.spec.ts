@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import {Router} from '@angular/router';
 import { GameService, GameMessage, GameListener } from '../game.service';
 import { HttpClientModule } from '@angular/common/http';
 import { UsersData } from '../user-data';
@@ -9,19 +9,22 @@ import { FindGameWidgetComponent } from './find-game-widget.component';
 
 let gameSpy;
 let userSpy;
+let routerSpy;
 
 describe('FindGameWidgetComponent', () => {
   let component: FindGameWidgetComponent;
   let fixture: ComponentFixture<FindGameWidgetComponent>;
 
   beforeEach(async () => {
-    gameSpy = jasmine.createSpyObj('GameService', ['seekGame', 'endSeekGame', 'onInit', 'listen'], {gameStatus: {inGame:false}});
+    gameSpy = jasmine.createSpyObj('GameService', ['seekGame', 'endSeekGame', 'onInit', 'listen', 'startGame', 'acceptInvite', 'startAIGame'], {gameStatus: {inGame:false}});
     userSpy = jasmine.createSpyObj('UsersData', {getUser: () => {color: "red"}});
+    routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
     await TestBed.configureTestingModule({
       declarations: [FindGameWidgetComponent ],
-      imports: [RouterTestingModule, HttpClientModule],
+      imports: [ HttpClientModule],
       providers: [
         { provide:GameService, useValue:gameSpy},
+        { provide:Router, useValue:routerSpy},
         { provide:UsersData, useValue:userSpy}]
     })
     .compileComponents();
@@ -68,5 +71,46 @@ describe('FindGameWidgetComponent', () => {
     expect(component.seekingLongTime).toBe(false);
     expect(component.game.gameStatus.invited).toBe(false);
     expect(gameSpy.endSeekGame).toHaveBeenCalled();
+  });
+  
+  it('does canceGame', () => {
+
+    component.game.gameStatus.inGame = true;
+    component.game.gameStatus.gameName = "Fun Game"
+    fixture.detectChanges();
+    let cancelButton = fixture.nativeElement.querySelector("#cancelBtn");
+    let gameName = fixture.nativeElement.querySelector(".gameName");
+    expect(gameName.innerText).toBe("Fun Game");
+
+    cancelButton.click();
+    expect(component.game.gameStatus.inGame).toBe(false);
+    expect(component.game.gameStatus.gameName).toBe('');
+  });
+
+  it('does acceptInvite', () => {
+
+    component.game.gameStatus.inGame = false;
+    component.game.gameStatus.invited = true;
+    component.game.gameStatus.inviter = "Bob";
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector(".inviter").innerText).toBe("Bob");
+    let acceptButton = fixture.nativeElement.querySelector("#acceptBtn");
+
+    acceptButton.click();
+    expect(component.game.gameStatus.inGame).toBe(true);
+    expect(gameSpy.startGame).toHaveBeenCalled();
+    expect(gameSpy.acceptInvite).toHaveBeenCalled();
+    expect(routerSpy.navigateByUrl).toHaveBeenCalled();
+  });
+  
+  it('does ai game', () => {
+
+    component.isSeeking = true;
+    let aiButton = fixture.nativeElement.querySelector("#aiBtn");
+
+    aiButton.click();
+    expect(component.isSeeking).toBe(false);
+    expect(gameSpy.endSeekGame).toHaveBeenCalled();
+    expect(gameSpy.startAIGame).toHaveBeenCalled();
   });
 });
