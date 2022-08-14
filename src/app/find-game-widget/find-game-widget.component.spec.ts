@@ -214,13 +214,13 @@ describe('FindGameWidgetComponent', () => {
     
     // Set winner, result, round score
     component.game.gameStatus.inGame = false;
-    let msg3 : GameMessage = { action: 'resendGame', detail: 'quick game', id:'55', players:['you', 'some guy'], choices:[null, null], winner:'Bob', detail2: 'Bomb destroys Everything', round:2, scores:[10,23]};
+    let msg3 : GameMessage = { action: 'resendGame', detail: 'quick game', id:'55', players:['some guy', 'you'], choices:[null, null], winner:'Bob', detail2: 'Bomb destroys Everything', round:2, scores:[10,23]};
     component.onMessage(msg3);
     expect(gameSpy.startGame).toHaveBeenCalledWith('quick game', '55');
     expect(component.game.gameStatus.lastWinner).toBe("Bob");
     expect(component.game.gameStatus.resultText).toBe("Bomb destroys Everything");
     expect(component.game.gameStatus.roundText).toBe("Round 2");
-    expect(component.game.gameStatus.scoreText).toBe("You: 10 some guy: 23");
+    expect(component.game.gameStatus.scoreText).toBe("You: 23 some guy: 10");
 
 
 
