@@ -128,7 +128,7 @@ describe('FindGameWidgetComponent', () => {
     expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('game');
   });
   
-  it('accept invite message', () => {
+  it('invite message', () => {
     component.game.gameStatus.inGame = false;
     component.isSeeking = true;
     let msg : GameMessage = { action: 'invite', detail: 'quick game', id:'55', players:['you', 'some guy']};
@@ -158,5 +158,31 @@ describe('FindGameWidgetComponent', () => {
     expect(component.game.gameStatus.gameName).toBe('quick game');
     expect(component.game.gameStatus.gameID).toBe('55');
     expect(component.game.gameStatus.inviter).toBe('some guy');
+  });
+  
+  it('accepted invite message', () => {
+    component.game.gameStatus.inGame = false;
+    component.game.gameStatus.invited = true;
+    component.isSeeking = true;
+    let msg : GameMessage = { action: 'acceptedInvite', detail: 'quick game', id:'55', players:['you', 'some guy']};
+    component.onMessage(msg);
+    fixture.detectChanges();
+
+    expect(component.game.gameStatus.invited).toBe(false);
+    expect(component.game.gameStatus.inGame).toBe(true);
+    expect(component.game.gameStatus.gameName).toBe('quick game');
+    expect(component.game.gameStatus.inviter).toBe('');
+    expect(gameSpy.startGame).toHaveBeenCalledWith('quick game', '55');
+    expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('game');
+   
+    // Message while already invited does nothing.
+    let msg2 : GameMessage = { action: 'invite', detail: 'quicker game', id:'58'};
+    gameSpy.startGame.calls.reset();
+    routerSpy.navigateByUrl.calls.reset();
+    component.onMessage(msg2);
+    fixture.detectChanges();
+    expect(component.game.gameStatus.gameName).toBe('quick game');
+    expect(gameSpy.startGame).not.toHaveBeenCalledWith('quick game', '55');
+    expect(routerSpy.navigateByUrl).not.toHaveBeenCalledWith('game');
   });
 });
