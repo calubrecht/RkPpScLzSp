@@ -7,6 +7,7 @@ import { MsgService } from '../msg.service';
 import { UsersData, UserData } from '../user-data';
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Observable, of, Subscription } from 'rxjs';
 
 import { LobbyComponent } from './lobby.component';
 
@@ -27,29 +28,37 @@ class MockMsg {}
 class MockChat{}
 @Component({
   selector: 'app-user-detail',
-  template: '<p>Users</p>'
+  template: '<p class="userDetail">{{user && user.userName}}</p>'
 })
 class MockUsers { @Input() user: string; }
 @Component({
   selector: 'app-find-game-widget',
-  template: '<p>Users</p>'
+  template: '<p>Find Game</p>'
 })
 class MockFindGame{}
+
+
+let userDataSpy;
+let chatSpy;
+let chatDataSpy;
 
 describe('LobbyComponent', () => {
   let component: LobbyComponent;
   let fixture: ComponentFixture<LobbyComponent>;
 
   beforeEach(async () => {
+    userDataSpy = jasmine.createSpyObj('UsersData', {getUser: {color: "red"}, getActiveUsers: [{userName:'Bob', color:'red'},{userName:'Fred', color:'blue'}]});
+    chatSpy = {sendChat: (m) => of(m)};
+    chatDataSpy = jasmine.createSpyObj('ChatData', ['addChat']);
     await TestBed.configureTestingModule({
       declarations: [ LobbyComponent, MockHello, MockMsg, MockChat, MockUsers, MockFindGame ],
       imports: [ FormsModule ],
       providers: [
         MockProvider(UserLoginService),
-        MockProvider(ChatService),
-        MockProvider(ChatData),
-        MockProvider(UsersData),
-        MockProvider(MsgService)
+        { provide:ChatData, useValue:chatDataSpy  },
+        { provide:ChatService, useValue:chatSpy  },
+        MockProvider(MsgService),
+        { provide:UsersData, useValue:userDataSpy }
         ]
     })
     .compileComponents();
@@ -61,5 +70,33 @@ describe('LobbyComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  
+  it('should showUsers', () => {
+    expect(component).toBeTruthy();
+    let userBox = fixture.nativeElement.querySelector(".userbox");
+    expect(userBox.children.length).toBe(2);
+    expect(userBox.children[0].className).toBe('red user');
+    expect(userBox.children[1].className).toBe('blue user');
+    expect(userBox.children[0].innerText).toBe('Bob');
+    expect(userBox.children[1].innerText).toBe('Fred');
+  });
+  
+  it('should select User', () => {
+    expect(component).toBeTruthy();
+    let userBox = fixture.nativeElement.querySelector(".userbox");
+    userBox.children[0].click();
+    fixture.detectChanges();
+    let detail = fixture.nativeElement.querySelector(".userDetail");
+    expect(detail.innerText).toBe('Bob');
+  });
+  
+  it('should send Chat', () => {
+    component.newChat = 'Hi';
+    component.sendChat();
+    fixture.detectChanges();
+
+    expect(component.newChat).toBe('');
+    expect(chatDataSpy.addChat).toHaveBeenCalledWith(new ChatMessage('', 'Hi'));
   });
 });
