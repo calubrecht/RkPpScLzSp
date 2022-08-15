@@ -3,7 +3,6 @@ import { MockProvider, MockService } from 'ng-mocks';
 
 import { UserLoginService } from './user-login.service'
 import {Router} from '@angular/router';
-import {Subscription } from 'rxjs';
 import { ApiService } from './api.service';
 import { MsgService } from './msg.service';
 import { GameService } from './game.service';
@@ -11,6 +10,7 @@ import { SubscriptionService } from './subscription.service';
 import { ChatService } from './chat.service';
 import { StorageService } from './storage.service';
 import { UsersData, UserMessage } from './user-data';
+import { Observable, of, Subscription } from 'rxjs';
 
 const mockStorage = MockService(StorageService);
 const mockApi = MockService(ApiService);
@@ -123,6 +123,40 @@ describe('UserLoginService', () => {
     
     expect(callback).toBe(null);
 
+  });
+  
+  it('should logIn', () => {
+    let result = of({token:'abcd'});
+
+    spyOn(mockApi, 'sendPost').and.returnValue(result);
+    spyOn(mockStorage, 'setToken');
+    // for fetchUser
+    spyOn(mockApi, 'sendGetString').and.returnValue(of("Joe"));
+    const service: UserLoginService = TestBed.get(UserLoginService);
+
+    service.logIn("Joe", "Blow");
+    
+    expect(mockStorage.setToken).toHaveBeenCalledWith("abcd");
+    expect(mockApi.sendPost).toHaveBeenCalledWith('sessions/login', {userName:"Joe", password:"Blow"});
+    expect(service.userName).toBe("Joe");
+    expect(service.loggedIn).toBe(true);
+  });
+  
+  it('should register', () => {
+    let result = of({token:'abcd'});
+
+    spyOn(mockApi, 'sendPost').and.returnValue(result);
+    spyOn(mockStorage, 'setToken');
+    // for fetchUser
+    spyOn(mockApi, 'sendGetString').and.returnValue(of("Joe"));
+    const service: UserLoginService = TestBed.get(UserLoginService);
+
+    service.register("Joe", "Blow", "green");
+    
+    expect(mockStorage.setToken).toHaveBeenCalledWith("abcd");
+    expect(mockApi.sendPost).toHaveBeenCalledWith('sessions/register', {userName:"Joe", password:"Blow", color:"green"});
+    expect(service.userName).toBe("Joe");
+    expect(service.loggedIn).toBe(true);
   });
     
 });
