@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockProvider, MockService } from 'ng-mocks';
-import { RouterTestingModule } from '@angular/router/testing';
+import {Router} from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { UserLoginService } from '../user-login.service';
 import { FormsModule } from '@angular/forms';
@@ -14,15 +14,24 @@ import { LoginComponent } from './login.component';
 })
 class MockMsg {}
 
+let routerSpy;
+let loginSpy;
+
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
 
   beforeEach(async () => {
+    routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
+    loginSpy = jasmine.createSpyObj('UserLoginService',['initSession', 'logIn', 'logInGuest'],  {
+      'isLoggedIn': () => false});
     await TestBed.configureTestingModule({
       declarations: [ LoginComponent, MockMsg ],
-      imports: [RouterTestingModule, HttpClientModule, FormsModule],
-      providers: [MockProvider(UserLoginService) ]
+      imports: [ HttpClientModule, FormsModule],
+      providers: [
+        { provide:UserLoginService, useValue:loginSpy},
+        { provide: Router, useValue: routerSpy}
+      ]
     })
     .compileComponents();
 
@@ -33,5 +42,59 @@ describe('LoginComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  
+  it('should call register', () => {
+    expect(component).toBeTruthy();
+    fixture.nativeElement.querySelector(".buttonPanel").children[1].click();
+    expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('register');
+  });
+  
+  it('should try login', () => {
+    expect(component).toBeTruthy();
+    let userNameInput = fixture.nativeElement.querySelector("#userName");
+    let passwordInput = fixture.nativeElement.querySelector("#password");
+    userNameInput.value = "loser1";
+    passwordInput.value = "pass1";
+    userNameInput.dispatchEvent(new Event("input"));
+    passwordInput.dispatchEvent(new Event("input"));
+    fixture.detectChanges();
+    fixture.nativeElement.querySelector(".buttonPanel").children[0].click();
+    expect(loginSpy.logIn).toHaveBeenCalledWith("loser1", "pass1");
+  });
+  
+  it('should try loginGuest', () => {
+    expect(component).toBeTruthy();
+    fixture.nativeElement.querySelector(".buttonPanel").children[2].click();
+    expect(loginSpy.logInGuest).toHaveBeenCalled();
+  });
+});
+
+describe('LoginComponent loggedinAlready', () => {
+  let component: LoginComponent;
+  let fixture: ComponentFixture<LoginComponent>;
+
+  beforeEach(async () => {
+    routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
+    loginSpy = jasmine.createSpyObj('UserLoginService', ['initSession'], {
+      'isLoggedIn': () => true});
+    await TestBed.configureTestingModule({
+      imports: [HttpClientModule, FormsModule],
+      declarations: [ LoginComponent, MockMsg ],
+      providers: [
+        { provide:UserLoginService, useValue:loginSpy},
+        { provide: Router, useValue: routerSpy}
+      ]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(LoginComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should navigate to lobby', () => {
+    expect(component).toBeTruthy();
+    expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('lobby');
   });
 });
