@@ -15,6 +15,7 @@ import { Observable, of, Subscription } from 'rxjs';
 const mockStorage = MockService(StorageService);
 const mockApi = MockService(ApiService);
 const mockSub = MockService(SubscriptionService);
+const mockUsers = MockService(UsersData);
 
 
 describe('UserLoginService', () => {
@@ -27,7 +28,7 @@ describe('UserLoginService', () => {
         MockProvider(SubscriptionService, mockSub),
         MockProvider(StorageService, mockStorage),
         MockProvider(GameService),
-        MockProvider(UsersData),
+        MockProvider(UsersData, mockUsers),
         MockProvider(ChatService)
         ]
   }
@@ -156,6 +157,25 @@ describe('UserLoginService', () => {
     expect(mockStorage.setToken).toHaveBeenCalledWith("abcd");
     expect(mockApi.sendPost).toHaveBeenCalledWith('sessions/register', {userName:"Joe", password:"Blow", color:"green"});
     expect(service.userName).toBe("Joe");
+    expect(service.loggedIn).toBe(true);
+  });
+  
+  it('should loginGuest', () => {
+    let result = of({token:'abcd', userName:"Guest 1"});
+
+    spyOn(mockApi, 'sendPost').and.returnValue(result);
+    spyOn(mockStorage, 'setToken');
+    spyOn(mockUsers, 'createUser');
+    // for fetchUser
+    spyOn(mockApi, 'sendGetString').and.returnValue(of("Guest 1"));
+    const service: UserLoginService = TestBed.get(UserLoginService);
+
+    service.logInGuest();
+    
+    expect(mockStorage.setToken).toHaveBeenCalledWith("abcd");
+    expect(mockUsers.createUser).toHaveBeenCalledWith("Guest 1");
+    expect(mockApi.sendPost).toHaveBeenCalledWith('sessions/loginGuest', {});
+    expect(service.userName).toBe("Guest 1");
     expect(service.loggedIn).toBe(true);
   });
     
