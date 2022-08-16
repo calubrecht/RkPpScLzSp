@@ -15,6 +15,8 @@ import { Observable, of, Subscription } from 'rxjs';
 const mockStorage = MockService(StorageService);
 const mockApi = MockService(ApiService);
 const mockSub = MockService(SubscriptionService);
+const mockGame = MockService(GameService);
+const mockChat = MockService(ChatService);
 const mockUsers = MockService(UsersData);
 
 
@@ -27,9 +29,9 @@ describe('UserLoginService', () => {
         MockProvider(MsgService),
         MockProvider(SubscriptionService, mockSub),
         MockProvider(StorageService, mockStorage),
-        MockProvider(GameService),
+        MockProvider(GameService, mockGame),
         MockProvider(UsersData, mockUsers),
-        MockProvider(ChatService)
+        MockProvider(ChatService, mockChat)
         ]
   }
   );
@@ -178,5 +180,46 @@ describe('UserLoginService', () => {
     expect(service.userName).toBe("Guest 1");
     expect(service.loggedIn).toBe(true);
   });
+  
+  it('test isLoggedIn', () => {
+    let token = null;
+    mockStorage.getToken = () => token;
+    const service: UserLoginService = TestBed.get(UserLoginService);
+
+    expect(service.isLoggedIn()).toBe(false);
+    token = "chumbawumba";
+    expect(service.isLoggedIn()).toBe(true);
     
+  });
+    
+  it('should log out', () => {
+    let result = of("Doesn't matter");
+
+    spyOn(mockApi, 'sendPost').and.returnValue(result);
+    spyOn(mockStorage, 'clearToken');
+    spyOn(mockUsers, 'createUser');
+    spyOn(mockGame, 'unsubscribe');
+    spyOn(mockChat, 'unsubscribe');
+    spyOn(mockSub, 'unsubscribeAll');
+    const service: UserLoginService = TestBed.get(UserLoginService);
+    service.initted=true;
+
+    service.logOut("Me bad");
+    
+    expect(service.initted).toBe(false);
+    expect(mockApi.sendPost).toHaveBeenCalledWith('sessions/logout');
+    expect(service.userName).toBe("");
+    expect(service.loggedIn).toBe(false);
+    expect(mockGame.unsubscribe).toHaveBeenCalled();
+    expect(mockChat.unsubscribe).toHaveBeenCalled();
+    expect(mockSub.unsubscribeAll).toHaveBeenCalled();
+    expect(mockStorage.clearToken).toHaveBeenCalled();
+  });
+  
+  it('should parseMsg', () => {
+    const service: UserLoginService = TestBed.get(UserLoginService);
+
+    expect(service.parseMsg("<html>SomeHTML</html>")).toBe("Unable to authenticate. Please login");
+    expect(service.parseMsg("Not HTML")).toBe("Not HTML");
+  });
 });
