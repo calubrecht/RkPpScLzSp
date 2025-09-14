@@ -50,11 +50,10 @@ if (environment.production) {
       { path: 'lobby', component: LobbyComponent, canActivate: [NeedAuthGuardService]  },
     ]),
     HttpClientModule,
-     ],
-  declarations: [
     AppComponent, HelloComponent, HeaderComponent, LoginComponent, LobbyComponent,
     MsgComponent, ChatboxComponent, UserDetailComponent, FindGameWidgetComponent,
-    GameComponent, MenubarComponent, RegisterComponent ],
+    GameComponent, MenubarComponent, RegisterComponent
+     ],
   bootstrap:    [ AppComponent ],
   providers: [
          UserLoginService,

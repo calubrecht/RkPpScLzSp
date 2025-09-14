@@ -18,12 +18,12 @@ describe('SubscriptionMsgService', () => {
   });
 
   it('should be created', () => {
-    const service: SubscriptionService = TestBed.get(SubscriptionService);
+    const service: SubscriptionService = TestBed.inject(SubscriptionService);
     expect(service).toBeTruthy();
   });
 
   it('newSubsID returns consecuctive values', () => {
-    const service: SubscriptionService = TestBed.get(SubscriptionService);
+    const service: SubscriptionService = TestBed.inject(SubscriptionService);
 
     expect(service.newSubsID()).toBe(0);
     expect(service.newSubsID()).toBe(1);
@@ -31,8 +31,8 @@ describe('SubscriptionMsgService', () => {
   });
 
   it('subscribe calls wsService', () => {
-    const service: SubscriptionService = TestBed.get(SubscriptionService);
-    const wsService: WebsocketService = TestBed.get(WebsocketService);
+    const service: SubscriptionService = TestBed.inject(SubscriptionService);
+    const wsService: WebsocketService = TestBed.inject(WebsocketService);
 
     spyOn(wsService, 'subscribe');
     service.subscribe('callMethod');
@@ -40,8 +40,8 @@ describe('SubscriptionMsgService', () => {
   });
 
   it('subscribeUserChannel calls wsService', () => {
-    const service: SubscriptionService = TestBed.get(SubscriptionService);
-    const wsService: WebsocketService = TestBed.get(WebsocketService);
+    const service: SubscriptionService = TestBed.inject(SubscriptionService);
+    const wsService: WebsocketService = TestBed.inject(WebsocketService);
 
     spyOn(wsService, 'subscribeUserChannel');
     service.subscribeUserChannel('callMethod');
@@ -49,8 +49,8 @@ describe('SubscriptionMsgService', () => {
   });
 
   it('sendMessage calls wsService', () => {
-    const service: SubscriptionService = TestBed.get(SubscriptionService);
-    const wsService: WebsocketService = TestBed.get(WebsocketService);
+    const service: SubscriptionService = TestBed.inject(SubscriptionService);
+    const wsService: WebsocketService = TestBed.inject(WebsocketService);
 
     spyOn(wsService, 'publishMsg');
     service.sendMessage('topic','callMethod');
@@ -58,8 +58,8 @@ describe('SubscriptionMsgService', () => {
   });
 
   it('onConnection calls wsService', () => {
-    const service: SubscriptionService = TestBed.get(SubscriptionService);
-    const wsService: WebsocketService = TestBed.get(WebsocketService);
+    const service: SubscriptionService = TestBed.inject(SubscriptionService);
+    const wsService: WebsocketService = TestBed.inject(WebsocketService);
 
     let callback = () => {};
     spyOn(wsService, 'onConnection');
@@ -68,8 +68,8 @@ describe('SubscriptionMsgService', () => {
   });
   
   it('onWSDisconnect calls wsService', () => {
-    const service: SubscriptionService = TestBed.get(SubscriptionService);
-    const wsService: WebsocketService = TestBed.get(WebsocketService);
+    const service: SubscriptionService = TestBed.inject(SubscriptionService);
+    const wsService: WebsocketService = TestBed.inject(WebsocketService);
 
     let callback = () => {};
     spyOn(wsService, 'onWSDisconnect');
@@ -78,8 +78,8 @@ describe('SubscriptionMsgService', () => {
   });
   
   it('unsubscribeAll calls wsService', () => {
-    const service: SubscriptionService = TestBed.get(SubscriptionService);
-    const wsService: WebsocketService = TestBed.get(WebsocketService);
+    const service: SubscriptionService = TestBed.inject(SubscriptionService);
+    const wsService: WebsocketService = TestBed.inject(WebsocketService);
 
     spyOn(wsService, 'disconnect');
     service.unsubscribeAll();

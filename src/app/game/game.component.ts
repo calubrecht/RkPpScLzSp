@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { GameMessage, GameService } from '../game.service';
 import { MsgService } from '../msg.service';
+import { MsgComponent } from '../msg/msg.component'
 import { UserLoginService } from '../user-login.service';
 import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.css']
+  styleUrls: ['./game.component.css'],
+  imports: [MsgComponent]
 })
 export class GameComponent implements OnInit {
 
-  choices = ['scissors', 'paper', 'rock', 'paper', 'lizard', 'spock'];
+  choices = ['scissors', 'rock', 'paper', 'lizard', 'spock'];
   selectedElement;
 
   cancelButtonName = 'Cancel Game';

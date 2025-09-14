@@ -4,20 +4,22 @@
     <h2 >Register</h2>
     <div >
       <label for="userName">User Name</label>
-      <input type="text" id="userName" name="userNAme" placeholder="User Name" [(ngModel)]="userName">
+      <input type="text" id="userName" name="userName" placeholder="User Name" [(ngModel)]="userName" #ctrl="ngModel">
     </div>
     <div>
       <label for="password">Password</label>
-      <input type="password" id="password" name="password" placeholder="Password" [(ngModel)]="password">
+      <input type="password" id="password" name="password" placeholder="Password" [(ngModel)]="password" #ctrl="ngModel">
     </div>
     <div>
       <label for="confirmPass">Confirm Password</label>
-      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" [(ngModel)]="confirmPassword">
+      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" [(ngModel)]="confirmPassword" #ctrl="ngModel">
     </div>
     <div>
       <label for="color">Color</label>
-      <select id="selectColor" name="color" [(ngModel)] = "color">
-        <option *ngFor="let c of colors" value={{c}}>{{c}}</option>
+      <select id="selectColor" name="color" [(ngModel)]="color" #ctrl="ngModel">
+       @for (c of colors; track c) {
+        <option value={{c}}>{{c}}</option>
+        }
       </select>
     </div>
     <div class="buttonPanel">

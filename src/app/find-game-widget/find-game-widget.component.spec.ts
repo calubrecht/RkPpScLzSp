@@ -23,8 +23,7 @@ describe('FindGameWidgetComponent', () => {
     loginSpy = jasmine.createSpyObj('UserLoginService', {getName: "you"});
     routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
     await TestBed.configureTestingModule({
-      declarations: [FindGameWidgetComponent ],
-      imports: [ HttpClientModule],
+      imports: [ HttpClientModule, FindGameWidgetComponent],
       providers: [
         { provide:GameService, useValue:gameSpy},
         { provide:Router, useValue:routerSpy},

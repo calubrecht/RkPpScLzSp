@@ -42,6 +42,16 @@ let userDataSpy;
 let chatSpy;
 let chatDataSpy;
 
+function configure(providers) {
+    return TestBed.configureTestingModule({
+      imports: [ FormsModule],
+      providers: providers
+    })
+    .overrideComponent(LobbyComponent, {
+      set: {imports: [MockMsg, MockHello, MockChat, MockUsers, MockFindGame, FormsModule]}
+    });
+}
+
 describe('LobbyComponent', () => {
   let component: LobbyComponent;
   let fixture: ComponentFixture<LobbyComponent>;
@@ -50,18 +60,15 @@ describe('LobbyComponent', () => {
     userDataSpy = jasmine.createSpyObj('UsersData', {getUser: {color: "red"}, getActiveUsers: [{userName:'Bob', color:'red'},{userName:'Fred', color:'blue'}]});
     chatSpy = {sendChat: (m) => of(m)};
     chatDataSpy = jasmine.createSpyObj('ChatData', ['addChat']);
-    await TestBed.configureTestingModule({
-      declarations: [ LobbyComponent, MockHello, MockMsg, MockChat, MockUsers, MockFindGame ],
-      imports: [ FormsModule ],
-      providers: [
+    await configure(
+      [
         MockProvider(UserLoginService),
         { provide:ChatData, useValue:chatDataSpy  },
         { provide:ChatService, useValue:chatSpy  },
         MockProvider(MsgService),
         { provide:UsersData, useValue:userDataSpy }
         ]
-    })
-    .compileComponents();
+    );
 
     fixture = TestBed.createComponent(LobbyComponent);
     component = fixture.componentInstance;
@@ -92,7 +99,9 @@ describe('LobbyComponent', () => {
   });
   
   it('should send Chat', () => {
-    component.newChat = 'Hi';
+    let chatInput = fixture.nativeElement.querySelector("#chatInput");
+    chatInput.value = "Hi";
+    chatInput.dispatchEvent(new Event("input"));
     component.sendChat();
     fixture.detectChanges();
 

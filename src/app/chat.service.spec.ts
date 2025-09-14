@@ -26,13 +26,13 @@ describe('ChatService', () => {
   );
 
   it('should be created', () => {
-    const service: ChatService = TestBed.get(ChatService);
+    const service: ChatService = TestBed.inject(ChatService);
     expect(service).toBeTruthy();
   });
 
   it('getChats should call api', () => {
-    const service: ChatService = TestBed.get(ChatService);
-    const apiService: ApiService = TestBed.get(ApiService);
+    const service: ChatService = TestBed.inject(ChatService);
+    const apiService: ApiService = TestBed.inject(ApiService);
 
     let messages :ChatMessage[] = [];
 
@@ -45,8 +45,8 @@ describe('ChatService', () => {
   });
 
   it('getUsers should call api', () => {
-    const service: ChatService = TestBed.get(ChatService);
-    const apiService: ApiService = TestBed.get(ApiService);
+    const service: ChatService = TestBed.inject(ChatService);
+    const apiService: ApiService = TestBed.inject(ApiService);
 
     let users :UserData[] = [];
 
@@ -59,8 +59,8 @@ describe('ChatService', () => {
   });
 
   it('sencChat should call api', () => {
-    const service: ChatService = TestBed.get(ChatService);
-    const apiService: ApiService = TestBed.get(ApiService);
+    const service: ChatService = TestBed.inject(ChatService);
+    const apiService: ApiService = TestBed.inject(ApiService);
 
     let message: ChatMessage = new ChatMessage("userName", "a message");
 
@@ -73,8 +73,8 @@ describe('ChatService', () => {
   });
 
   it('subscibe chats calls api', () => {
-    const service: ChatService = TestBed.get(ChatService);
-    const subService: SubscriptionService = TestBed.get(SubscriptionService);
+    const service: ChatService = TestBed.inject(ChatService);
+    const subService: SubscriptionService = TestBed.inject(SubscriptionService);
 
     let message: ChatMessage = new ChatMessage("userName", "a message");
 
@@ -87,8 +87,8 @@ describe('ChatService', () => {
   });
 
   it('subscibe users calls api', () => {
-    const service: ChatService = TestBed.get(ChatService);
-    const subService: SubscriptionService = TestBed.get(SubscriptionService);
+    const service: ChatService = TestBed.inject(ChatService);
+    const subService: SubscriptionService = TestBed.inject(SubscriptionService);
 
     let user = new UserData({userName: 'user', color:'blue', system:false, status:'ok'});
 
@@ -101,11 +101,11 @@ describe('ChatService', () => {
   });
   
   it('subscibe/unsubscribe', () => {
-    const service: ChatService = TestBed.get(ChatService);
-    const apiService: ApiService = TestBed.get(ApiService);
-    const subService: SubscriptionService = TestBed.get(SubscriptionService);
-    const chatData: ChatData = TestBed.get(ChatData);
-    const userData: UsersData = TestBed.get(UsersData);
+    const service: ChatService = TestBed.inject(ChatService);
+    const apiService: ApiService = TestBed.inject(ApiService);
+    const subService: SubscriptionService = TestBed.inject(SubscriptionService);
+    const chatData: ChatData = TestBed.inject(ChatData);
+    const userData: UsersData = TestBed.inject(UsersData);
 
     let chatMessages : ChatMessage[] = [];
     let userMessages : UserData[] = [];

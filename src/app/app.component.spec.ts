@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
@@ -17,15 +17,24 @@ class MockHeader {
 })
 class MockMenu {
 }
+
+function configure() {
+    return TestBed.configureTestingModule({
+      imports: [RouterTestingModule, HttpClientModule],
+    })
+    .overrideComponent(AppComponent, {
+      set: {imports: [MockHeader, MockMenu]}
+    });
+}
   
 describe('AppComponent', () => {
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientModule],
-      declarations: [
-        AppComponent, MockHeader, MockMenu
-      ],
-    }).compileComponents();
+      imports: [HttpClientModule],
+    })
+    .overrideComponent(AppComponent, {
+      set: {imports: [MockHeader, MockMenu, RouterTestingModule]}
+    });
   }));
 
   it('should create the app', () => {

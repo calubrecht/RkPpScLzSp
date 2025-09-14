@@ -1,18 +1,28 @@
 <div class='findGameWidget'>
-  <div *ngIf="isSeeking">
+  @if (isSeeking) {
+  <div >
     <div>Waiting for a match... <button id="endSeekBtn" (click)="endSeek()">Cancel</button><button id='aiBtn' (click)="aiGame()">Play AI</button></div>
-    <div *ngIf="seekingLongTime" class='seekingLongTime'>Seeking Game is taking a long time. Would you prefer to play the AI?</div>
+    @if (seekingLongTime) {
+    <div class='seekingLongTime'>Seeking Game is taking a long time. Would you prefer to play the AI?</div>
+    }
 
   </div>
-  <div *ngIf="!isSeeking && !game.gameStatus.inGame && !game.gameStatus.invited">
+  }
+  @if ( !isSeeking && !game.gameStatus.inGame && !game.gameStatus.invited) {
+  <div>
     <button id="seekGameBtn" (click)="startSeek()">Find a game</button><button id='aiBtn' (click)="aiGame()">Play AI</button>
   </div>
-  <div *ngIf="game.gameStatus.invited">
+  }
+  @if ( game.gameStatus.invited ) {
+  <div >
     <div><span class="inviter {{userData.getUser(game.gameStatus.inviter).color}}">{{game.gameStatus.inviter}}</span> has invited you to a game</div>
     <button id="acceptBtn" (click)="acceptInvite()">Accept Invite</button>
   </div>
-  <div *ngIf="game.gameStatus.inGame">
+  }
+  @if ( game.gameStatus.inGame ) {
+  <div >
     <div>Ready to start game<span class="gameName">{{game.gameStatus.gameName}}</span></div>
     <button id="cancelBtn" (click)="cancelGame()">Cancel Game</button>
   </div>
+  }
 </div>

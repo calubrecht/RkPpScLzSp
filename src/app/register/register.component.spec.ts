@@ -20,6 +20,16 @@ let routerSpy;
 let loginSpy;
 let msgSpy;
 
+function configure(providers) {
+    return TestBed.configureTestingModule({
+      imports: [HttpClientModule, FormsModule],
+      providers: providers
+    })
+    .overrideComponent(RegisterComponent, {
+      set: {imports: [MockMsg, FormsModule]}
+    });
+}
+
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
@@ -28,16 +38,13 @@ describe('RegisterComponent', () => {
     routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
     loginSpy = jasmine.createSpyObj('UserLoginService', ['register', 'isLoggedIn']);
     msgSpy = jasmine.createSpyObj('MsgService', ['setError']);
-    await TestBed.configureTestingModule({
-      imports: [HttpClientModule, FormsModule],
-      declarations: [ RegisterComponent, MockMsg ],
-      providers: [
+    await configure(
+      [
         { provide:UserLoginService, useValue:loginSpy},
         { provide:MsgService, useValue:msgSpy},
         { provide: Router, useValue: routerSpy}
       ]
-    })
-    .compileComponents();
+    );
 
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;
@@ -125,16 +132,13 @@ describe('RegisterComponent loggedinAlready', () => {
     loginSpy = jasmine.createSpyObj('UserLoginService', {
       'isLoggedIn': true});
     msgSpy = jasmine.createSpyObj('MsgService', ['setError']);
-    await TestBed.configureTestingModule({
-      imports: [HttpClientModule, FormsModule],
-      declarations: [ RegisterComponent, MockMsg ],
-      providers: [
+    await configure(
+      [
         { provide:UserLoginService, useValue:loginSpy},
         { provide:MsgService, useValue:msgSpy},
         { provide: Router, useValue: routerSpy}
       ]
-    })
-    .compileComponents();
+    );
 
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;

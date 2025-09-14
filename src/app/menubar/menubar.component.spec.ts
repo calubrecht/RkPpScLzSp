@@ -1,8 +1,8 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { MockProvider, MockService } from 'ng-mocks';
 import {Router} from '@angular/router';
 import { Component } from '@angular/core';
-import { GameService } from '../game.service';
+import { GameService, GameStatus } from '../game.service';
 
 import { MenubarComponent } from './menubar.component';
 
@@ -23,11 +23,15 @@ class MockGameService {
   getGameStatus = () => this.gameStatus.gameStatus;
 }
 
+function makeGameStatus (gameStatus: string, gameName: string) : GameStatus {
+  return {gameStatus, gameName, round: 0, gameID: '0', selectedName: 'Bob', opponentSelectedName: "Roger", resultText:"", roundText: "", scoreText: "", inviter: "", lastWinner: "", invited: false, inGame: false};
+}
+
   
 describe('MenubarComponent', () => {
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
+      imports: [
         MenubarComponent
       ],
       providers: [
@@ -45,7 +49,7 @@ describe('MenubarComponent', () => {
   
   it('should indicateIfInLobby', () => {
     const fixture = TestBed.createComponent(MenubarComponent);
-    const router: Router = TestBed.get(Router);
+    const router: Router = TestBed.inject(Router);
     const component = fixture.debugElement.componentInstance;
 
     expect(component.inLobby()).toBe(true);
@@ -55,7 +59,7 @@ describe('MenubarComponent', () => {
   
   it('to Lobby', () => {
     const fixture = TestBed.createComponent(MenubarComponent);
-    const router: Router = TestBed.get(Router);
+    const router: Router = TestBed.inject(Router);
     const component = fixture.debugElement.componentInstance;
 
     spyOn(router, "navigateByUrl").and.callThrough();
@@ -72,7 +76,7 @@ describe('MenubarComponent', () => {
 
   it('to Game', () => {
     const fixture = TestBed.createComponent(MenubarComponent);
-    const router: Router = TestBed.get(Router);
+    const router: Router = TestBed.inject(Router);
     const component = fixture.debugElement.componentInstance;
 
     spyOn(router, "navigateByUrl").and.callThrough();
@@ -87,8 +91,8 @@ describe('MenubarComponent', () => {
   });
 
   it('to Render', () => {
-    const gameService = TestBed.get(GameService);
-    gameService.gameStatus = {gameStatus:'started', gameName:'FastGame'};
+    const gameService = TestBed.inject(GameService);
+    gameService.gameStatus = makeGameStatus('started', 'FastGame');
     expect(gameService.getGameStatus()).toBe('started');
     const fixture = TestBed.createComponent(MenubarComponent);
     const component = fixture.debugElement.componentInstance;

@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import { UserLoginService } from '../user-login.service';
 import { MsgService  } from '../msg.service';
+import { MsgComponent  } from '../msg/msg.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
+  imports: [ FormsModule, MsgComponent ]
 })
 export class RegisterComponent implements OnInit {
   colors = ['red', 'blue', 'green', 'orange', 'yellow', 'white', 'black'];
@@ -38,11 +41,13 @@ export class RegisterComponent implements OnInit {
     {
       this.loginService.register(this.userName, this.password, this.color);
     }
+    return false;
   }
 
   cancel()
   {
     this.router.navigateByUrl('login');
+    return false;
   }
 
   validate(): boolean

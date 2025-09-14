@@ -7,12 +7,12 @@ describe('UserData', () => {
   }));
 
   it('should be created', () => {
-    const service: UsersData = TestBed.get(UsersData);
+    const service: UsersData = TestBed.inject(UsersData);
     expect(service).toBeTruthy();
   });
   
   it('should add user', () => {
-    const service: UsersData = TestBed.get(UsersData);
+    const service: UsersData = TestBed.inject(UsersData);
 
     let u : UserData = {userName:'u1', color:'blue', system:false, status:'CONNECTED', wins:0, losses:0};
     service.addUser(u);
@@ -21,7 +21,7 @@ describe('UserData', () => {
   });
   
   it('should get active users', () => {
-    const service: UsersData = TestBed.get(UsersData);
+    const service: UsersData = TestBed.inject(UsersData);
 
     expect(service.getUsers()).toHaveSize(0);
     let u : UserData = {userName:'u1', color:'blue', system:false, status:'CONNECTED', wins:0, losses:0};
@@ -33,7 +33,7 @@ describe('UserData', () => {
   });
   
   it('should create User', () => {
-    const service: UsersData = TestBed.get(UsersData);
+    const service: UsersData = TestBed.inject(UsersData);
 
     let u = service.createUser('Joey');
 
@@ -41,7 +41,7 @@ describe('UserData', () => {
   });
   
   it('should update User', () => {
-    const service: UsersData = TestBed.get(UsersData);
+    const service: UsersData = TestBed.inject(UsersData);
 
     let u : UserData = {userName:'u1', color:'blue', system:false, status:'CONNECTED', wins:0, losses:0};
     let u2 : UserData = {userName:'u2', color:'blue', system:false, status:'DISCONNECTED', wins:0, losses:0};
@@ -59,7 +59,7 @@ describe('UserData', () => {
   });
   
   it('should add system User', () => {
-    const service: UsersData = TestBed.get(UsersData);
+    const service: UsersData = TestBed.inject(UsersData);
 
     expect(service.getUsers()).toHaveSize(0);
     service.addUsers([]);
@@ -69,7 +69,7 @@ describe('UserData', () => {
   });
 
   it('should getUser', () => {
-    const service: UsersData = TestBed.get(UsersData);
+    const service: UsersData = TestBed.inject(UsersData);
 
     let u : UserData = {userName:'u1', color:'blue', system:false, status:'CONNECTED', wins:0, losses:0};
     let u2 : UserData = {userName:'u2', color:'green', system:false, status:'DISCONNECTED', wins:0, losses:0};

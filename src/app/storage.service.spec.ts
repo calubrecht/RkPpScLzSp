@@ -4,12 +4,12 @@ import { StorageService} from './storage.service';
 describe('StorageMsgService', () => {
 
   it('should be created', () => {
-    const service: StorageService = TestBed.get(StorageService);
+    const service: StorageService = TestBed.inject(StorageService);
     expect(service).toBeTruthy();
   });
 
   it('set/getName', () => {
-    const service: StorageService = TestBed.get(StorageService);
+    const service: StorageService = TestBed.inject(StorageService);
 
     expect(service.getName()).toBeFalsy();
     service.setName('Bob');
@@ -17,7 +17,7 @@ describe('StorageMsgService', () => {
   });
   
   it('set/getToken', () => {
-    const service: StorageService = TestBed.get(StorageService);
+    const service: StorageService = TestBed.inject(StorageService);
 
     expect(service.getToken()).toBeFalsy();
     service.setToken('ABCD555');

@@ -4,12 +4,12 @@ import { MsgService} from './msg.service';
 describe('MsgService', () => {
 
   it('should be created', () => {
-    const service: MsgService = TestBed.get(MsgService);
+    const service: MsgService = TestBed.inject(MsgService);
     expect(service).toBeTruthy();
   });
 
   it('set/getMessage', () => {
-    const service: MsgService = TestBed.get(MsgService);
+    const service: MsgService = TestBed.inject(MsgService);
 
     expect(service.getMessage()).toBe('')
     service.setMessage('a message');
@@ -19,7 +19,7 @@ describe('MsgService', () => {
   });
 
   it('set/getError', () => {
-    const service: MsgService = TestBed.get(MsgService);
+    const service: MsgService = TestBed.inject(MsgService);
 
     expect(service.getError()).toBe('')
     service.setError('an Error');

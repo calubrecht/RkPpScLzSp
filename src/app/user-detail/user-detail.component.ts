@@ -1,4 +1,5 @@
 import { Input, Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { UserData } from '../user-data';
 import { UserLoginService } from '../user-login.service';
 import { GameService, GameListener, GameMessage } from '../game.service';
@@ -6,6 +7,7 @@ import { GameService, GameListener, GameMessage } from '../game.service';
 @Component({
   selector: 'app-user-detail',
   templateUrl: './user-detail.component.html',
+  imports: [CommonModule],
   styleUrls: ['./user-detail.component.css']
 })
 export class UserDetailComponent implements OnInit, GameListener{

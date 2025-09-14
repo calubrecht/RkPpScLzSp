@@ -17,23 +17,30 @@ class MockMsg {}
 let routerSpy;
 let loginSpy;
 
+function configure(providers) {
+    return TestBed.configureTestingModule({
+      imports: [FormsModule, HttpClientModule],
+      providers: providers
+    })
+    .overrideComponent(LoginComponent, {
+      set: {imports: [MockMsg, FormsModule]}
+    });
+}
+
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
 
   beforeEach(async () => {
-    routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
+    routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl'])
     loginSpy = jasmine.createSpyObj('UserLoginService',['initSession', 'logIn', 'logInGuest'],  {
       'isLoggedIn': () => false});
-    await TestBed.configureTestingModule({
-      declarations: [ LoginComponent, MockMsg ],
-      imports: [ HttpClientModule, FormsModule],
-      providers: [
+    await configure(
+      [
         { provide:UserLoginService, useValue:loginSpy},
-        { provide: Router, useValue: routerSpy}
+        { provide: Router, useValue:routerSpy}
       ]
-    })
-    .compileComponents();
+    );
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
@@ -49,7 +56,7 @@ describe('LoginComponent', () => {
     fixture.nativeElement.querySelector(".buttonPanel").children[1].click();
     expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('register');
   });
-  
+
   it('should try login', () => {
     expect(component).toBeTruthy();
     let userNameInput = fixture.nativeElement.querySelector("#userName");
@@ -78,15 +85,12 @@ describe('LoginComponent loggedinAlready', () => {
     routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
     loginSpy = jasmine.createSpyObj('UserLoginService', ['initSession'], {
       'isLoggedIn': () => true});
-    await TestBed.configureTestingModule({
-      imports: [HttpClientModule, FormsModule],
-      declarations: [ LoginComponent, MockMsg ],
-      providers: [
+    await configure(
+      [
         { provide:UserLoginService, useValue:loginSpy},
         { provide: Router, useValue: routerSpy}
       ]
-    })
-    .compileComponents();
+    );
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;

@@ -8,9 +8,11 @@
 <app-chatbox></app-chatbox>
 <div class="floatbox">
   <div class='userbox' #userScroll >
-     <div *ngFor="let u of userData.getActiveUsers()" class='user {{u.color}}' (click)="onSelect(u)">
+     @for (u of userData.getActiveUsers(); track u.userName) {
+     <div class='user {{u.color}}' (click)="onSelect(u)">
   	  {{u.userName}}
     </div>
+    }
   </div>
 </div>
 <app-user-detail [user]="selectedUser"></app-user-detail>
@@ -18,7 +20,7 @@
 <div class="findGame">
   <app-find-game-widget></app-find-game-widget>
 </div>
-<input type='text' class='chatInput' [(ngModel)]="newChat" (keyup.enter)="sendChat()"><button class='defButton' (click)="sendChat()">Send</button>
+<input type='text' id='chatInput' class='chatInput' [(ngModel)]="newChat" #ctrl="ngModel" name="newChat" (keyup.enter)="sendChat()"><button class='defButton' (click)="sendChat()">Send</button>
 
 <div>
 <button class="logoutButton" (click)="this.loginService.logOut('')">Log Out!</button>

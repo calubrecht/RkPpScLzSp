@@ -10,7 +10,7 @@ describe('MsgComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MsgComponent ],
+      imports: [ MsgComponent ],
       providers: [MockProvider(MsgService)]
     })
     .compileComponents();

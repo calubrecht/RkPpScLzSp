@@ -6,8 +6,10 @@
 
 <div class="gameCanvas">
   <img id='gameBack' src='assets/pentagonArrows.png'>
-  <div *ngFor="let choice of getChoices()" >
+  <div>
+  @for (choice of choices; track choice) {
     <img src='assets/{{choice}}.png' class='game_choice' id='game_{{choice}}' (click)='select($event.target)'>
+  }
   </div>
 </div>
     <div class="break"></div>

@@ -9,12 +9,12 @@ describe('ChatData', () => {
   }));
 
   it('should be created', () => {
-    const service: ChatData = TestBed.get(ChatData);
+    const service: ChatData = TestBed.inject(ChatData);
     expect(service).toBeTruthy();
   });
   
   it('should add chat', () => {
-    const service: ChatData = TestBed.get(ChatData);
+    const service: ChatData = TestBed.inject(ChatData);
 
     let c : ChatMessage = new ChatMessage('loser', 'loser says what?');
     service.addChat(c);
@@ -23,7 +23,7 @@ describe('ChatData', () => {
   });
   
   it('should clear chats', () => {
-    const service: ChatData = TestBed.get(ChatData);
+    const service: ChatData = TestBed.inject(ChatData);
 
     let c : ChatMessage = new ChatMessage('loser', 'loser says what?');
     c.msgID = 0;
@@ -34,7 +34,7 @@ describe('ChatData', () => {
   });
   
   it('should add multiple chats', () => {
-    const service: ChatData = TestBed.get(ChatData);
+    const service: ChatData = TestBed.inject(ChatData);
     let c : ChatMessage = new ChatMessage('loser', 'loser says what?');
     c.msgID = 0;
     let c2 : ChatMessage = new ChatMessage('winner', 'bring it');
@@ -47,7 +47,7 @@ describe('ChatData', () => {
   });
   
   it('setChats should replace', () => {
-    const service: ChatData = TestBed.get(ChatData);
+    const service: ChatData = TestBed.inject(ChatData);
 
     let c : ChatMessage = new ChatMessage('loser', 'loser says what?');
     c.msgID = 0;
@@ -59,7 +59,7 @@ describe('ChatData', () => {
   });
   
   it('should not add duplicates', () => {
-    const service: ChatData = TestBed.get(ChatData);
+    const service: ChatData = TestBed.inject(ChatData);
 
     let c : ChatMessage = new ChatMessage('loser', 'loser says what?');
     c.msgID = 4;

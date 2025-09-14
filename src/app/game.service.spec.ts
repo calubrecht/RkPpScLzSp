@@ -24,13 +24,13 @@ describe('GameService', () => {
   );
 
   it('should be created', () => {
-    const service: GameService = TestBed.get(GameService);
+    const service: GameService = TestBed.inject(GameService);
     expect(service).toBeTruthy();
   });
 
   it('seekGame should call api', () => {
-    const service: GameService = TestBed.get(GameService);
-    const apiService: ApiService = TestBed.get(ApiService);
+    const service: GameService = TestBed.inject(GameService);
+    const apiService: ApiService = TestBed.inject(ApiService);
 
     let message = new GameMessage();
 
@@ -42,8 +42,8 @@ describe('GameService', () => {
   });
 
   it('invite should call api and listen', () => {
-    const service: GameService = TestBed.get(GameService);
-    const apiService: ApiService = TestBed.get(ApiService);
+    const service: GameService = TestBed.inject(GameService);
+    const apiService: ApiService = TestBed.inject(ApiService);
 
     let listener = {onMessage: jasmine.createSpy() };
 
@@ -61,8 +61,8 @@ describe('GameService', () => {
   });
 
   it('onInit inits subscription', () => {
-    const service: GameService = TestBed.get(GameService);
-    const subsService: SubscriptionService = TestBed.get(SubscriptionService);
+    const service: GameService = TestBed.inject(GameService);
+    const subsService: SubscriptionService = TestBed.inject(SubscriptionService);
 
     let subscription = MockService(Subscription);
     let message = new GameMessage();
@@ -83,8 +83,8 @@ describe('GameService', () => {
   });
 
   it('acceptInvite should call api', () => {
-    const service: GameService = TestBed.get(GameService);
-    const apiService: ApiService = TestBed.get(ApiService);
+    const service: GameService = TestBed.inject(GameService);
+    const apiService: ApiService = TestBed.inject(ApiService);
 
     let message = new GameMessage();
     let acceptMessage: GameMessage = {action: 'acceptInvite', id: 'ID555'};
@@ -97,8 +97,8 @@ describe('GameService', () => {
   });
 
   it('endSeekGame should call api', () => {
-    const service: GameService = TestBed.get(GameService);
-    const apiService: ApiService = TestBed.get(ApiService);
+    const service: GameService = TestBed.inject(GameService);
+    const apiService: ApiService = TestBed.inject(ApiService);
 
     let message = new GameMessage();
 
@@ -110,8 +110,8 @@ describe('GameService', () => {
   });
 
   it('startAIGame should call api', () => {
-    const service: GameService = TestBed.get(GameService);
-    const apiService: ApiService = TestBed.get(ApiService);
+    const service: GameService = TestBed.inject(GameService);
+    const apiService: ApiService = TestBed.inject(ApiService);
 
     let listener = {onMessage: jasmine.createSpy() };
 
@@ -124,8 +124,8 @@ describe('GameService', () => {
   });
 
   it('cancel should call api', () => {
-    const service: GameService = TestBed.get(GameService);
-    const apiService: ApiService = TestBed.get(ApiService);
+    const service: GameService = TestBed.inject(GameService);
+    const apiService: ApiService = TestBed.inject(ApiService);
 
     service.gameStatus.gameID= 'GAME1';
 
@@ -139,8 +139,8 @@ describe('GameService', () => {
   });
 
   it('sendMessage should call subs service', () => {
-    const service: GameService = TestBed.get(GameService);
-    const subsService: SubscriptionService = TestBed.get(SubscriptionService);
+    const service: GameService = TestBed.inject(GameService);
+    const subsService: SubscriptionService = TestBed.inject(SubscriptionService);
 
     let message = new GameMessage();
 
@@ -152,8 +152,8 @@ describe('GameService', () => {
   });
 
   it('unsubscribe unsubs subscription', () => {
-    const service: GameService = TestBed.get(GameService);
-    const subsService: SubscriptionService = TestBed.get(SubscriptionService);
+    const service: GameService = TestBed.inject(GameService);
+    const subsService: SubscriptionService = TestBed.inject(SubscriptionService);
 
     let subscription = MockService(Subscription);
     service.subscription = subscription;
@@ -172,7 +172,7 @@ describe('GameService', () => {
   });
   
   it('onMessage to alert listeners', () => {
-    const service: GameService = TestBed.get(GameService);
+    const service: GameService = TestBed.inject(GameService);
 
     let message = new GameMessage();
     let listener1 = {onMessage: jasmine.createSpy() };
@@ -193,7 +193,7 @@ describe('GameService', () => {
   });
 
   it('start/end game', () => {
-    const service: GameService = TestBed.get(GameService);
+    const service: GameService = TestBed.inject(GameService);
 
     service.startGame("This game", "GAME123");
 
@@ -209,9 +209,9 @@ describe('GameService', () => {
   });
   
   it('onConnect sends post', () => {
-    const service: GameService = TestBed.get(GameService);
-    const subsService: SubscriptionService = TestBed.get(SubscriptionService);
-    const apiService: ApiService = TestBed.get(ApiService);
+    const service: GameService = TestBed.inject(GameService);
+    const subsService: SubscriptionService = TestBed.inject(SubscriptionService);
+    const apiService: ApiService = TestBed.inject(ApiService);
 
     let subscription = MockService(Subscription);
     let message = new GameMessage();

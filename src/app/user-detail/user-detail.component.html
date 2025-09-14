@@ -1,4 +1,5 @@
-<div *ngIf="user" class="floatbox">
+@if (user) {
+<div class="floatbox">
   <div class="userDetails">
     <h2>{{user.userName | uppercase}} Details</h2>
     <div class="userWinRecord">Record W:{{user.wins}} L:{{user.losses}}</div>
@@ -8,4 +9,4 @@
     </div>
   </div>
 </div>
-	
+}	

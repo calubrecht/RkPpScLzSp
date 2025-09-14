@@ -31,7 +31,7 @@ class MockGameService {
 
 describe('UserDetailComponent', () => {
   beforeEach(() => TestBed.configureTestingModule({
-      declarations: [
+      imports: [
         UserDetailComponent
       ],
       providers: [

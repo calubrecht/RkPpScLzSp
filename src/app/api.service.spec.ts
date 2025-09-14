@@ -57,12 +57,12 @@ describe('ApiService', () => {
   );
 
   it('should be created', () => {
-    const service: ApiService = TestBed.get(ApiService);
+    const service: ApiService = TestBed.inject(ApiService);
     expect(service).toBeTruthy();
   });
   
   it('should set fields', () => {
-    const service: ApiService = TestBed.get(ApiService);
+    const service: ApiService = TestBed.inject(ApiService);
     expect(service.API).toBe("basePage");
     expect(service.WSAPI).toBe("server");
     expect(service.WSENTRY).toBe("entryPoint");
@@ -70,7 +70,7 @@ describe('ApiService', () => {
   
   it('should set fields if localServer', () => {
     localEnv.localServer = true;
-    const service: ApiService = TestBed.get(ApiService);
+    const service: ApiService = TestBed.inject(ApiService);
     expect(service.API).toBe("/API");
     expect(service.WSAPI).toBe("ws://otherHost/API");
     expect(service.WSENTRY).toBe("entryPoint");
@@ -79,20 +79,20 @@ describe('ApiService', () => {
   it('should set fields if localServer-secure', () => {
     localEnv.localServer = true;
     localEnv.protocol = 'https';
-    const service: ApiService = TestBed.get(ApiService);
+    const service: ApiService = TestBed.inject(ApiService);
     expect(service.API).toBe("/API");
     expect(service.WSAPI).toBe("wss://otherHost/API");
     expect(service.WSENTRY).toBe("entryPoint");
   });
   
   it('should provide API', () => {
-    const service: ApiService = TestBed.get(ApiService);
+    const service: ApiService = TestBed.inject(ApiService);
     expect(service.getAPI()).toBe("basePage");
   });
   
   it('should sendGet', () => {
-    const service: ApiService = TestBed.get(ApiService);
-    const http = TestBed.get(HttpClient);
+    const service: ApiService = TestBed.inject(ApiService);
+    const http = TestBed.inject(HttpClient);
 
     spyOn(http, "get");
 
@@ -101,18 +101,18 @@ describe('ApiService', () => {
   });
   
   it('should sendGetString', () => {
-    const service: ApiService = TestBed.get(ApiService);
-    const http = TestBed.get(HttpClient);
+    const service: ApiService = TestBed.inject(ApiService);
+    const http = TestBed.inject(HttpClient);
 
     spyOn(http, "get");
 
     let obsv = service.sendGetString("bing");
-    expect(http.get).toHaveBeenCalledWith("basePage/api/v1/bing", {responseType: 'text'});
+    expect(http.get).toHaveBeenCalledWith("basePage/api/v1/bing", {responseType: 'text' as 'json'});
   });
   
   it('should sendPost', () => {
-    const service: ApiService = TestBed.get(ApiService);
-    const http = TestBed.get(HttpClient);
+    const service: ApiService = TestBed.inject(ApiService);
+    const http = TestBed.inject(HttpClient);
 
     spyOn(http, "post");
 
@@ -121,12 +121,12 @@ describe('ApiService', () => {
   });
   
   it('should sendPost for string', () => {
-    const service: ApiService = TestBed.get(ApiService);
-    const http = TestBed.get(HttpClient);
+    const service: ApiService = TestBed.inject(ApiService);
+    const http = TestBed.inject(HttpClient);
 
     spyOn(http, "post");
 
     let obsv = service.sendPostForString("bing", "bong");
-    expect(http.post).toHaveBeenCalledWith("basePage/api/v1/bing", "bong", {responseType: 'text'});
+    expect(http.post).toHaveBeenCalledWith("basePage/api/v1/bing", "bong", {responseType: 'text' as 'json'});
   });
 });

@@ -12,7 +12,8 @@ import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-msg',
-  template: '<p>Msg</p>'
+  template: '<p>Msg</p>',
+  standalone: true
 })
 class MockMsg {}
 
@@ -48,23 +49,28 @@ class MockRouter {
   navigateByUrl = mockRoute;
 }
 
+function configure(providers) {
+    return TestBed.configureTestingModule({
+      imports: [RouterTestingModule, HttpClientModule, GameComponent],
+      providers: providers
+    })
+    .overrideComponent(GameComponent, {
+      set: {imports: [MockMsg]}
+    });
+}
+
 describe('GameComponent', () => {
   let component: GameComponent;
   let fixture: ComponentFixture<GameComponent>;
 
   beforeEach(async () => {
     mockSend.calls.reset();
-    await TestBed.configureTestingModule({
-      declarations: [ GameComponent, MockMsg ],
-      imports: [RouterTestingModule, HttpClientModule],
-      providers: [
+    await configure ([
         {provide: GameService, useClass: MockGame},
         {provide: UserLoginService, useClass: MockLoginUser},
         {provide: Router, useClass: MockRouter}
-      ],
-    })
-    .compileComponents();
-
+      ]);
+    
     fixture = TestBed.createComponent(GameComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -244,14 +250,9 @@ describe('GameComponent Finished', () => {
   let fixture: ComponentFixture<GameComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ GameComponent, MockMsg ],
-      imports: [RouterTestingModule, HttpClientModule],
-      providers: [
+    await configure ([
         {provide: GameService, useClass: MockGameFinished}
-      ],
-    })
-    .compileComponents();
+      ]);
 
     fixture = TestBed.createComponent(GameComponent);
     component = fixture.componentInstance;
@@ -270,14 +271,10 @@ describe('GameComponent inProgress', () => {
 
   beforeEach(async () => {
     mockSend.calls.reset();
-    await TestBed.configureTestingModule({
-      declarations: [ GameComponent, MockMsg ],
-      imports: [RouterTestingModule, HttpClientModule],
-      providers: [
+    await configure ([
         {provide: GameService, useClass: MockGameInProgress}
-      ],
-    })
-    .compileComponents();
+      ]);
+
 
     fixture = TestBed.createComponent(GameComponent);
     component = fixture.componentInstance;
@@ -298,14 +295,9 @@ describe('GameComponent Finished', () => {
   let fixture: ComponentFixture<GameComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ GameComponent, MockMsg ],
-      imports: [RouterTestingModule, HttpClientModule],
-      providers: [
+    await configure ([
         {provide: GameService, useClass: MockGameFinished}
-      ],
-    })
-    .compileComponents();
+      ]);
 
     fixture = TestBed.createComponent(GameComponent);
     component = fixture.componentInstance;
@@ -323,14 +315,9 @@ describe('GameComponent inProgress', () => {
   let fixture: ComponentFixture<GameComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ GameComponent, MockMsg ],
-      imports: [RouterTestingModule, HttpClientModule],
-      providers: [
+    await configure ([
         {provide: GameService, useClass: MockGameInProgress}
-      ],
-    })
-    .compileComponents();
+      ]);
 
     fixture = TestBed.createComponent(GameComponent);
     component = fixture.componentInstance;

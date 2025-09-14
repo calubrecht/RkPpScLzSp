@@ -39,13 +39,13 @@ describe('UserLoginService', () => {
   );
 
   it('should be created', () => {
-    const service: UserLoginService = TestBed.get(UserLoginService);
+    const service: UserLoginService = TestBed.inject(UserLoginService);
     expect(service).toBeTruthy();
   });
   
   it('should set Name', () => {
     spyOn(mockStorage, 'setName');
-    const service: UserLoginService = TestBed.get(UserLoginService);
+    const service: UserLoginService = TestBed.inject(UserLoginService);
     expect(service).toBeTruthy();
 
     service.setName("name");
@@ -62,7 +62,7 @@ describe('UserLoginService', () => {
     mockPromise.trigger = () => callback('aName');
 
     spyOn(mockApi, 'sendGetString').and.returnValue(mockPromise);
-    const service: UserLoginService = TestBed.get(UserLoginService);
+    const service: UserLoginService = TestBed.inject(UserLoginService);
 
     service.fetchUserName();
     mockPromise.trigger();
@@ -79,7 +79,7 @@ describe('UserLoginService', () => {
 
     spyOn(mockApi, 'sendGetString').and.returnValue(mockPromise);
     spyOn(mockSub, 'onWSDisconnect').and.callFake((cb) => {wsCallback = cb;});
-    const service: UserLoginService = TestBed.get(UserLoginService);
+    const service: UserLoginService = TestBed.inject(UserLoginService);
     spyOn(service, 'logOut');
     spyOn(service, 'fetchVersion').and.callFake(() => {});
 
@@ -109,7 +109,7 @@ describe('UserLoginService', () => {
     mockPromise.subscribe = (cb) => callback = cb;
 
     spyOn(mockApi, 'sendGetString').and.returnValue(mockPromise);
-    const service: UserLoginService = TestBed.get(UserLoginService);
+    const service: UserLoginService = TestBed.inject(UserLoginService);
 
     service.fetchVersion();
     
@@ -135,7 +135,7 @@ describe('UserLoginService', () => {
     spyOn(mockStorage, 'setToken');
     // for fetchUser
     spyOn(mockApi, 'sendGetString').and.returnValue(of("Joe"));
-    const service: UserLoginService = TestBed.get(UserLoginService);
+    const service: UserLoginService = TestBed.inject(UserLoginService);
 
     service.logIn("Joe", "Blow");
     
@@ -152,7 +152,7 @@ describe('UserLoginService', () => {
     spyOn(mockStorage, 'setToken');
     // for fetchUser
     spyOn(mockApi, 'sendGetString').and.returnValue(of("Joe"));
-    const service: UserLoginService = TestBed.get(UserLoginService);
+    const service: UserLoginService = TestBed.inject(UserLoginService);
 
     service.register("Joe", "Blow", "green");
     
@@ -170,7 +170,7 @@ describe('UserLoginService', () => {
     spyOn(mockUsers, 'createUser');
     // for fetchUser
     spyOn(mockApi, 'sendGetString').and.returnValue(of("Guest 1"));
-    const service: UserLoginService = TestBed.get(UserLoginService);
+    const service: UserLoginService = TestBed.inject(UserLoginService);
 
     service.logInGuest();
     
@@ -184,7 +184,7 @@ describe('UserLoginService', () => {
   it('test isLoggedIn', () => {
     let token = null;
     mockStorage.getToken = () => token;
-    const service: UserLoginService = TestBed.get(UserLoginService);
+    const service: UserLoginService = TestBed.inject(UserLoginService);
 
     expect(service.isLoggedIn()).toBe(false);
     token = "chumbawumba";
@@ -201,7 +201,7 @@ describe('UserLoginService', () => {
     spyOn(mockGame, 'unsubscribe');
     spyOn(mockChat, 'unsubscribe');
     spyOn(mockSub, 'unsubscribeAll');
-    const service: UserLoginService = TestBed.get(UserLoginService);
+    const service: UserLoginService = TestBed.inject(UserLoginService);
     service.initted=true;
 
     service.logOut("Me bad");
@@ -217,7 +217,7 @@ describe('UserLoginService', () => {
   });
   
   it('should parseMsg', () => {
-    const service: UserLoginService = TestBed.get(UserLoginService);
+    const service: UserLoginService = TestBed.inject(UserLoginService);
 
     expect(service.parseMsg("<html>SomeHTML</html>")).toBe("Unable to authenticate. Please login");
     expect(service.parseMsg("Not HTML")).toBe("Not HTML");

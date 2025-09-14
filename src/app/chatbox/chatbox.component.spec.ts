@@ -12,7 +12,7 @@ describe('ChatboxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChatboxComponent ],
+      imports: [ ChatboxComponent ],
       providers: [
         MockProvider(ChatData),
         MockProvider(ChatService),
@@ -46,10 +46,10 @@ describe('ChatboxComponent', () => {
   });
 
   it('render 2 chats', () => {
-    let chatData = TestBed.get(ChatData);
+    let chatData = TestBed.inject(ChatData);
     spyOn(chatData, 'getChats').and.returnValue([
-      {userName:'user1', chatText:'Hi'},
-      {userName:'user2', chatText:'Hi yourself'}]);
+      {userName:'user1', chatText:'Hi', msgID: 1},
+      {userName:'user2', chatText:'Hi yourself', msgID: 2}]);
     component.users = [{userName: 'user1', color: 'red', status:'online', system:false, wins:0, losses:0}]
     fixture.detectChanges();
 
